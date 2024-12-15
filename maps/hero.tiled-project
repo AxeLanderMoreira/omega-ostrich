@@ -1,0 +1,139 @@
+{
+    "automappingRulesFile": "",
+    "commands": [
+    ],
+    "compatibilityVersion": 1100,
+    "extensionsPath": "extensions",
+    "folders": [
+        "."
+    ],
+    "properties": [
+    ],
+    "propertyTypes": [
+        {
+            "color": "#fff9f9ff",
+            "drawFill": true,
+            "id": 4,
+            "members": [
+            ],
+            "name": "Checkpoint",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset",
+                "project"
+            ]
+        },
+        {
+            "color": "#ffff0000",
+            "drawFill": true,
+            "id": 2,
+            "members": [
+            ],
+            "name": "Enemy",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset",
+                "project"
+            ]
+        },
+        {
+            "color": "#ff00aaff",
+            "drawFill": true,
+            "id": 3,
+            "members": [
+                {
+                    "name": "color",
+                    "type": "string",
+                    "value": ""
+                }
+            ],
+            "name": "Fluid",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset",
+                "project"
+            ]
+        },
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 5,
+            "members": [
+            ],
+            "name": "StartPosition",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset",
+                "project"
+            ]
+        },
+        {
+            "color": "#ff00aa00",
+            "drawFill": true,
+            "id": 1,
+            "members": [
+                {
+                    "name": "breakable",
+                    "type": "bool",
+                    "value": false
+                },
+                {
+                    "name": "hot",
+                    "type": "bool",
+                    "value": false
+                },
+                {
+                    "name": "xmove",
+                    "type": "int",
+                    "value": 0
+                },
+                {
+                    "name": "ymove",
+                    "type": "int",
+                    "value": 0
+                }
+            ],
+            "name": "Wall",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset",
+                "project"
+            ]
+        }
+    ]
+}

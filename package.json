@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "ect-bin": "^1.4.1",
+    "typescript": "^5.6.3"
+  }
+}

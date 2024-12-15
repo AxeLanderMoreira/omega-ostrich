@@ -1,0 +1,120 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "map03.tmj",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "fileStates": {
+        "": {
+            "scaleInDock": 1
+        },
+        "Enemies.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 4.1622
+        },
+        "HERO.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "map01.tmj": {
+            "expandedObjectLayers": [
+                2
+            ],
+            "scale": 8,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 785.4375,
+                "y": 342.9375
+            }
+        },
+        "map01.tmj#HERO": {
+            "scaleInDock": 1
+        },
+        "map02.tmj": {
+            "expandedObjectLayers": [
+                2
+            ],
+            "scale": 3,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 176.16666666666666,
+                "y": 199.83333333333331
+            }
+        },
+        "map03.tmj": {
+            "expandedObjectLayers": [
+                2
+            ],
+            "scale": 1.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 185.66666666666669,
+                "y": 449.66666666666663
+            }
+        },
+        "map04.tmj": {
+            "expandedObjectLayers": [
+                2
+            ],
+            "scale": 2,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 352.25,
+                "y": 99.75
+            }
+        },
+        "map05.tmj": {
+            "expandedObjectLayers": [
+                2
+            ],
+            "scale": 2,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 82.75,
+                "y": 166.75
+            }
+        }
+    },
+    "last.exportedFilePath": "/home/alexandre/workspace/herojs/maps",
+    "last.imagePath": "/home/alexandre/workspace/herojs/images",
+    "map.fixedSize": true,
+    "map.height": 25,
+    "map.lastUsedExportFilter": "JavaScript map files (*.js)",
+    "map.lastUsedFormat": "json",
+    "map.orientation": 1,
+    "map.tileHeight": 8,
+    "map.tileWidth": 8,
+    "map.width": 44,
+    "openFiles": [
+        "HERO.tsx",
+        "map01.tmj",
+        "Enemies.tsx",
+        "map02.tmj",
+        "map04.tmj",
+        "map03.tmj"
+    ],
+    "project": "hero.tiled-project",
+    "property.type": "int",
+    "recentFiles": [
+        "HERO.tsx",
+        "map01.tmj",
+        "Enemies.tsx",
+        "map02.tmj",
+        "map04.tmj",
+        "map03.tmj"
+    ],
+    "tileset.embedInMap": false,
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.margin": 0,
+    "tileset.spacing": 0,
+    "tileset.tileSize": {
+        "height": 13,
+        "width": 13
+    },
+    "tileset.transparentColor": "#ff00ff",
+    "tileset.type": 0,
+    "tileset.useTransparentColor": false
+}
