@@ -63,7 +63,7 @@ cat ../src/utils.js >> ${BUILD_FILENAME}
 optipng ../images/*.png
 
 # copy images to build folder
-cp -R ../images  .
+cp -R ../images/*  .
 
 if [ $BUILD_MODE == "release" ]; then
     # minify code with closure
@@ -105,7 +105,7 @@ fi
 echo "</script>" >> index.html
 
 # zip the result, ect is recommended
-../node_modules/ect-bin/vendor/linux/ect -9 -strip -zip ../${NAME}.zip index.html images/*.png
+../node_modules/ect-bin/vendor/linux/ect -9 -strip -zip ../${NAME}.zip index.html *.png
 if [ $? -ne 0 ]; then
     read -p "Unexpected error. Press any key to terminate..."
     exit $?

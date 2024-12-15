@@ -151,9 +151,9 @@ engineInit(
     gameRender, 
     gameRenderPost, 
     [
-        './images/Ostrich.png', /*HERO*/
-        './images/EggBomb.png',
-        './images/Enemies.png',
-        './images/HudIcons.png'
+        './Ostrich.png', /*HERO*/
+        './EggBomb.png',
+        './Enemies.png',
+        './HudIcons.png'
     ]
 );
