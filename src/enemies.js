@@ -48,8 +48,8 @@ class Enemy extends GameObject
             vec2(0,0),
             vec2(pw/WORLD_TILE_SIZE, ph/WORLD_TILE_SIZE)
         );
-        box.color = new Color(0,1,0,.5); // debug
-        //box.color = new Color(0,0,0,0);
+        //box.color = new Color(0,1,0,.5); // debug
+        box.color = new Color(0,0,0,0);
         this.addChild(box,vec2(px/WORLD_TILE_SIZE, py/WORLD_TILE_SIZE));
         this.box = box;
     }
