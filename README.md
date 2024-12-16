@@ -22,9 +22,9 @@ Her powers include:
 
 Gameplay is heavily inspired by Atari 2600's H.E.R.O, and uses a classic single-button control scheme.
 
-* Jump / fly: Tap UP direction to jump, then tap and hold to fly. Release and tap again to control the height. Use LEFT and RIGHT direction to maneuver.
+* Jump / fly: Tap UP direction or Button 2 (X on keyboard) to jump. Then, tap and hold to fly. Release and tap again to control the height. Use LEFT and RIGHT direction to maneuver.
 
-* Shoot Laser beam: Hold FIRE button to shoot a short laser beam continuosly (SPACE or Z on key board, face buttons on gamepad).
+* Shoot Laser beam: Hold FIRE button to shoot a short laser beam continuosly (SPACE or Z on keyboard, Button 1 on gamepad).
 
 * Lay Explosive egg: Tap the opposite direction to turn away, and hold DOWN to crouch. While crouched, tap FIRE button, then run in the oppotie direction (otherwise you will be caught in the blast and lose a life).
 

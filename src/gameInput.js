@@ -18,7 +18,7 @@ class GameInput
     constructor()
     {
         this.clear();
-        this.controlMode = CONTROL_MODE_RETRO; // default
+        //this.controlMode = CONTROL_MODE_RETRO; // default
     }
     
 
@@ -50,13 +50,15 @@ class GameInput
             alreadyHolding[GAME_INPUT_DOWN] = this.holdingKey[GAME_INPUT_DOWN];
             alreadyHolding[GAME_INPUT_LEFT] = this.holdingKey[GAME_INPUT_LEFT];
             alreadyHolding[GAME_INPUT_RIGHT] = this.holdingKey[GAME_INPUT_RIGHT];
-            if (this.controlMode == CONTROL_MODE_RETRO) {
+            /*if (this.controlMode == CONTROL_MODE_RETRO) {
                 this.holdingKey[GAME_INPUT_UP] = stk.y > 0;
                 this.holdingKey[GAME_INPUT_ACTION] = gamepadIsDown(0) || gamepadIsDown(1) || gamepadIsDown(2) || gamepadIsDown(3);
             } else {
                 this.holdingKey[GAME_INPUT_UP] = gamepadIsDown(1);
                 this.holdingKey[GAME_INPUT_ACTION] = gamepadIsDown(0);
-            }            
+            } */  
+            this.holdingKey[GAME_INPUT_UP] = stk.y > 0 || gamepadIsDown(1) || gamepadIsDown(3);
+            this.holdingKey[GAME_INPUT_ACTION] = gamepadIsDown(0) || gamepadIsDown(2);
             this.holdingKey[GAME_INPUT_DOWN] = stk.y < 0;
             this.holdingKey[GAME_INPUT_LEFT] = stk.x < 0;
             this.holdingKey[GAME_INPUT_RIGHT] = stk.x > 0;
@@ -73,13 +75,15 @@ class GameInput
             this.holdingKey[GAME_INPUT_RIGHT] = keyIsDown('ArrowRight');
             // action is performed by Z, spacebar, or ENTER (which in TV remote controls translate to the ENTER key)
             this.holdingKey[GAME_INPUT_ACTION] = keyIsDown('KeyZ') || keyIsDown('Space') || keyIsDown('Enter');
-            if (this.controlMode == CONTROL_MODE_RETRO) {
+            /*if (this.controlMode == CONTROL_MODE_RETRO) {
                 this.holdingKey[GAME_INPUT_UP] = keyIsDown('ArrowUp');
                 this.pressedKey[GAME_INPUT_UP] = keyWasPressed('ArrowUp');
             } else {
                 this.holdingKey[GAME_INPUT_UP] = keyIsDown('KeyX');
                 this.pressedKey[GAME_INPUT_UP] = keyWasPressed('KeyX');
-            }
+            }*/
+            this.holdingKey[GAME_INPUT_UP] = keyIsDown('ArrowUp') || keyIsDown('KeyX');
+            this.pressedKey[GAME_INPUT_UP] = keyWasPressed('ArrowUp') || keyWasPressed('KeyX');
             this.pressedKey[GAME_INPUT_DOWN] = keyWasPressed('ArrowDown');
             this.pressedKey[GAME_INPUT_LEFT] = keyWasPressed('ArrowLeft');
             this.pressedKey[GAME_INPUT_RIGHT] = keyWasPressed('ArrowRight');

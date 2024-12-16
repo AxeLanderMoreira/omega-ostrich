@@ -147,7 +147,7 @@ class Character extends GameObject
                 this.airborne = true;
                 break;
             case STATE_CHARACTER_CROUCH:
-                this.isCrouching = true;
+                this.velocity.x = 0;
                 this.updateHitBox(0,-4,12,16)
                 break;
             case STATE_CHARACTER_ASTRALFLIGHT:
@@ -593,7 +593,9 @@ class Player extends Character
         );
         switch(this.state) {
             case STATE_CHARACTER_STAND:
-                if (holdingLeft || holdingRight) { // lateral movement? check for need to turn, and other combinations
+                if (holdingDown) { // crouch action has precedence
+                    this.changeState(STATE_CHARACTER_CROUCH);
+                } else if (holdingLeft || holdingRight) { // lateral movement? check for need to turn, and other combinations
                     newMirror = holdingLeft;
                     let endState;
                     if (pressedUp) {
@@ -601,7 +603,7 @@ class Player extends Character
                         endState = STATE_CHARACTER_JUMP;
                     } else {
                         endState = STATE_CHARACTER_WALK;
-                    }
+                    }                    
                     if (newMirror != this.mirror) {
                         this.changeState(STATE_CHARACTER_TURN, endState);
                     } else {
@@ -609,8 +611,6 @@ class Player extends Character
                     }
                 } else if (pressedUp) {
                     this.changeState(STATE_CHARACTER_JUMP);  // jump from neutral input
-                } else if (holdingDown) {
-                    this.changeState(STATE_CHARACTER_CROUCH);
                 }
                 break;
             case STATE_CHARACTER_WALK:
@@ -625,6 +625,8 @@ class Player extends Character
                 } else if (holdingUp) {
                     this.diagonalJump = true;
                     this.changeState(STATE_CHARACTER_JUMP); // diagonal jump
+                } else if (holdingDown) {
+                    this.changeState(STATE_CHARACTER_CROUCH);
                 }
                 break;
             case STATE_CHARACTER_FALL:

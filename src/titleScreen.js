@@ -1,11 +1,9 @@
 class TitleScreen extends GameScreen
 {
-    init()
+    /*init()
     {
-        //this.fontImg = new FontImage();
         this.levelSelect = 1;
-        this.mainMenu = [
-            /*{ label: 'OPTIONS', action: this.showMenu.bind(this, this.optionsMenu) },*/
+        this.mainMenu = [            
             { label: 'OPTIONS', action: () => this.showMenu(this.optionsMenu) },
             { label: 'START GAME', action: () => this.startGame() }
         ];
@@ -15,6 +13,19 @@ class TitleScreen extends GameScreen
             { label: 'BACK', action: () => this.showMenu(this.mainMenu) }
 
         ]
+        this.showMenu(this.mainMenu);
+    }*/
+
+    // Simplified implementation - instead of allowing select a different control scheme,
+    // we allow (for now) both UP arrow and button 2 to work as jump/fly;
+
+    init()
+    {
+        this.levelSelect = 1;
+        this.mainMenu = [            
+            { label: 'LEVEL SELECT:', options: this.makeLevelSelectOptions(), index: 0, onfocus: (i) => this.setStartLevel(i) },
+            { label: 'START GAME', action: () => this.startGame() }
+        ];        
         this.showMenu(this.mainMenu);
     }
     
@@ -32,9 +43,9 @@ class TitleScreen extends GameScreen
         return ret;
     }
 
-    setControlMode(i) {
+    /*setControlMode(i) {
         this.controlMode = i;
-    }
+    }*/
 
     setStartLevel(i) {
         this.levelSelect = (i + 1);

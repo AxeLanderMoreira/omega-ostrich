@@ -25,8 +25,9 @@ const PIXEL_UNIT = .125; // 1/8
 
 const SOUND_DYNAMITE_BLOW = [,,49,.08,.06,.43,4,1.3,,-9,,,,.8,,.4,,.48,.12];
 
-const CONTROL_MODE_RETRO = 0; // 1-BUTTON
-const CONTROL_MODE_MODERN = 1; // 2-BUTTON
+// Unified/merged control modes
+//const CONTROL_MODE_RETRO = 0; // 1-BUTTON
+//const CONTROL_MODE_MODERN = 1; // 2-BUTTON
 
 // Program-defined globals
 let gameInput;
