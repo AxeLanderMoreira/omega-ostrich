@@ -1,5 +1,5 @@
-const ENEMY_TILE_SIZE_X = 13;
-const ENEMY_TILE_SIZE_Y = 13;
+const ENEMY_TILE_SIZE_X = 15;
+const ENEMY_TILE_SIZE_Y = 15;
 
 const SPRITE_INDEX_SPIDER = 0;
 const SPRITE_INDEX_MOTH = 2;
@@ -29,38 +29,21 @@ class Enemy extends GameObject
         super(
             pos, 
             vec2(ENEMY_TILE_SIZE_X/WORLD_TILE_SIZE, ENEMY_TILE_SIZE_Y/WORLD_TILE_SIZE),
-            new TileInfo(vec2(0, 0), vec2(ENEMY_TILE_SIZE_X, ENEMY_TILE_SIZE_Y), TEXTURE_INDEX_ENEMIES)
+            new TileInfo(vec2(0, 0), vec2(ENEMY_TILE_SIZE_X, ENEMY_TILE_SIZE_Y), TEXTURE_INDEX_ENEMIES, 1)
         );        
         this.screen = screen;
         this.player = screen.player;
         this.renderOrder = RENDER_ORDER_ENEMIES;
     }
 
-    /**
-     * Create a Hitbox game object with the pixel coordinates passed.
-     * @param {integer} px x-offset in pixels, in relation to the full frame center
-     * @param {integer} py y-offset in pixels, in relation to the full frame center
-     * @param {integer} pw width in pixels of the hitbox
-     * @param {integer} ph height in pixels of the hitbox
-     */
-    createHitBox(px, py, pw, ph) {
-        let box = new EngineObject(
-            vec2(0,0),
-            vec2(pw/WORLD_TILE_SIZE, ph/WORLD_TILE_SIZE)
-        );
-        //box.color = new Color(0,1,0,.5); // debug
-        box.color = new Color(0,0,0,0);
-        this.addChild(box,vec2(px/WORLD_TILE_SIZE, py/WORLD_TILE_SIZE));
-        this.box = box;
-    }
-
     hitPlayer() {
         let o = this.box ? this.box : this;
+        let p = this.player.box ? this.player.box : this.player;
         return isOverlapping(
             o.pos,
             o.size,
-            this.player.pos,
-            this.player.size
+            p.pos,
+            p.size
         )
         // TODO custom hitbox for player
     }
@@ -152,7 +135,7 @@ class Moth extends Enemy
 }
 
 const SNAKE_ATTACK_TIME = 1;
-const SNAKE_ATTACK_RANGE = ENEMY_TILE_SIZE_X/WORLD_TILE_SIZE;
+const SNAKE_ATTACK_RANGE = (ENEMY_TILE_SIZE_X-2)/WORLD_TILE_SIZE; // adjusted for padding
 
 class Snake extends Enemy
 {

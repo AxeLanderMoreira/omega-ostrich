@@ -77,7 +77,7 @@ class GameLevel
         } else {
             color = randColor(new Color(.5,.5,.5), new Color(.9,.9,.9));
         }
-        let pos = this._translatePos(x, y, width, height);
+        let pos = this._translatePos(x, y, width, height, true);
         let size = vec2(width, height).divide(vec2(8));
         let obj = new Wall(pos, size, this.screen, color, breakable, hot, xmove, ymove);
         if (obj) {
@@ -124,7 +124,7 @@ class GameLevel
         let height = this._next();
         let color = new Color();
         color.setHex(this._next());
-        let pos = this._translatePos(x, y, width, height);
+        let pos = this._translatePos(x, y, width, height, true);
         let size = vec2(width, height).divide(vec2(8));
         let obj = new Fluid(pos, size, color, this.screen);
 
@@ -153,7 +153,17 @@ class GameLevel
      * @param {Vector2} pos in pixels (0,0@top,left)
      * @return {Vector2} pos in game world coordinates
      */
-    _translatePos(x, y, w, h) {
+
+    /**
+     * 
+     * @param {int} x x-coordinate
+     * @param {int} y y-coordinate
+     * @param {int} w width
+     * @param {int} h height
+     * @param {boolean} isTopLeft true if x,y position is anchored to top left; false or undefined if centered.
+     * @returns {Vector2} pos in game world coordinates
+     */
+    _translatePos(x, y, w, h, isTopLeft) {
         // adjust from screen coordinates to cartesian
         let tx = x - GAME_RESOLUTION_W / 2;
         let ty = -y + GAME_RESOLUTION_H / 2;

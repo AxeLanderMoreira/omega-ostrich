@@ -21,9 +21,12 @@ const TEXTURE_INDEX_DYNAMITE=1;
 const TEXTURE_INDEX_ENEMIES=2;
 const TEXTURE_INDEX_HUD_ICONS=3;
 
-const PIXEL_UNIT_Y = .125;
+const PIXEL_UNIT = .125; // 1/8
 
 const SOUND_DYNAMITE_BLOW = [,,49,.08,.06,.43,4,1.3,,-9,,,,.8,,.4,,.48,.12];
+
+const CONTROL_MODE_RETRO = 0; // 1-BUTTON
+const CONTROL_MODE_MODERN = 1; // 3-BUTTON
 
 // Program-defined globals
 let gameInput;
@@ -48,11 +51,7 @@ function gameInit()
     enablePhysicsSolver = false;
     objectMaxSpeed = .5;    //2;
     gRandom = new RandomGenerator(randInt(1e9));
-    //const tileSize = vec2(14,24);
-    //const tileInfo = new TileInfo(pos, tileSize, 0);
-    //const object = new GameObject(pos, undefined, tileInfo);
     gameInput = new GameInput();
-    //currentScreen = new MainGameScreen();
     showTitleScreen();
 }
 
@@ -70,7 +69,7 @@ function showTitleScreen()
     currentScreen.start();
 }
 
-function showMainGameScreen(startLevel)
+function showMainGameScreen(startLevel, controlMode)
 {
     if (currentScreen) {
         currentScreen.stop();

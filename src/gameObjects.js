@@ -22,6 +22,30 @@ class GameObject extends EngineObject
         this.visible = true;
     }
 
+    /**
+     * Create a Hitbox game object with the pixel coordinates passed.
+     * @param {integer} px x-offset in pixels, in relation to the full frame center
+     * @param {integer} py y-offset in pixels, in relation to the full frame center
+     * @param {integer} pw width in pixels of the hitbox
+     * @param {integer} ph height in pixels of the hitbox
+     */
+    createHitBox(px, py, pw, ph) {
+        let box = new EngineObject(
+            vec2(0,0),
+            vec2(pw/WORLD_TILE_SIZE, ph/WORLD_TILE_SIZE)
+        );
+        //box.color = new Color(0,1,0,.5); // debug
+        box.color = new Color(0,0,0,0);
+        this.addChild(box,vec2(px/WORLD_TILE_SIZE, py/WORLD_TILE_SIZE));
+        this.box = box;
+    }
+
+    updateHitBox(px, py, pw, ph) {
+        this.box.size.x = pw/WORLD_TILE_SIZE;
+        this.box.size.y = ph/WORLD_TILE_SIZE;
+        this.box.localPos.set(px/WORLD_TILE_SIZE, py/WORLD_TILE_SIZE);
+    }
+
     update() 
     {
         if (!this.visible) return;
@@ -318,7 +342,7 @@ class Wall extends GameObject
             }
         }
         if (this.hot) {
-            if (this.collideWith(this.player))  {
+            if (this.collideWith(this.player.box))  {
                 this.player.damage();                
             } else {
                 let n = Math.PI * ((time - this.t0) / BAT_FLY_PERIOD);
@@ -347,7 +371,7 @@ class Checkpoint extends GameObject {
         super(
             pos, 
             vec2(ENEMY_TILE_SIZE_X/WORLD_TILE_SIZE, ENEMY_TILE_SIZE_Y/WORLD_TILE_SIZE),
-            new TileInfo(vec2(0, 0), vec2(ENEMY_TILE_SIZE_X, ENEMY_TILE_SIZE_Y), TEXTURE_INDEX_ENEMIES)
+            new TileInfo(vec2(0, 0), vec2(ENEMY_TILE_SIZE_X, ENEMY_TILE_SIZE_Y), TEXTURE_INDEX_ENEMIES, 1)
         );
         this.mirror = mirror;
         this.player = screen.player;
@@ -360,7 +384,7 @@ class Checkpoint extends GameObject {
     }
 
     update() {
-        if (this.state == STATE_CHECKPOINT_WAIT && this.collideWith(this.player))  {
+        if (this.state == STATE_CHECKPOINT_WAIT && this.collideWith(this.player.box))  {
             this.changeState(STATE_CHECKPOINT_PASS);
             this.player.changeState(STATE_CHARACTER_CHECKPOINT);
         }

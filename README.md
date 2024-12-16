@@ -34,11 +34,7 @@ Gameplay is heavily inspired by Atari 2600's H.E.R.O, and uses a classic single-
 
 ## 3. Known bugs
 
-* Virtual (touch-screen) gamepad does not work properly: holding down a D-pad direction or button has the effect of a short tap.
-
 * Pause function not working in physical gamepad (game will pause and unpause instantly).
-
-* The game does not have a pixel-perfect presentation, with some rows and columns blurred and/or deformed.
 
 ## 4. TO-DO List
 

@@ -163,8 +163,8 @@ class MainGameScreen extends GameScreen
      */
     drawHUDIcon(iconIndex, pos) {
         drawTile(pos, // pos
-                 vec2(8,8), // size
-                 new TileInfo(vec2(iconIndex*8,0*8), vec2(8,8), TEXTURE_INDEX_HUD_ICONS), // tile info
+                 vec2(10,10), // size
+                 new TileInfo(vec2(iconIndex*10,0), vec2(10,10), TEXTURE_INDEX_HUD_ICONS, 1), // tile info
                  undefined, 0, false, undefined, // color, angle, mirror, additiveColor
                  glEnable, true); // useWebGL, screenSpace
     }

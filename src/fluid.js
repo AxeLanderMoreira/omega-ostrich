@@ -34,7 +34,7 @@ class Fluid extends GameObject
 
     update()
     {
-        if (this.collideWith(this.player)) {
+        if (this.collideWith(this.player.box)) {
             this.player.damage();
         }
         let t = time - this.t0;

@@ -1,9 +1,9 @@
 'use strict';
 
-const PLAYER_TILE_SIZE_X = 14;
-const PLAYER_TILE_SIZE_Y = 24;
-const DYNAMITE_TILE_SIZE_X = 13;
-const DYNAMITE_TILE_SIZE_Y = 12;
+const PLAYER_TILE_SIZE_X = 16;  //14;
+const PLAYER_TILE_SIZE_Y = 26;  //24;
+const DYNAMITE_TILE_SIZE_X = 15; //13;
+const DYNAMITE_TILE_SIZE_Y = 14; //12;
 // TODO Move below to some file named atlas.js:
 const PLAYER_HORZ_MOVE_SPD = .2;
 const PLAYER_HOVER_UPWARDS_ACCELERATION = .02;
@@ -41,10 +41,9 @@ class Character extends GameObject
     { 
         super(pos, vec2(PLAYER_TILE_SIZE_X/WORLD_TILE_SIZE, PLAYER_TILE_SIZE_Y/WORLD_TILE_SIZE));
         this.screen = screen;
-        this.tileInfo = new TileInfo(vec2(0, 0), vec2(PLAYER_TILE_SIZE_X, PLAYER_TILE_SIZE_Y), TEXTURE_INDEX_HERO);
+        this.tileInfo = new TileInfo(vec2(0, 0), vec2(PLAYER_TILE_SIZE_X, PLAYER_TILE_SIZE_Y), TEXTURE_INDEX_HERO, 1);
         this.mirror = false; // facing right
         this.lives = PLAYER_INITIAL_LIVES;
-        this.isCrouching = false;
         this.animMap = [
             new GameAnimation(this, 0, [0], 1, true),          // STAND
             new GameAnimation(this, 0, [1,2,3,4], .3, true),   // WALK
@@ -61,8 +60,9 @@ class Character extends GameObject
             new GameAnimation(this, 0, [6,7,8], .4, true),   // RESPAWN
         ];
         //this.setCollision(false, true);
+//        this.createHitBox(3,0,7,24);
+        this.createHitBox(0,0,12,24);
         this.changeState(STATE_CHARACTER_RESPAWN); // this.nextState will assume -1
-        //this.changeState(STATE_CHARACTER_ASTRALFLIGHT); // this.nextState will assume -1
         this.renderOrder = RENDER_ORDER_HERO;
         this.numSticks = PLAYER_INITIAL_NUM_STICKS;
         this.fuel = PLAYER_INITIAL_FUEL;
@@ -71,7 +71,7 @@ class Character extends GameObject
     collideWallLR(walls)
     {
         for (var i = 0; i < walls.length; i++) {
-            if (collideLR(this, walls[i])) {
+            if (collideLR(this.box, walls[i])) {
                 return walls[i];
             }
         }
@@ -80,7 +80,7 @@ class Character extends GameObject
     collideWallRL(walls)
     {
         for (var i = 0; i < walls.length; i++) {
-            if (collideRL(this, walls[i])) {
+            if (collideRL(this.box, walls[i])) {
                 return walls[i];
             }
         }
@@ -89,7 +89,7 @@ class Character extends GameObject
     collideCeiling(walls)
     {
         for (var i = 0; i < walls.length; i++) {
-            if (collideTB(this, walls[i])) {
+            if (collideTB(this.box, walls[i])) {
                 return walls[i];
             }
         }
@@ -99,7 +99,9 @@ class Character extends GameObject
     {
         //console.log('[collideFloor] IN');
         for (var i = 0; i < walls.length; i++) {
-            if (collideBT(this, walls[i])) {
+            console.log('[collideFloor] this.box.size.x = ' + this.box.size.x);
+            console.log('[collideFloor] this.box.size.y = ' + this.box.size.y);
+            if (collideBT(this.box, walls[i])) {
                 //console.log('[collideFloor] OUT - collided');
                 return walls[i];
             }
@@ -114,11 +116,14 @@ class Character extends GameObject
      */
     changeState(newState, followingState = -1)
     {
+        if (this.state == STATE_CHARACTER_CROUCH) {
+            // reset hitbox to normal
+            this.updateHitBox(0,0,12,24);
+        }
         switch(newState) {
             case STATE_CHARACTER_STAND:
-                //console.log('[STATE_CHARACTER_STAND] pos=(' + this.pos.x  + ',' + this.pos.y + ')');
             case STATE_CHARACTER_TURN:
-                this.isCrouching = false;
+                // TODO Implement TURNCROUCHING state
                 this.velocity.x = 0;
                 break;
             case STATE_CHARACTER_WALK: 
@@ -145,6 +150,7 @@ class Character extends GameObject
                 break;
             case STATE_CHARACTER_CROUCH:
                 this.isCrouching = true;
+                this.updateHitBox(0,-4,12,16)
                 break;
             case STATE_CHARACTER_ASTRALFLIGHT:
                 this.color  = randColor(new Color(.5,.5,.5), new Color(.9,.9,.9));
@@ -225,7 +231,7 @@ class Character extends GameObject
                     // check collision with wall to the left
                     if (wall && !wall.hot) {
                         // snap back position
-                        this.pos.x = this.x = wall.x + wall.w/2 + this.w/2;
+                        this.pos.x = (this.x = wall.x + wall.w/2 + this.w/2) - PIXEL_UNIT; // compensate for padding
                         this.changeState(STATE_CHARACTER_STAND);
                     } 
                 } else { // walking right
@@ -233,7 +239,7 @@ class Character extends GameObject
                     // check collision with wall to the right
                     if (wall && !wall.hot) {
                         // snap back position
-                        this.pos.x = this.x = wall.x - wall.w/2 - this.w/2;
+                        this.pos.x = this.x = (wall.x - wall.w/2 - this.w/2) + PIXEL_UNIT; // compensate for padding
                         this.changeState(STATE_CHARACTER_STAND);
                     }
                 }                
@@ -253,7 +259,7 @@ class Character extends GameObject
                         // descending - check if landed
                         let floor = this.collideFloor(walls);
                         if (floor && !floor.hot) {
-                            this.pos.y = this.y = (floor.y + floor.h/2 + this.h / 2);// + PIXEL_UNIT_Y;
+                            this.pos.y = this.y = (floor.y + floor.h/2 + this.h / 2) - PIXEL_UNIT; // compensate for padding
                             this.velocity = vec2(0,0);
                             this.gravityScale = 0;
                             this.airborne = false;
@@ -264,11 +270,10 @@ class Character extends GameObject
                         // ascending - check if bumped on ceiling
                         let ceiling = this.collideCeiling(walls);
                         if (ceiling && !ceiling.hot) {
-                            this.pos.y = this.y = (ceiling.y - ceiling.h/2 - this.h / 2 - PIXEL_UNIT_Y);
+                            this.pos.y = this.y = (ceiling.y - ceiling.h/2 - this.h / 2) + PIXEL_UNIT; // compensate for padding
                             this.velocity.y = 0;
                         }
                     }
-                    //if (this.mirror) {
                     if (this.velocity.x < 0) {
                         // check collision with wall to the left
                         // TODO Reuse code with WALK
@@ -276,7 +281,7 @@ class Character extends GameObject
                         if (wall && !wall.hot) {
                             // snap back position and nullify horizontal speed
                             this.velocity.x = 0;
-                            this.pos.x = this.x = wall.x + wall.w/2 + this.w/2;
+                            this.pos.x = (this.x = wall.x + wall.w/2 + this.w/2) - PIXEL_UNIT; // compensate for padding
                         }
                     } else if (this.velocity.x > 0) {
                         // check collision with wall to the right
@@ -285,7 +290,7 @@ class Character extends GameObject
                         if (wall && !wall.hot) {
                             // snap back position and nullify horizontal speed
                             this.velocity.x = 0;
-                            this.pos.x = this.x = wall.x - wall.w/2 - this.w/2;
+                            this.pos.x = (this.x = wall.x - wall.w/2 - this.w/2) + PIXEL_UNIT; // compensate for padding
                         }
                     }
 
@@ -324,7 +329,6 @@ class Character extends GameObject
     nextLevel() {
         if (this.screen.nextLevel()) {
             this.mirror = false;
-            this.isCrouching = false;
             this.numSticks = PLAYER_INITIAL_NUM_STICKS;
             this.fuel = PLAYER_INITIAL_FUEL;
             this.pos = this.screen.respawnPosition.copy();
@@ -402,7 +406,7 @@ class Dynamite extends GameObject
             //vec2(player.pos.x + mirror * 1, player.pos.y - .75),
             vec2(player.pos.x - mirror * 1, player.pos.y - .75), // EggBomb is laid behind
             vec2(DYNAMITE_TILE_SIZE_X/WORLD_TILE_SIZE,DYNAMITE_TILE_SIZE_Y/WORLD_TILE_SIZE), 
-            new TileInfo(vec2(0, 0), vec2(DYNAMITE_TILE_SIZE_X, DYNAMITE_TILE_SIZE_Y), TEXTURE_INDEX_DYNAMITE)
+            new TileInfo(vec2(0, 0), vec2(DYNAMITE_TILE_SIZE_X, DYNAMITE_TILE_SIZE_Y), TEXTURE_INDEX_DYNAMITE, 1)
         );
         this.player = player;
         this.mirror = mirror;
@@ -483,7 +487,7 @@ class Dynamite extends GameObject
                     if (wall) {
                         wall.fullDamage();
                     }
-                    if (this.collideWith(this.player)) {
+                    if (this.collideWith(this.player.box)) {
                         this.player.damage();
                     }
                 }

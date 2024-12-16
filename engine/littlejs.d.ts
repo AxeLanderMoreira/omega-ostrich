@@ -64,14 +64,15 @@ declare module "littlejsengine" {
      *  @memberof Engine */
     export function setPaused(isPaused: boolean): void;
     /** Startup LittleJS engine with your callback functions
-     *  @param {Function} gameInit       - Called once after the engine starts up, setup the game
-     *  @param {Function} gameUpdate     - Called every frame at 60 frames per second, handle input and update the game state
-     *  @param {Function} gameUpdatePost - Called after physics and objects are updated, setup camera and prepare for render
-     *  @param {Function} gameRender     - Called before objects are rendered, draw any background effects that appear behind objects
-     *  @param {Function} gameRenderPost - Called after objects are rendered, draw effects or hud that appear above all objects
-     *  @param {Array} [imageSources=['tiles.png']] - Image to load
+     *  @param {Function|function():Promise} gameInit - Called once after the engine starts up
+     *  @param {Function} gameUpdate - Called every frame before objects are updated
+     *  @param {Function} gameUpdatePost - Called after physics and objects are updated, even when paused
+     *  @param {Function} gameRender - Called before objects are rendered, for drawing the background
+     *  @param {Function} gameRenderPost - Called after objects are rendered, useful for drawing UI
+     *  @param {Array} [imageSources=[]] - List of images to load
+     *  @param {HTMLElement} [rootElement] - Root element to attach to, the document body by default
      *  @memberof Engine */
-    export function engineInit(gameInit: Function, gameUpdate: Function, gameUpdatePost: Function, gameRender: Function, gameRenderPost: Function, imageSources?: any[]): void;
+    export function engineInit(gameInit: Function | (() => Promise<any>), gameUpdate: Function, gameUpdatePost: Function, gameRender: Function, gameRenderPost: Function, imageSources?: any[], rootElement?: HTMLElement): void;
     /** Update each engine object, remove destroyed objects, and update time
      *  @memberof Engine */
     export function engineObjectsUpdate(): void;
@@ -231,11 +232,16 @@ declare module "littlejsengine" {
      *  @default Vector2()
      *  @memberof Settings */
     export let canvasFixedSize: Vector2;
-    /** Disables filtering for crisper pixel art if true
+    /** Use nearest neighbor scaling algorithm for canvas for more pixelated look
      *  @type {Boolean}
      *  @default
      *  @memberof Settings */
     export let canvasPixelated: boolean;
+    /** Disables texture filtering for crisper pixel art
+     *  @type {Boolean}
+     *  @default
+     *  @memberof Settings */
+    export let tilesPixelated: boolean;
     /** Default font used for text rendering
      *  @type {String}
      *  @default
@@ -414,10 +420,14 @@ declare module "littlejsengine" {
      *  @param {Vector2} size
      *  @memberof Settings */
     export function setCanvasFixedSize(size: Vector2): void;
-    /** Disables anti aliasing for pixel art if true
+    /** Use nearest neighbor scaling algorithm for canvas for more pixelated look
      *  @param {Boolean} pixelated
      *  @memberof Settings */
     export function setCanvasPixelated(pixelated: boolean): void;
+    /** Disables texture filtering for crisper pixel art
+     *  @param {Boolean} pixelated
+     *  @memberof Settings */
+    export function setTilesPixelated(pixelated: boolean): void;
     /** Set default font used for text rendering
      *  @param {String} font
      *  @memberof Settings */
@@ -699,7 +709,8 @@ declare module "littlejsengine" {
      *  @return {Number}
      *  @memberof Random */
     export function rand(valueA?: number, valueB?: number): number;
-    /** Returns a floored random value the two values passed in
+    /** Returns a floored random value between the two values passed in
+     *  The upper bound is exclusive. (If 2 is passed in, result will be 0 or 1)
      *  @param {Number} valueA
      *  @param {Number} [valueB]
      *  @return {Number}
@@ -874,6 +885,9 @@ declare module "littlejsengine" {
          * @param {Number} digits - precision to display
          * @return {String} */
         toString(digits?: number): string;
+        /** Checks if this is a valid vector
+         * @return {Boolean} */
+        isValid(): boolean;
     }
     /**
      * Color object (red, green, blue, alpha) with some helpful functions
@@ -964,6 +978,9 @@ declare module "littlejsengine" {
         /** Returns this color expressed as 32 bit RGBA value
          * @return {Number} */
         rgbaInt(): number;
+        /** Checks if this is a valid color
+         * @return {Boolean} */
+        isValid(): boolean;
     }
     /**
      * Timer object tracks how long has passed since it was set
@@ -1096,21 +1113,22 @@ declare module "littlejsengine" {
      *  @memberof Draw */
     export let textureInfos: any[];
     /**
-     * Create a tile info object
+     * Create a tile info object using a grid based system
      * - This can take vecs or floats for easier use and conversion
      * - If an index is passed in, the tile size and index will determine the position
-     * @param {(Number|Vector2)} [pos=(0,0)]            - Top left corner of tile in pixels or index
+     * @param {(Number|Vector2)} [pos=0]                - Index of tile in sheet
      * @param {(Number|Vector2)} [size=tileSizeDefault] - Size of tile in pixels
      * @param {Number} [textureIndex]                   - Texture index to use
+     * @param {Number} [padding]                        - How many pixels padding around tiles
      * @return {TileInfo}
      * @example
      * tile(2)                       // a tile at index 2 using the default tile size of 16
      * tile(5, 8)                    // a tile at index 5 using a tile size of 8
      * tile(1, 16, 3)                // a tile at index 1 of size 16 on texture 3
-     * tile(vec2(4,8), vec2(30,10))  // a tile at pixel location (4,8) with a size of (30,10)
+     * tile(vec2(4,8), vec2(30,10))  // a tile at index (4,8) with a size of (30,10)
      * @memberof Draw
      */
-    export function tile(pos?: (number | Vector2), size?: (number | Vector2), textureIndex?: number): TileInfo;
+    export function tile(pos?: (number | Vector2), size?: (number | Vector2), textureIndex?: number, padding?: number): TileInfo;
     /**
      * Tile Info - Stores info about how to draw a tile
      */
@@ -1119,14 +1137,17 @@ declare module "littlejsengine" {
          *  @param {Vector2} [pos=(0,0)]            - Top left corner of tile in pixels
          *  @param {Vector2} [size=tileSizeDefault] - Size of tile in pixels
          *  @param {Number}  [textureIndex]         - Texture index to use
+         *  @param {Number}  [padding]              - How many pixels padding around tiles
          */
-        constructor(pos?: Vector2, size?: Vector2, textureIndex?: number);
+        constructor(pos?: Vector2, size?: Vector2, textureIndex?: number, padding?: number);
         /** @property {Vector2} - Top left corner of tile in pixels */
         pos: Vector2;
         /** @property {Vector2} - Size of tile in pixels */
         size: Vector2;
         /** @property {Number} - Texture index to use */
         textureIndex: number;
+        /** @property {Number} - How many pixels padding around tiles */
+        padding: number;
         /** Returns a copy of this tile offset by a vector
         *  @param {Vector2} offset - Offset to apply in pixels
         *  @return {TileInfo}
@@ -1155,8 +1176,6 @@ declare module "littlejsengine" {
         size: Vector2;
         /** @property {WebGLTexture} - webgl texture */
         glTexture: WebGLTexture;
-        /** @property {Vector2} - size to adjust tile to fix bleeding */
-        fixBleedSize: Vector2;
     }
     /**
      * LittleJS Drawing System
@@ -1242,6 +1261,37 @@ declare module "littlejsengine" {
      *  @param {CanvasRenderingContext2D|OffscreenCanvasRenderingContext2D} [context]
      *  @memberof Draw */
     export function drawLine(posA: Vector2, posB: Vector2, thickness?: number, color?: Color, useWebGL?: boolean, screenSpace?: boolean, context?: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D): void;
+    /** Draw colored polygon using passed in points
+     *  @param {Array}   points - Array of Vector2 points
+     *  @param {Color}   [color=(1,1,1,1)]
+     *  @param {Number}  [lineWidth=0]
+     *  @param {Color}   [lineColor=(0,0,0,1)]
+     *  @param {Boolean} [screenSpace=false]
+     *  @param {CanvasRenderingContext2D} [context=mainContext]
+     *  @memberof Draw */
+    export function drawPoly(points: any[], color?: Color, lineWidth?: number, lineColor?: Color, screenSpace?: boolean, context?: CanvasRenderingContext2D): void;
+    /** Draw colored ellipse using passed in point
+     *  @param {Vector2} pos
+     *  @param {Number}  [width=1]
+     *  @param {Number}  [height=1]
+     *  @param {Number}  [angle=0]
+     *  @param {Color}   [color=(1,1,1,1)]
+     *  @param {Number}  [lineWidth=0]
+     *  @param {Color}   [lineColor=(0,0,0,1)]
+     *  @param {Boolean} [screenSpace=false]
+     *  @param {CanvasRenderingContext2D} [context=mainContext]
+     *  @memberof Draw */
+    export function drawEllipse(pos: Vector2, width?: number, height?: number, angle?: number, color?: Color, lineWidth?: number, lineColor?: Color, screenSpace?: boolean, context?: CanvasRenderingContext2D): void;
+    /** Draw colored circle using passed in point
+     *  @param {Vector2} pos
+     *  @param {Number}  [radius=1]
+     *  @param {Color}   [color=(1,1,1,1)]
+     *  @param {Number}  [lineWidth=0]
+     *  @param {Color}   [lineColor=(0,0,0,1)]
+     *  @param {Boolean} [screenSpace=false]
+     *  @param {CanvasRenderingContext2D} [context=mainContext]
+     *  @memberof Draw */
+    export function drawCircle(pos: Vector2, radius?: number, color?: Color, lineWidth?: number, lineColor?: Color, screenSpace?: boolean, context?: CanvasRenderingContext2D): void;
     /** Draw directly to a 2d canvas context in world space
      *  @param {Vector2}  pos
      *  @param {Vector2}  size
@@ -1258,7 +1308,7 @@ declare module "littlejsengine" {
      *  @param {CanvasRenderingContext2D|OffscreenCanvasRenderingContext2D} [context=mainContext]
      *  @memberof Draw */
     export function setBlendMode(additive?: boolean, useWebGL?: boolean, context?: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D): void;
-    /** Draw text on overlay canvas in screen space
+    /** Draw text on main canvas in world space
      *  Automatically splits new lines into rows
      *  @param {String}  text
      *  @param {Vector2} pos
@@ -1266,11 +1316,12 @@ declare module "littlejsengine" {
      *  @param {Color}   [color=(1,1,1,1)]
      *  @param {Number}  [lineWidth]
      *  @param {Color}   [lineColor=(0,0,0,1)]
-     *  @param {CanvasTextAlign}  [textAlign]
+     *  @param {CanvasTextAlign}  [textAlign='center']
      *  @param {String}  [font=fontDefault]
-     *  @param {CanvasRenderingContext2D|OffscreenCanvasRenderingContext2D} [context=overlayContext]
+     *  @param {Number}  [maxWidth]
+     *  @param {CanvasRenderingContext2D|OffscreenCanvasRenderingContext2D} [context=mainContext]
      *  @memberof Draw */
-    export function drawTextScreen(text: string, pos: Vector2, size?: number, color?: Color, lineWidth?: number, lineColor?: Color, textAlign?: CanvasTextAlign, font?: string, context?: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D): void;
+    export function drawText(text: string, pos: Vector2, size?: number, color?: Color, lineWidth?: number, lineColor?: Color, textAlign?: CanvasTextAlign, font?: string, maxWidth?: number, context?: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D): void;
     /** Draw text on overlay canvas in world space
      *  Automatically splits new lines into rows
      *  @param {String}  text
@@ -1281,9 +1332,23 @@ declare module "littlejsengine" {
      *  @param {Color}   [lineColor=(0,0,0,1)]
      *  @param {CanvasTextAlign}  [textAlign='center']
      *  @param {String}  [font=fontDefault]
+     *  @param {Number}  [maxWidth]
+     *  @memberof Draw */
+    export function drawTextOverlay(text: string, pos: Vector2, size?: number, color?: Color, lineWidth?: number, lineColor?: Color, textAlign?: CanvasTextAlign, font?: string, maxWidth?: number): void;
+    /** Draw text on overlay canvas in screen space
+     *  Automatically splits new lines into rows
+     *  @param {String}  text
+     *  @param {Vector2} pos
+     *  @param {Number}  [size]
+     *  @param {Color}   [color=(1,1,1,1)]
+     *  @param {Number}  [lineWidth]
+     *  @param {Color}   [lineColor=(0,0,0,1)]
+     *  @param {CanvasTextAlign}  [textAlign]
+     *  @param {String}  [font=fontDefault]
+     *  @param {Number}  [maxWidth]
      *  @param {CanvasRenderingContext2D|OffscreenCanvasRenderingContext2D} [context=overlayContext]
      *  @memberof Draw */
-    export function drawText(text: string, pos: Vector2, size?: number, color?: Color, lineWidth?: number, lineColor?: Color, textAlign?: CanvasTextAlign, font?: string, context?: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D): void;
+    export function drawTextScreen(text: string, pos: Vector2, size?: number, color?: Color, lineWidth?: number, lineColor?: Color, textAlign?: CanvasTextAlign, font?: string, maxWidth?: number, context?: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D): void;
     export let engineFontImage: any;
     /**
      * Font Image Object - Draw text on a 2D canvas by using characters in an image
@@ -1398,6 +1463,23 @@ declare module "littlejsengine" {
      *  @param {WebGLTexture} texture
      *  @memberof WebGL */
     export function glSetTexture(texture: WebGLTexture): void;
+    /** Set antialiasing for webgl canvas
+     *  @param {Boolean} [antialias]
+     *  @memberof WebGL */
+    export function glSetAntialias(antialias?: boolean): void;
+    /** Shoule webgl be setup with antialiasing, must be set before calling engineInit
+     *  @type {Boolean}
+     *  @memberof WebGL */
+    export let glAntialias: boolean;
+    export let glShader: any;
+    export let glActiveTexture: any;
+    export let glArrayBuffer: any;
+    export let glGeometryBuffer: any;
+    export let glPositionData: any;
+    export let glColorData: any;
+    export let glInstanceCount: any;
+    export let glAdditive: any;
+    export let glBatchAdditive: any;
     /**
      * LittleJS Input System
      * - Tracks keyboard down, pressed, and released
@@ -1548,7 +1630,7 @@ declare module "littlejsengine" {
         play(pos?: Vector2, volume?: number, pitch?: number, randomnessScale?: number, loop?: boolean): AudioBufferSourceNode;
         gainNode: GainNode;
         source: AudioBufferSourceNode;
-        /** Set the sound volume
+        /** Set the sound volume of the most recently played instance of this sound
          *  @param {Number}  [volume] - How much to scale volume by
          */
         setVolume(volume?: number): void;
@@ -1861,24 +1943,24 @@ declare module "littlejsengine" {
      * - Drawn directly to the main canvas without using WebGL
      * @namespace TileCollision
      */
-    /** The tile collision layer array, use setTileCollisionData and getTileCollisionData to access
+    /** The tile collision layer grid, use setTileCollisionData and getTileCollisionData to access
      *  @type {Array}
      *  @memberof TileCollision */
     export let tileCollision: any[];
-    /** Size of the tile collision layer
+    /** Size of the tile collision layer 2d grid
      *  @type {Vector2}
      *  @memberof TileCollision */
     export let tileCollisionSize: Vector2;
     /** Clear and initialize tile collision
-     *  @param {Vector2} size
+     *  @param {Vector2} size - width and height of tile collision 2d grid
      *  @memberof TileCollision */
     export function initTileCollision(size: Vector2): void;
-    /** Set tile collision data
+    /** Set tile collision data for a given cell in the grid
      *  @param {Vector2} pos
      *  @param {Number}  [data]
      *  @memberof TileCollision */
     export function setTileCollisionData(pos: Vector2, data?: number): void;
-    /** Get tile collision data
+    /** Get tile collision data for a given cell in the grid
      *  @param {Vector2} pos
      *  @return {Number}
      *  @memberof TileCollision */
@@ -1890,7 +1972,8 @@ declare module "littlejsengine" {
      *  @return {Boolean}
      *  @memberof TileCollision */
     export function tileCollisionTest(pos: Vector2, size?: Vector2, object?: EngineObject): boolean;
-    /** Return the center of first tile hit (does not return the exact intersection)
+    /** Return the center of first tile hit, undefined if nothing was hit.
+     *  This does not return the exact intersection, but the center of the tile hit.
      *  @param {Vector2}      posStart
      *  @param {Vector2}      posEnd
      *  @param {EngineObject} [object]
@@ -2192,14 +2275,19 @@ declare module "littlejsengine" {
          *  @param {String} [src]         - Image location for the medal
          */
         constructor(id: number, name: string, description?: string, icon?: string, src?: string);
+        /** @property {Number} - The unique identifier of the medal */
         id: number;
+        /** @property {String} - Name of the medal */
         name: string;
+        /** @property {String} - Description of the medal */
         description: string;
+        /** @property {String} - Icon for the medal */
         icon: string;
+        /** @property {Boolean} - Is the medal unlocked? */
+        unlocked: boolean;
         image: HTMLImageElement;
         /** Unlocks a medal if not already unlocked */
         unlock(): void;
-        unlocked: number;
         /** Render a medal
          *  @param {Number} [hidePercent] - How much to slide the medal off screen
          */
