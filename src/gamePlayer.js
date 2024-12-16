@@ -99,8 +99,6 @@ class Character extends GameObject
     {
         //console.log('[collideFloor] IN');
         for (var i = 0; i < walls.length; i++) {
-            console.log('[collideFloor] this.box.size.x = ' + this.box.size.x);
-            console.log('[collideFloor] this.box.size.y = ' + this.box.size.y);
             if (collideBT(this.box, walls[i])) {
                 //console.log('[collideFloor] OUT - collided');
                 return walls[i];
@@ -245,6 +243,7 @@ class Character extends GameObject
                 }                
                 break;
             case STATE_CHARACTER_TURN: 
+            case STATE_CHARACTER_TURNCROUCHING:
                 if (this.currentAnim.ended()) {
                     this.mirror = !this.mirror;
                 }
@@ -682,6 +681,11 @@ class Player extends Character
                     this.changeState(STATE_CHARACTER_STAND);
                 } else if (pressedAction && this.numSticks > 0) {
                     this._dropDynamite();
+                } else if (holdingLeft || holdingRight) { // lateral movement? check for need to turn
+                    newMirror = holdingLeft;                    
+                    if (newMirror != this.mirror) {
+                        this.changeState(STATE_CHARACTER_TURNCROUCHING, STATE_CHARACTER_CROUCH);
+                    }
                 }
                 break;
             case STATE_CHARACTER_RESPAWN:
