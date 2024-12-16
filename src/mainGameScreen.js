@@ -14,10 +14,11 @@ class MainGameScreen extends GameScreen
     /**
      * 
      */
-     constructor(startLevel)
+     constructor(startLevel, controlMode)
      {
         super();
         this.startLevel = startLevel;
+        gameInput.setControlMode(controlMode);
      }
 
     /**

@@ -10,7 +10,7 @@ class TitleScreen extends GameScreen
             { label: 'START GAME', action: () => this.startGame() }
         ];
         this.optionsMenu = [
-            { label: 'CONTROL MODE:', options: ['1 BUTTON', '3 BUTTONS'], index: 0, onfocus: (i) => this.setControlMode(i) },
+            { label: 'CONTROL MODE:', options: ['1 BUTTON', '2 BUTTONS'], index: 0, onfocus: (i) => this.setControlMode(i) },
             { label: 'LEVEL SELECT:', options: this.makeLevelSelectOptions(), index: 0, onfocus: (i) => this.setStartLevel(i) },
             { label: 'BACK', action: () => this.showMenu(this.mainMenu) }
 
@@ -93,9 +93,6 @@ class TitleScreen extends GameScreen
         let hcenter = mainCanvasSize.x/2
         let vbottom =  mainCanvasSize.y;
         drawTextScreen('OMEGA OSTRICH', vec2(hcenter, 40), 40, new Color(1,1,1,1));
-        /*drawTextScreen('LEVEL SELECT: ⟨' + this.levelSelect + '⟩', vec2(hcenter, vbottom - 70), 12, new Color(1,1,1,1));
-        drawTextScreen('➤ PRESS FIRE TO START', vec2(hcenter, vbottom -40), 20, new Color(1,1,1,1));*/
-        //for (let i = 0; i < this.currentMenu.len)
         let i = 0;
         let menu = this.currentMenu;
         let y = vbottom -90;
