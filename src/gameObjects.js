@@ -15,8 +15,6 @@ class GameObject extends EngineObject
         this.damping = 1;  // simple retro arcade physics
         this.friction = 1;
         this.gravityScale = 0; // characters change gravityScale to 1 when jumping or falling, return to 0 at the end
-        this.xOffset = 0;
-        this.yOffset = 0;
         this.w = this.size.x;
         this.h = this.size.y;
         this.visible = true;
@@ -56,16 +54,8 @@ class GameObject extends EngineObject
 
     render()
     {
-        //let mul = this.mirror ? -1 : 1;
-        if (!this.visible) return;
-        let mul = this.getMirrorSign();
-        let x = this.pos.x;
-        let y = this.pos.y;
-        this.pos.x += mul * (this.xOffset / cameraScale);
-        this.pos.y += this.yOffset / cameraScale;
-        super.render();    
-        this.pos.x = x;
-        this.pos.y = y;
+        if (!this.visible) return;        
+        super.render();
     }
 
     changeState(newState, followingState = -1)
@@ -147,9 +137,8 @@ class GameAnimation
      * @param {Number} duration total duration in seconds, to play all the animation 
      *                          (the interval is distributed evenly between the frames to be presented)
      * @param {Boolean} loop true for loop always, false for freezing at the last frame
-     * @param {Array} xOffsets Horizontal position adjustment for each frame in the sequence
      */
-    constructor(gameObj, frameOffset, sequence, duration, loop, xOffsets)
+    constructor(gameObj, frameOffset, sequence, duration, loop)
     {
         this.gameObj = gameObj;
         if (frameOffset <= 0) {
@@ -162,7 +151,6 @@ class GameAnimation
         }
         this.duration = duration;
         this.loop = loop;
-        this.xOffsets = xOffsets;
         this.t0 = -1000;
         this.frameIndex = 0;        
     }
@@ -222,9 +210,7 @@ class GameAnimation
         }
         let frameIndex = Math.floor(animTime / this.duration * numFrames);
         this.frameIndex = clamp(frameIndex, 0, numFrames - 1);
-        //this.gameObj.tileIndex = this.sequence[this.frameIndex];
         this.gameObj.setFrame(this.sequence[this.frameIndex]);
-        this.gameObj.xOffset = this.xOffsets ? this.xOffsets[this.frameIndex] : 0;
     }
 }
 
