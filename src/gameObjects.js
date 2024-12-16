@@ -232,14 +232,21 @@ const hotWallColor0 = new Color(1, 0, 0);
 const hotWallColor1 = new Color(.5, .15, .05);
 
 const WALL_MOVE_SPEED = 6; // tiles per second
+const BREAKABLE_WALL_NUM_FRAMES = 6;
 
 class Wall extends GameObject
 {
     constructor(pos, size, screen, color, breakable, hot, xmove, ymove) {
-        super(pos, size, undefined, 0, color);
+        super(pos, 
+              size, 
+              breakable ? new TileInfo(vec2(0,0), vec2(24,60), TEXTURE_INDEX_BREAKABLE_WALL) : undefined, 
+              0, 
+              color);
         this.breakable = breakable;
         if (breakable) {
             this.hp = BREAKABLE_WALL_HP;
+            this.dmgFrame = 0;
+            this.initialY = pos.y;
         }
         this.hot = hot;
         if (hot) {
@@ -285,9 +292,12 @@ class Wall extends GameObject
     partialDamage(dmg) {
         this.hp -= dmg;
         if (this.hp > 0) {
-            //let s = .25 + .75*(this.hp/BREAKABLE_WALL_HP);
-            //this.color = new Color(s,s,s,1);
-            this.color.a = .25 + .75*(this.hp/BREAKABLE_WALL_HP);
+            let numFrame = Math.floor(BREAKABLE_WALL_HP-this.hp);
+            if (numFrame > this.dmgFrame) {
+                this.dmgFrame = numFrame;
+                this.tileInfo.pos.x = numFrame * 24;
+            }
+            this.pos.y = this.initialY + (randInt(-1,2) * PIXEL_UNIT);
             return true;
         } else {
             this.screen.destroyWall(this);

@@ -20,6 +20,7 @@ const TEXTURE_INDEX_HERO=0;
 const TEXTURE_INDEX_DYNAMITE=1;
 const TEXTURE_INDEX_ENEMIES=2;
 const TEXTURE_INDEX_HUD_ICONS=3;
+const TEXTURE_INDEX_BREAKABLE_WALL=4;
 
 const PIXEL_UNIT = .125; // 1/8
 
@@ -154,6 +155,7 @@ engineInit(
         './Ostrich.png', /*HERO*/
         './EggBomb.png',
         './Enemies.png',
-        './HudIcons.png'
+        './HudIcons.png',
+        './BreakableWall.png'
     ]
 );

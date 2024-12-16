@@ -19,7 +19,7 @@
                  "y":1
                 }, 
                 {
-                 "height":60,
+                 "height":62,
                  "id":2,
                  "name":"",
                  "rotation":0,
@@ -27,7 +27,7 @@
                  "visible":true,
                  "width":248,
                  "x":105,
-                 "y":1
+                 "y":0
                 }, 
                 {
                  "height":60,
@@ -82,7 +82,7 @@
                  "visible":true,
                  "width":24,
                  "x":105,
-                 "y":61
+                 "y":62
                 }, 
                 {
                  "height":0,

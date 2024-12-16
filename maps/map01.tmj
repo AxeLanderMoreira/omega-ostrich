@@ -33,7 +33,7 @@
                  "rotation":0,
                  "type":"Wall",
                  "visible":true,
-                 "width":248,
+                 "width":600,
                  "x":104,
                  "y":0
                 }, 
@@ -69,17 +69,6 @@
                  "width":162,
                  "x":190,
                  "y":120
-                }, 
-                {
-                 "height":60,
-                 "id":7,
-                 "name":"",
-                 "rotation":0,
-                 "type":"Wall",
-                 "visible":true,
-                 "width":352,
-                 "x":352,
-                 "y":0
                 }, 
                 {
                  "height":60,

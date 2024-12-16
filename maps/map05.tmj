@@ -59,7 +59,7 @@
                  "y":151
                 }, 
                 {
-                 "height":79,
+                 "height":60,
                  "id":4,
                  "name":"",
                  "rotation":0,
@@ -67,7 +67,7 @@
                  "visible":true,
                  "width":30,
                  "x":322,
-                 "y":60
+                 "y":79
                 }, 
                 {
                  "gid":2147483664,
@@ -82,7 +82,7 @@
                  "y":132
                 }, 
                 {
-                 "height":60,
+                 "height":48,
                  "id":6,
                  "name":"",
                  "rotation":0,
@@ -93,7 +93,7 @@
                  "y":0
                 }, 
                 {
-                 "height":60,
+                 "height":79,
                  "id":7,
                  "name":"",
                  "rotation":0,
@@ -104,7 +104,7 @@
                  "y":0
                 }, 
                 {
-                 "height":76,
+                 "height":88,
                  "id":8,
                  "name":"",
                  "rotation":0,
@@ -112,7 +112,7 @@
                  "visible":true,
                  "width":16,
                  "x":0,
-                 "y":60
+                 "y":48
                 }, 
                 {
                  "height":64,
@@ -126,29 +126,18 @@
                  "y":136
                 }, 
                 {
-                 "height":28,
-                 "id":10,
-                 "name":"",
-                 "rotation":0,
-                 "type":"Wall",
-                 "visible":true,
-                 "width":17,
-                 "x":104,
-                 "y":60
-                }, 
-                {
                  "height":8,
                  "id":11,
                  "name":"",
                  "rotation":0,
                  "type":"Wall",
                  "visible":true,
-                 "width":73,
-                 "x":48,
-                 "y":88
+                 "width":57,
+                 "x":47,
+                 "y":79
                 }, 
                 {
-                 "height":79,
+                 "height":60,
                  "id":12,
                  "name":"",
                  "properties":[
@@ -162,7 +151,7 @@
                  "visible":true,
                  "width":24,
                  "x":256,
-                 "y":60
+                 "y":79
                 }, 
                 {
                  "height":33,
