@@ -26,6 +26,7 @@ const PIXEL_UNIT = .125; // 1/8
 
 const SOUND_DYNAMITE_BLOW = [,,49,.08,.06,.43,4,1.3,,-9,,,,.8,,.4,,.48,.12];
 const SOUND_SOFT_BLOW = [2.2,,100,.03,.09,.03,3,3.5,-4,3,,,.09,1.7,,.3,.15,.46,.03,.19];
+const SOUND_CHECKPOINT = [.5,,80,.3,.4,.7,2,.1,-0.73,3.42,-430,.09,.17,,,,.19];
 
 // Unified/merged control modes
 //const CONTROL_MODE_RETRO = 0; // 1-BUTTON

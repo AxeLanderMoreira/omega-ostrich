@@ -13,7 +13,7 @@ const PLAYER_INITIAL_NUM_STICKS = 5;
 
 const PLAYER_INITIAL_LIVES = 3;
 
-const PLAYER_RESPAWN_TIME=2; // Time from DEAD to respawning
+const PLAYER_RESPAWN_TIME=1.5; // Time from DEAD to respawning
 
 const PLAYER_INITIAL_FUEL=60; // In seconds
 
@@ -156,6 +156,7 @@ class Character extends GameObject
                 this.velocity = vec2(0, 0);
                 break;
             case STATE_CHARACTER_CHECKPOINT:
+                new Sound(SOUND_CHECKPOINT).play();
                 this.t0Checkpoint = time;
                 this.gravityScale = 0;
                 this.velocity = vec2(0, 0);

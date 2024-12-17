@@ -196,8 +196,8 @@ class MainGameScreen extends GameScreen
         let left = 8; //11;
         let topYellow = 6;  //11;
         let width = 4;
-        //let height = 60;
-        let heightYellow = this.player.fuel; // TODO Ratio-based calculation
+        // TODO Ratio-based calculation (breaks if PLAYER_INITIAL_FUEL is changed)
+        let heightYellow = this.player.fuel; 
         let topRed = topYellow + heightYellow;
         let heightRed = 60 - this.player.fuel;
         
