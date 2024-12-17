@@ -66,7 +66,7 @@ class TitleScreen extends GameScreen
        let item = menu[menu.index];
         if (gameInput.pressedUp() && menu.index > 0) {
             menu.index--;
-        } else if (gameInput.pressedDown() && menu.index < menu.length) {
+        } else if (gameInput.pressedDown() && menu.index < menu.length-1) {
             menu.index++;
         } else if (gameInput.pressedLeft()) {
             if (item.options) {
