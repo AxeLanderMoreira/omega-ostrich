@@ -23,11 +23,11 @@
             "expandedObjectLayers": [
                 2
             ],
-            "scale": 4,
+            "scale": 8,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 528.125,
-                "y": 199.875
+                "x": 1034.8125,
+                "y": 322.4375
             }
         },
         "map01.tmj#HERO": {
@@ -37,33 +37,33 @@
             "expandedObjectLayers": [
                 2
             ],
-            "scale": 1.5,
+            "scale": 2,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 157,
-                "y": 127.66666666666663
+                "x": 218.25,
+                "y": 279.75
             }
         },
         "map03.tmj": {
             "expandedObjectLayers": [
                 2
             ],
-            "scale": 1.5,
+            "scale": 1,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 185.66666666666669,
-                "y": 361.66666666666663
+                "x": 424.5,
+                "y": 416.5
             }
         },
         "map04.tmj": {
             "expandedObjectLayers": [
                 2
             ],
-            "scale": 2,
+            "scale": 3,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 112.75,
-                "y": 99.75
+                "x": 642.8333333333333,
+                "y": 97.16666666666669
             }
         },
         "map05.tmj": {

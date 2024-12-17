@@ -8,15 +8,15 @@
          "name":"Object Layer 1",
          "objects":[
                 {
-                 "height":60,
+                 "height":61,
                  "id":1,
                  "name":"",
                  "rotation":0,
                  "type":"Wall",
                  "visible":true,
-                 "width":60,
-                 "x":1,
-                 "y":1
+                 "width":61,
+                 "x":0,
+                 "y":0
                 }, 
                 {
                  "height":62,
@@ -25,7 +25,7 @@
                  "rotation":0,
                  "type":"Wall",
                  "visible":true,
-                 "width":248,
+                 "width":247,
                  "x":105,
                  "y":0
                 }, 
@@ -97,15 +97,15 @@
                  "y":22
                 }, 
                 {
-                 "height":60,
+                 "height":61,
                  "id":10,
                  "name":"",
                  "rotation":0,
                  "type":"Wall",
                  "visible":true,
-                 "width":40,
-                 "x":2,
-                 "y":62
+                 "width":42,
+                 "x":0,
+                 "y":61
                 }, 
                 {
                  "gid":3,
@@ -142,14 +142,14 @@
                  "y":283
                 }, 
                 {
-                 "height":60,
+                 "height":61,
                  "id":14,
                  "name":"",
                  "rotation":0,
                  "type":"Wall",
                  "visible":true,
                  "width":352,
-                 "x":1,
+                 "x":0,
                  "y":339
                 }, 
                 {
@@ -159,12 +159,12 @@
                  "rotation":0,
                  "type":"Wall",
                  "visible":true,
-                 "width":40,
-                 "x":1,
+                 "width":41,
+                 "x":0,
                  "y":281
                 }, 
                 {
-                 "height":58,
+                 "height":59,
                  "id":16,
                  "name":"",
                  "rotation":0,

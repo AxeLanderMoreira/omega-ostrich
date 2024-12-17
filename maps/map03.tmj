@@ -99,8 +99,8 @@
                  "type":"Wall",
                  "visible":true,
                  "width":40,
-                 "x":1,
-                 "y":61
+                 "x":0,
+                 "y":60
                 }, 
                 {
                  "gid":1,
@@ -115,7 +115,7 @@
                  "y":157
                 }, 
                 {
-                 "height":80,
+                 "height":81,
                  "id":13,
                  "name":"",
                  "rotation":0,
@@ -123,7 +123,7 @@
                  "visible":true,
                  "width":184,
                  "x":0,
-                 "y":201
+                 "y":200
                 }, 
                 {
                  "height":55,
@@ -204,8 +204,8 @@
                  "rotation":0,
                  "type":"Wall",
                  "visible":true,
-                 "width":87,
-                 "x":1,
+                 "width":88,
+                 "x":0,
                  "y":400
                 }, 
                 {
@@ -231,18 +231,18 @@
                  "y":400
                 }, 
                 {
-                 "height":30,
+                 "height":29,
                  "id":22,
                  "name":"",
                  "rotation":0,
                  "type":"Wall",
                  "visible":true,
-                 "width":350,
-                 "x":1,
+                 "width":352,
+                 "x":0,
                  "y":571
                 }, 
                 {
-                 "height":51,
+                 "height":53,
                  "id":23,
                  "name":"",
                  "properties":[
@@ -254,12 +254,12 @@
                  "rotation":0,
                  "type":"Wall",
                  "visible":true,
-                 "width":64,
+                 "width":66,
                  "x":286,
-                 "y":519
+                 "y":518
                 }, 
                 {
-                 "height":128,
+                 "height":129,
                  "id":24,
                  "name":"",
                  "rotation":0,
@@ -267,7 +267,7 @@
                  "visible":true,
                  "width":28,
                  "x":0,
-                 "y":443
+                 "y":442
                 }, 
                 {
                  "gid":2147483664,

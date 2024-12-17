@@ -70,7 +70,7 @@ class Enemy extends GameObject
     }
 
     damage() {
-        new Sound([2.2,,100,.03,.09,.03,3,3.5,-4,3,,,.09,1.7,,.3,.15,.46,.03,.19]).play(); // Hit 40
+        new Sound(SOUND_SOFT_BLOW).play(); // Hit 40
         this.screen.destroyEnemy(this);
     }
 

@@ -282,6 +282,7 @@ class Wall extends GameObject
             if (numFrame > this.dmgFrame) {
                 this.dmgFrame = numFrame;
                 this.tileInfo.pos.x = numFrame * 24;
+                new Sound(SOUND_SOFT_BLOW).play();
             }
             this.pos.y = this.initialY + (randInt(-1,2) * PIXEL_UNIT);
             return true;
@@ -294,6 +295,15 @@ class Wall extends GameObject
 
     fullDamage() {
         this.screen.destroyWall(this);
+    }
+
+    render() {
+        if (!this.breakable && !this.hot) {
+            drawRect(this.pos, this.size); // white outline
+            drawRect(this.pos, this.size.add(vec2(-PIXEL_UNIT*2)), this.color);            
+        } else {
+            super.render();
+        }
     }
 
     update() {        
