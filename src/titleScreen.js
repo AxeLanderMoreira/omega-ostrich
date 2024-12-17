@@ -27,6 +27,8 @@ class TitleScreen extends GameScreen
             { label: 'START GAME', action: () => this.startGame() }
         ];        
         this.showMenu(this.mainMenu);
+        this.hero = new Character(vec2(-6,0), this);
+        this.bat = new Bat(vec2(0,0), this);
     }
     
     start()
@@ -100,13 +102,13 @@ class TitleScreen extends GameScreen
     
     render()
     {
-
+        drawBackground(BG_GRADIENT_COLOR_BRIGHT, BG_GRADIENT_COLOR_DARK);
         let hcenter = mainCanvasSize.x/2
         let vbottom =  mainCanvasSize.y;
-        drawTextScreen('OMEGA OSTRICH', vec2(hcenter, 40), 40, new Color(1,1,1,1));
+        drawTextScreen('OMEGA OSTRICH', vec2(hcenter, 40), 36, new Color(1,1,1,1));
         let i = 0;
         let menu = this.currentMenu;
-        let y = vbottom -90;
+        let y = vbottom -40;
         menu.forEach(element => {
             let label = element.label;
             let color = (i == menu.index) ? new Color(1,1,0,1) : new Color(.75,.75,.75,1);
@@ -116,8 +118,8 @@ class TitleScreen extends GameScreen
                 label += ' < ' + options[subIndex] + ' > ';
             }
             i++;
-            drawTextScreen(label, vec2(hcenter, y), 20, color);
-            y += 25;
+            drawTextScreen(label, vec2(hcenter, y), 15, color);
+            y += 20;
         });
     }
     
@@ -127,7 +129,7 @@ class TitleScreen extends GameScreen
     
     stop()
     {
-    
+        engineObjectsDestroy();
     }
     
     hide()

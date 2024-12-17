@@ -37,6 +37,7 @@ class Enemy extends GameObject
     }
 
     hitPlayer() {
+        if (!this.player) return;
         let o = this.box ? this.box : this;
         let p = this.player.box ? this.player.box : this.player;
         return isOverlapping(
@@ -49,6 +50,7 @@ class Enemy extends GameObject
     }
 
     hitByLaser() {
+        if (!this.player) return false;
         let laser = this.player.laser;
         let o = this.box ? this.box : this;
         if (laser) {
@@ -60,17 +62,17 @@ class Enemy extends GameObject
         }
     }
 
-    update() {
+    updateState() {
         if (this.hitPlayer()) {
             this.player.damage(this);
         } else if (this.hitByLaser()) {
             this.damage();
         }
-        super.update();
+        super.updateState();
     }
 
     damage() {
-        new Sound(SOUND_SOFT_BLOW).play(); // Hit 40
+        new Sound(SOUND_SOFT_BLOW).play();
         this.screen.destroyEnemy(this);
     }
 
@@ -93,12 +95,12 @@ class Bat extends Enemy
         this.changeState(STATE_BAT_FLY);
     }
 
-    update()
+    updateState()
     {
+        super.updateState();
         let n = Math.PI * ((time - this.t0) / BAT_FLY_PERIOD);
         let y = Math.sin(n);
         this.pos.y = this.initialY + (y * BAT_FLY_RANGE);
-        super.update();
     }
 }
 
@@ -122,15 +124,15 @@ class Moth extends Enemy
         this.changeState(STATE_MOTH_FLY);        
     }
 
-    update()
+    updateState()
     {
+        super.updateState();
         let ny = Math.PI * ((time - this.t0) / MOTH_FLY_PERIOD_Y);
         let nx = Math.PI * ((time - this.t0) / MOTH_FLY_PERIOD_X);
         let y = Math.sin(ny);
         let x = Math.cos(nx);
         this.pos.y = this.initialY + (y * MOTH_FLY_RANGE_Y);
         this.pos.x = this.initialX + (x * MOTH_FLY_RANGE_X);
-        super.update();
     }
 }
 
@@ -151,8 +153,9 @@ class Snake extends Enemy
         this.changeState(STATE_SNAKE_ATTACK);        
     }
 
-    update()
+    updateState()
     {
+        super.updateState();
         let elapsed = time - this.t0;
         let rounded = Math.floor(elapsed);
         let t = (elapsed - rounded) / SNAKE_ATTACK_TIME;
@@ -163,7 +166,6 @@ class Snake extends Enemy
             t = (1-t) / .5;
         }
         this.pos.x = this.initialX + (this.getMirrorSign() * t * SNAKE_ATTACK_RANGE);
-        super.update();
     }
 }
 
@@ -201,6 +203,7 @@ class Tentacle extends Enemy
 
     update()
     {
+        super.update();
         let playerposy = this.player.pos.y;
         let selfposy = this.pos.y;
         // under detectable vertical distance?
@@ -217,6 +220,5 @@ class Tentacle extends Enemy
                 this.velocity.x = 0;
             }
         }
-        super.update();
     }
 }

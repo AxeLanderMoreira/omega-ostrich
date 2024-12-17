@@ -47,9 +47,9 @@ class GameObject extends EngineObject
     update() 
     {
         if (!this.visible) return;
+        if (this.paused) return;
         this.updateState();
         super.update();
-        // TODO if need to flash when damaged, use this.additiveColor
     }
 
     render()

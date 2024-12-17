@@ -166,16 +166,17 @@ class Character extends GameObject
             case STATE_CHARACTER_DEAD:
                 new Sound([1.3,,80,.37,.01,.009,3,3.4,,,194,.35,,,,,.29,.95,.02,.46,-1370]).play(); // Random 34
                 this.t0Dead = time;
+                this.posDead = this.pos.copy();
                 this.gravityScale = 0;
                 this.velocity = vec2(0, 0);
                 this.airborne = false;
-                this._shootLaser(false);
+                this.shootLaser(false);
                 break;
             case STATE_CHARACTER_RESPAWN:
                 this.gravityScale = 0;
                 this.velocity = vec2(0, 0);
                 this.airborne = false;
-                this._shootLaser(false);
+                this.shootLaser(false);
                 break;            
         }
         super.changeState(newState, followingState);
@@ -184,10 +185,10 @@ class Character extends GameObject
     // Snap back if out of bounds
     outOfBounds()
     {
-        /*if (!this.screen.level) {
+        if (!this.screen.level) {
             console.warn('[gamePlayer.outOfBounds] level not assigned');
             return;
-        }*/
+        }
         let upperLimit = this.screen.level.getCameraUpperLimit().add(vec2(-22,12.5));
         let lowerLimit = this.screen.level.getCameraLowerLimit().add(vec2(22, -12.5));
         // 44 x 25
@@ -209,8 +210,12 @@ class Character extends GameObject
     updateState()
     {        
         // check collisions with walls
-        let walls = this.screen.getLevel().getWalls();
-        
+        let walls;
+        if (this.screen.level) {
+            walls = this.screen.level.getWalls();
+        } else {
+            walls = []; // title screen
+        }
         switch(this.state) {
             case STATE_CHARACTER_STAND:
                 if (!this.collideFloor(walls)) {
@@ -297,8 +302,17 @@ class Character extends GameObject
                 }
                 break;
             case STATE_CHARACTER_DEAD:
-                if (time - this.t0Dead >= PLAYER_RESPAWN_TIME) {
+                let elapsed = time - this.t0Dead;
+                if (elapsed >= PLAYER_RESPAWN_TIME) {
                     this.loseLife();
+                    this.color = new Color(1,1,1,1); // back to normal color
+                } else {
+                    this.pos.x = this.posDead.x + (randInt(-1,2) * PIXEL_UNIT);
+                    //this.pos.y = this.posDead.y + (randInt(-1,2) * PIXEL_UNIT);
+                    let n = Math.PI * elapsed / BAT_FLY_PERIOD;
+                    let y = .3 + .7 * (Math.abs(Math.cos(n)));
+                    //this.color = new Color(y,0,0,1);
+                    this.color.a = y;
                 }
                 break;
             case STATE_CHARACTER_CHECKPOINT:
@@ -346,8 +360,31 @@ class Character extends GameObject
     damage(enemy) {
         if (this.state != STATE_CHARACTER_DEAD) {
             this.changeState(STATE_CHARACTER_DEAD);
-            this.enemyTouched = enemy;
+            if (enemy) {
+                enemy.paused = true; // render but not update            
+                this.enemyTouched = enemy;
+            }
         }        
+    }
+
+    shootLaser(on)
+    {
+        if (on) {
+            if (!this.laser) {
+                this.laser= new Laser(this);
+                this.laserSound = new Sound([1.7,0,294,.11,.01,.005,,2.5,-16,,,,.01,,137,1,.01,.92,,,240]); // Random 28
+                this.laserSound.play(null,1,1,1,true);
+            }
+            this._drainFuel();
+        } else {
+            if (this.laser) {
+                this.laserSound.stop();
+                this.laserSound.setVolume(0);
+                delete this.laserSound;
+                this.laser.destroy();
+                delete this.laser;
+            }
+        }
     }
 }
 
@@ -531,26 +568,6 @@ class Player extends Character
         }
     }
 
-    _shootLaser(on)
-    {
-        if (on) {
-            if (!this.laser) {
-                this.laser= new Laser(this);
-                this.laserSound = new Sound([1.7,0,294,.11,.01,.005,,2.5,-16,,,,.01,,137,1,.01,.92,,,240]); // Random 28
-                this.laserSound.play(null,1,1,1,true);
-            }
-            this._drainFuel();
-        } else {
-            if (this.laser) {
-                this.laserSound.stop();
-                this.laserSound.setVolume(0);
-                delete this.laserSound;
-                this.laser.destroy();
-                delete this.laser;
-            }
-        }
-    }
-
     _dropDynamite()
     {
         if (!this.droppedDynamite) {
@@ -585,7 +602,7 @@ class Player extends Character
         // have states and transitions mapped in a more declarative way
         let accx = 0;
         let accy = 0;
-        this._shootLaser(holdingAction && 
+        this.shootLaser(holdingAction && 
             this.state != STATE_CHARACTER_TURN && 
             this.state != STATE_CHARACTER_TURNMIDAIR && 
             this.state != STATE_CHARACTER_CROUCH &&

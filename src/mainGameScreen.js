@@ -3,7 +3,6 @@ const INITIAL_LEVEL = 1;
 
 const CLASSIC_SCREEN_TRANSITION=true; /* use false for scrolling instead */
 
-
 const HUD_ICON_X = 10;
 const HUD_ICON_LEVEL = 11;
 const HUD_ICON_HERO = 12;
@@ -36,8 +35,6 @@ class MainGameScreen extends GameScreen
         this.enemies = this.level.getEnemies();
         this.fluids = this.level.getFluids();
         this.quadrant = vec2(0,0);
-        this.bgGradientColorBright = 'rgb(92 64 0)';
-        this.bgGradientColorDark = 'rgb(0 0 0)';
     }
 
     getQuadrantCenterPos(quad) {
@@ -149,18 +146,9 @@ class MainGameScreen extends GameScreen
             mainContext.fillStyle = mainContext.fillStyle = this.flashColor;
             mainContext.fillRect(0, 0, mainCanvas.width, mainCanvas.height);
         } else {
-            this.drawBackground();
+            drawBackground(BG_GRADIENT_COLOR_BRIGHT, BG_GRADIENT_COLOR_DARK);
         }
         super.render();
-    }
-
-    drawBackground()
-    {
-        const gradient = mainContext.fillStyle = mainContext.createLinearGradient(0, 0, 0, mainCanvas.height);
-        gradient.addColorStop(0, this.bgGradientColorBright);
-        gradient.addColorStop(0.5, this.bgGradientColorDark);
-        gradient.addColorStop(1, this.bgGradientColorBright);
-        mainContext.fillRect(0, 0, mainCanvas.width, mainCanvas.height);
     }
 
     /**

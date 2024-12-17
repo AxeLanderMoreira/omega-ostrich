@@ -4,6 +4,9 @@
 
 const TOLERANCE_THICKNESS = 3/WORLD_TILE_SIZE; // 3 pixel tolerance
 
+const BG_GRADIENT_COLOR_BRIGHT = 'rgb(92 64 0)';
+const BG_GRADIENT_COLOR_DARK   = 'rgb(0 0 0)'
+
 /**
  * @brief checks if an R1s LEFT edge touches R2's RIGHT edge.
  * @return true in case check is successful
@@ -70,4 +73,13 @@ function collideBT(r1, r2) {
         vec2(r2.pos.x, r2Top),
         vec2(r2.size.x, TOLERANCE_THICKNESS)
     );
+}
+
+function drawBackground(color1, color2)
+{
+    const gradient = mainContext.fillStyle = mainContext.createLinearGradient(0, 0, 0, mainCanvas.height);
+    gradient.addColorStop(0, color1);
+    gradient.addColorStop(0.5, color2);
+    gradient.addColorStop(1, color1);
+    mainContext.fillRect(0, 0, mainCanvas.width, mainCanvas.height);
 }
