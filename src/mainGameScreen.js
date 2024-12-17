@@ -34,6 +34,7 @@ class MainGameScreen extends GameScreen
         this.level = new GameLevel(GAMEMAP[this.currLevelNum-1], this);
         this.player.pos = this.respawnPosition.copy();
         this.enemies = this.level.getEnemies();
+        this.fluids = this.level.getFluids();
         this.quadrant = vec2(0,0);
         this.bgGradientColorBright = 'rgb(92 64 0)';
         this.bgGradientColorDark = 'rgb(0 0 0)';
@@ -246,7 +247,6 @@ class MainGameScreen extends GameScreen
         delete this.level;
         this.enemies = [];
         delete this.player;
-        delete this.fluid;
         engineObjectsDestroy();
     }
 
@@ -319,6 +319,10 @@ class MainGameScreen extends GameScreen
         walls.forEach(wall => {
             wall.destroy();
         });
+        let fluids = this.level.getFluids();
+        fluids.forEach(fluid => {
+            fluid.destroy();
+        })
         this.enemies = [];
         delete this.level;
 

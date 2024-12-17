@@ -15,6 +15,7 @@ class GameLevel
         this.parseIdx = 0;
         this.walls= []; // Array of GameObjects
         this.enemies = [];
+        this.fluids = [];
         this._parseMapArray(map);
     }
 
@@ -127,7 +128,9 @@ class GameLevel
         let pos = this._translatePos(x, y, width, height, true);
         let size = vec2(width, height).divide(vec2(8));
         let obj = new Fluid(pos, size, color, this.screen);
-
+        if (obj) {
+            this.fluids.push(obj);
+        }
     }
 
     _parseCheckpoint() {
@@ -188,6 +191,11 @@ class GameLevel
     getEnemies()
     {
         return this.enemies;
+    }
+
+    getFluids()
+    {
+        return this.fluids;
     }
      
 
