@@ -28,15 +28,15 @@ class MainGameScreen extends GameScreen
     init()
     {
         this.respawnPosition = vec2(-10, 10);   // default respawnPosition
-        //console.log('[mainGameScreen.init] respawnPosition = ' + this.respawnPosition.x + ',' + this.respawnPosition.y);
         this.respawnAirborne = true;
         this.player = new Player(this.respawnPosition, this); // position of middle floor
-        //this.currLevelNum = INITIAL_LEVEL;
         this.currLevelNum = this.startLevel;
         this.level = new GameLevel(GAMEMAP[this.currLevelNum-1], this);
         this.player.pos = this.respawnPosition.copy();
         this.enemies = this.level.getEnemies();
         this.quadrant = vec2(0,0);
+        this.bgGradientColorBright = 'rgb(92 64 0)';
+        this.bgGradientColorDark = 'rgb(0 0 0)';
     }
 
     getQuadrantCenterPos(quad) {
@@ -134,11 +134,6 @@ class MainGameScreen extends GameScreen
      */
     updatePost()
     {
-            // move camera to player
-    /*cameraPos = cameraPos.lerp(player.pos, clamp(player.getAliveTime()/2));
-
-    // update parallax background relative to camera
-    updateParallaxLayers();*/
     }
 
     /**
@@ -146,15 +141,25 @@ class MainGameScreen extends GameScreen
      */
     render()
     {
-        //this._drawBackground();
         if (this.flashFXEnd > 0 && 
             time < this.flashFXEnd && 
             this.flashColor &&
             this.flashFXFrame) {
             mainContext.fillStyle = mainContext.fillStyle = this.flashColor;
             mainContext.fillRect(0, 0, mainCanvas.width, mainCanvas.height);
-            super.render();
+        } else {
+            this.drawBackground();
         }
+        super.render();
+    }
+
+    drawBackground()
+    {
+        const gradient = mainContext.fillStyle = mainContext.createLinearGradient(0, 0, 0, mainCanvas.height);
+        gradient.addColorStop(0, this.bgGradientColorBright);
+        gradient.addColorStop(0.5, this.bgGradientColorDark);
+        gradient.addColorStop(1, this.bgGradientColorBright);
+        mainContext.fillRect(0, 0, mainCanvas.width, mainCanvas.height);
     }
 
     /**
@@ -231,9 +236,6 @@ class MainGameScreen extends GameScreen
         this.drawHUDIcon(Math.floor(this.currLevelNum / 10), pos);
         pos.x += 8;
         this.drawHUDIcon(Math.floor(this.currLevelNum % 10), pos, true);
-
-        
-
     }
 
     /**
