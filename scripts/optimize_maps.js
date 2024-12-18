@@ -135,6 +135,33 @@ function serializeStartPosition(obj) {
     jsString += ',' + Math.round(obj.y);
 }
 
+function serializeHint(obj) {
+    jsString += ',5';   // Object type for Hint
+    jsString += ',' + Math.round(obj.x);
+    jsString += ',' + Math.round(obj.y);
+    let text, hintX, hintY, hintW, hintH;
+    if (obj.properties) {
+        obj.properties.forEach(prop => {
+            if (prop.name == 'text') {
+                text = prop.value.replaceAll('\n', '\\n');
+            } else if (prop.name == 'hintX') {
+                hintX = prop.value;
+            } else if (prop.name == 'hintY') {
+                hintY = prop.value;
+            } else if (prop.name == 'hintW') {
+                hintW = prop.value;
+            } else if (prop.name == 'hintH') {
+                hintH = prop.value;
+            }
+        });
+    }
+    jsString += ',"' + text + '"';
+    jsString += ',' + hintX;
+    jsString += ',' + hintY;
+    jsString += ',' + hintW
+    jsString += ',' + hintH;
+}
+
 function sortLayer(layer) {
     layer.sort(function(a,b) {
         if (a.y < b.y) { // order from top-to-bottom first
@@ -191,6 +218,9 @@ function processMapFile(mapPath) {
                 break;
             case 'StartPosition':
                 serializeStartPosition(obj);
+                break;
+            case 'Hint':
+                serializeHint(obj);
                 break;
         }
     });

@@ -186,7 +186,6 @@ class Character extends GameObject
     outOfBounds()
     {
         if (!this.screen.level) {
-            console.warn('[gamePlayer.outOfBounds] level not assigned');
             return;
         }
         let upperLimit = this.screen.level.getCameraUpperLimit().add(vec2(-22,12.5));

@@ -6,6 +6,7 @@ const OBJECT_TYPE_ENEMY = 1;
 const OBJECT_TYPE_FLUID = 2;
 const OBJECT_TYPE_CHECKPOINT = 3;
 const OBJECT_TYPE_START_POSITION = 4;
+const OBJECT_TYPE_HINT = 5;
 
 class GameLevel
 {
@@ -16,6 +17,7 @@ class GameLevel
         this.walls= []; // Array of GameObjects
         this.enemies = [];
         this.fluids = [];
+        this.hints = [];
         this._parseMapArray(map);
     }
 
@@ -55,6 +57,8 @@ class GameLevel
                 case OBJECT_TYPE_START_POSITION:
                     obj = this._parseStartPosition();
                     break;
+                case OBJECT_TYPE_HINT:
+                    obj = this._parseHint();
             }
             if (obj) {
                 obj.gravityScale = 0;
@@ -151,6 +155,21 @@ class GameLevel
         // TODO Allow mirrored startPosition ?
     }
 
+    _parseHint() {
+        let x = this._next();
+        let y = this._next();
+        let pos = this._translatePos(x, y, ENEMY_TILE_SIZE_X, ENEMY_TILE_SIZE_Y);
+        let text= this._next();
+        let hintX = this._next();
+        let hintY = this._next();
+        let hintW = this._next();
+        let hintH = this._next();
+        let obj = new Hint(pos, this.screen, text, vec2(hintX, hintY), vec2(hintW, hintH));
+        if (obj) {
+            this.hints.push(obj);
+        }
+    }
+
     /**
      * 
      * @param {Vector2} pos in pixels (0,0@top,left)
@@ -196,6 +215,11 @@ class GameLevel
     getFluids()
     {
         return this.fluids;
+    }
+
+    getHints()
+    {
+        return this.hints;
     }
      
 

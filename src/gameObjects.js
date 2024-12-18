@@ -6,6 +6,7 @@ const WORLD_TILE_SIZE = 8;
 const BREAKABLE_WALL_HP = 6;
 
 const SPRITE_INDEX_CHECKPOINT = 14;
+const SPRITE_INDEX_HINT = 16;
 
 class GameObject extends EngineObject 
 {
@@ -395,5 +396,46 @@ class Checkpoint extends GameObject {
             this.player.changeState(STATE_CHARACTER_CHECKPOINT);
         }
         super.update();
+    }
+}
+
+class Hint extends GameObject {
+    constructor(pos, screen, text, panelPos, panelSize) {
+        super(
+            pos,
+            vec2(ENEMY_TILE_SIZE_X/WORLD_TILE_SIZE, ENEMY_TILE_SIZE_Y/WORLD_TILE_SIZE),
+            new TileInfo(vec2(0, 0), vec2(ENEMY_TILE_SIZE_X, ENEMY_TILE_SIZE_Y), TEXTURE_INDEX_ENEMIES, 1)
+        );
+        this.screen = screen;
+        this.player = screen.player;
+        this.renderOrder = RENDER_ORDER_ENEMIES;
+        this.setFrame(SPRITE_INDEX_HINT);
+        this.text = text;
+        //this.lines = text.split('\n');
+        //console.log('[Hint constructor] this.lines.length = ' + this.lines.length);
+        this.panelPos = panelPos.copy();
+        this.panelSize = panelSize.copy();
+        this.showing = false;
+    }
+
+    update() {
+        let overlap = this.collideWith(this.player.box);
+        if (!this.showing && overlap) {
+            console.log('[Hint.update] showHint');
+            this.showHint();
+        } else if (this.showing && !overlap) {
+            console.log('[Hint.update] hideHint');
+            this.hideHint();
+        }
+    }
+
+    showHint() {
+        this.showing = true;
+        this.screen.showHint(this.text, this.panelPos, this.panelSize);
+    }
+
+    hideHint() {
+        this.showing = false;
+        this.screen.hideHint();
     }
 }

@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "map03.tmj",
+    "activeFile": "map00.tmj",
     "expandedProjectPaths": [
         "."
     ],
@@ -12,22 +12,33 @@
             "scaleInDock": 1
         },
         "Enemies.tsx": {
-            "scaleInDock": 1,
+            "scaleInDock": 2,
             "scaleInEditor": 4.1622
         },
         "HERO.tsx": {
             "scaleInDock": 1,
             "scaleInEditor": 1
         },
+        "map00.tmj": {
+            "expandedObjectLayers": [
+                2
+            ],
+            "scale": 1.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 19.33333333333333,
+                "y": 84.99999999999997
+            }
+        },
         "map01.tmj": {
             "expandedObjectLayers": [
                 2
             ],
-            "scale": 8,
+            "scale": 1.5,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 1034.8125,
-                "y": 322.4375
+                "x": 73.33333333333333,
+                "y": 91.66666666666663
             }
         },
         "map01.tmj#HERO": {
@@ -37,33 +48,33 @@
             "expandedObjectLayers": [
                 2
             ],
-            "scale": 2,
+            "scale": 0.75,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 218.25,
-                "y": 279.75
+                "x": 175.33333333333331,
+                "y": 199.33333333333337
             }
         },
         "map03.tmj": {
             "expandedObjectLayers": [
                 2
             ],
-            "scale": 1,
+            "scale": 0.33,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 424.5,
-                "y": 416.5
+                "x": 177.27272727272725,
+                "y": 298.4848484848485
             }
         },
         "map04.tmj": {
             "expandedObjectLayers": [
                 2
             ],
-            "scale": 3,
+            "scale": 1,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 642.8333333333333,
-                "y": 97.16666666666669
+                "x": 351.5,
+                "y": 99.5
             }
         },
         "map05.tmj": {
@@ -87,14 +98,15 @@
     "map.orientation": 1,
     "map.tileHeight": 8,
     "map.tileWidth": 8,
-    "map.width": 44,
+    "map.width": 88,
     "openFiles": [
         "HERO.tsx",
         "map01.tmj",
         "Enemies.tsx",
         "map02.tmj",
         "map04.tmj",
-        "map03.tmj"
+        "map03.tmj",
+        "map00.tmj"
     ],
     "project": "hero.tiled-project",
     "property.type": "int",
@@ -104,7 +116,8 @@
         "Enemies.tsx",
         "map02.tmj",
         "map04.tmj",
-        "map03.tmj"
+        "map03.tmj",
+        "map00.tmj"
     ],
     "tileset.embedInMap": false,
     "tileset.lastUsedFormat": "tsx",

@@ -76,6 +76,51 @@
             ]
         },
         {
+            "color": "#ffffff00",
+            "drawFill": true,
+            "id": 6,
+            "members": [
+                {
+                    "name": "hintH",
+                    "type": "int",
+                    "value": 0
+                },
+                {
+                    "name": "hintW",
+                    "type": "int",
+                    "value": 0
+                },
+                {
+                    "name": "hintX",
+                    "type": "int",
+                    "value": 0
+                },
+                {
+                    "name": "hintY",
+                    "type": "int",
+                    "value": 0
+                },
+                {
+                    "name": "text",
+                    "type": "string",
+                    "value": ""
+                }
+            ],
+            "name": "Hint",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset",
+                "project"
+            ]
+        },
+        {
             "color": "#ffa0a0a4",
             "drawFill": true,
             "id": 5,

@@ -36,13 +36,13 @@
                  "rotation":0,
                  "type":"Wall",
                  "visible":true,
-                 "width":40,
+                 "width":16,
                  "x":0,
                  "y":60
                 }, 
                 {
                  "height":80,
-                 "id":5,
+                 "id":4,
                  "name":"",
                  "rotation":0,
                  "type":"Wall",
@@ -53,7 +53,7 @@
                 }, 
                 {
                  "height":60,
-                 "id":7,
+                 "id":6,
                  "name":"",
                  "properties":[
                         {
@@ -69,44 +69,8 @@
                  "y":60
                 }, 
                 {
-                 "gid":6,
-                 "height":13,
-                 "id":10,
-                 "name":"",
-                 "rotation":0,
-                 "type":"Enemy",
-                 "visible":true,
-                 "width":13,
-                 "x":263,
-                 "y":94
-                }, 
-                {
-                 "gid":9,
-                 "height":13,
-                 "id":11,
-                 "name":"",
-                 "rotation":0,
-                 "type":"Enemy",
-                 "visible":true,
-                 "width":13,
-                 "x":27,
-                 "y":99
-                }, 
-                {
-                 "gid":3,
-                 "height":13,
-                 "id":12,
-                 "name":"",
-                 "rotation":0,
-                 "type":"Enemy",
-                 "visible":true,
-                 "width":13,
-                 "x":443,
-                 "y":98
-                }, 
-                {
                  "height":60,
-                 "id":14,
+                 "id":10,
                  "name":"",
                  "properties":[
                         {
@@ -118,12 +82,12 @@
                  "type":"Wall",
                  "visible":true,
                  "width":24,
-                 "x":104,
+                 "x":580,
                  "y":60
                 }, 
                 {
                  "height":0,
-                 "id":15,
+                 "id":11,
                  "name":"",
                  "point":true,
                  "rotation":0,
@@ -134,38 +98,104 @@
                  "y":21
                 }, 
                 {
-                 "height":10,
-                 "id":16,
+                 "gid":17,
+                 "height":15,
+                 "id":12,
                  "name":"",
                  "properties":[
                         {
-                         "name":"hot",
-                         "type":"bool",
-                         "value":true
+                         "name":"hintH",
+                         "type":"int",
+                         "value":56
                         }, 
                         {
-                         "name":"ymove",
+                         "name":"hintW",
                          "type":"int",
-                         "value":-50
+                         "value":148
+                        }, 
+                        {
+                         "name":"hintX",
+                         "type":"int",
+                         "value":90
+                        }, 
+                        {
+                         "name":"hintY",
+                         "type":"int",
+                         "value":100
+                        }, 
+                        {
+                         "name":"text",
+                         "type":"string",
+                         "value":"White walls are breakable.\nPress and hold FIRE to \ndamage it. It will go down\nafter some time."
                         }],
                  "rotation":0,
-                 "type":"Wall",
+                 "type":"Hint",
                  "visible":true,
-                 "width":56,
-                 "x":512,
-                 "y":60
+                 "width":15,
+                 "x":540,
+                 "y":98
                 }, 
                 {
-                 "gid":2147483664,
-                 "height":13,
-                 "id":17,
+                 "gid":15,
+                 "height":15,
+                 "id":15,
                  "name":"",
                  "rotation":0,
                  "type":"Checkpoint",
                  "visible":true,
-                 "width":13,
-                 "x":643,
+                 "width":15,
+                 "x":648,
                  "y":113
+                }, 
+                {
+                 "gid":17,
+                 "height":15,
+                 "id":16,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"hintH",
+                         "type":"int",
+                         "value":28
+                        }, 
+                        {
+                         "name":"hintW",
+                         "type":"int",
+                         "value":168
+                        }, 
+                        {
+                         "name":"hintX",
+                         "type":"int",
+                         "value":100
+                        }, 
+                        {
+                         "name":"hintY",
+                         "type":"int",
+                         "value":100
+                        }, 
+                        {
+                         "name":"text",
+                         "type":"string",
+                         "value":"Press FIRE to use your laser beam, \nand take down the enemy ahead."
+                        }],
+                 "rotation":0,
+                 "type":"Hint",
+                 "visible":true,
+                 "width":15,
+                 "x":256,
+                 "y":98
+                }, 
+                {
+                 "gid":1,
+                 "height":15,
+                 "id":17,
+                 "name":"",
+                 "rotation":0,
+                 "type":"Enemy",
+                 "visible":true,
+                 "width":15,
+                 "x":312,
+                 "y":98
                 }],
          "opacity":1,
          "type":"objectgroup",

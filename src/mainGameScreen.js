@@ -168,7 +168,7 @@ class MainGameScreen extends GameScreen
     /**
      * Called from gameRenderPost callback registered via engineInit
      */
-    renderPost()
+    drawHUD()
     {
         // draw HUD
         //- dimensions: 40x64 pixels (5x8 tiles)
@@ -225,6 +225,25 @@ class MainGameScreen extends GameScreen
         this.drawHUDIcon(Math.floor(this.currLevelNum / 10), pos);
         pos.x += 8;
         this.drawHUDIcon(Math.floor(this.currLevelNum % 10), pos, true);
+    }
+
+    drawHint()
+    {
+        drawRect(this.hintPos, this.hintSize, new Color(1,1,1,1), 0, glEnable, true);
+        drawRect(this.hintPos, this.hintSize.add(vec2(-2)), new Color(0,0,0,1), 0, glEnable, true);
+        let y = this.hintPos.y - ((this.hintLines.length * 12) / 2) + 6;
+        for (let i = 0; i < this.hintLines.length; i++) {
+            drawTextScreen(this.hintLines[i], vec2(this.hintPos.x, y), 10, new Color(1,1,1,1));
+            y += 12;
+        }
+    }
+
+    renderPost()
+    {
+        this.drawHUD();
+        if (this.hintVisible) {
+            this.drawHint();
+        }
     }
 
     /**
@@ -310,7 +329,11 @@ class MainGameScreen extends GameScreen
         let fluids = this.level.getFluids();
         fluids.forEach(fluid => {
             fluid.destroy();
-        })
+        });
+        let hints = this.level.getHints();
+        hints.forEach(hint => {
+            hint.destroy();
+        });
         this.enemies = [];
         delete this.level;
 
@@ -322,5 +345,16 @@ class MainGameScreen extends GameScreen
         this.enemies = this.level.getEnemies();
         this.quadrant = vec2(0,0);
         return true;
+    }
+
+    showHint(text, hintPos, hintSize) {
+        this.hintLines = text.split('\n');
+        this.hintPos = hintPos;
+        this.hintSize = hintSize;
+        this.hintVisible = true;
+    }
+
+    hideHint() {
+        this.hintVisible = false;
     }
 }
