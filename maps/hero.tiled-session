@@ -26,19 +26,30 @@
             "scale": 1.5,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 19.33333333333333,
+                "x": 655.6666666666667,
                 "y": 84.99999999999997
+            }
+        },
+        "map001.tmj": {
+            "expandedObjectLayers": [
+                2
+            ],
+            "scale": 2,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 829.25,
+                "y": 273.75
             }
         },
         "map01.tmj": {
             "expandedObjectLayers": [
                 2
             ],
-            "scale": 1.5,
+            "scale": 3,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 73.33333333333333,
-                "y": 91.66666666666663
+                "x": 901.8333333333333,
+                "y": 262.8333333333333
             }
         },
         "map01.tmj#HERO": {
@@ -52,7 +63,7 @@
             "selectedLayer": 0,
             "viewCenter": {
                 "x": 175.33333333333331,
-                "y": 199.33333333333337
+                "y": 199.33333333333326
             }
         },
         "map03.tmj": {
@@ -92,13 +103,13 @@
     "last.exportedFilePath": "/home/alexandre/workspace/herojs/maps",
     "last.imagePath": "/home/alexandre/workspace/herojs/images",
     "map.fixedSize": true,
-    "map.height": 25,
+    "map.height": 50,
     "map.lastUsedExportFilter": "JavaScript map files (*.js)",
     "map.lastUsedFormat": "json",
     "map.orientation": 1,
     "map.tileHeight": 8,
     "map.tileWidth": 8,
-    "map.width": 88,
+    "map.width": 132,
     "openFiles": [
         "HERO.tsx",
         "map01.tmj",

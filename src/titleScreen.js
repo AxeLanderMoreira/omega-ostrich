@@ -23,9 +23,9 @@ class TitleScreen extends GameScreen
     {
         this.levelSelect = 1;
         this.mainMenu = [            
-            { label: 'LEVEL SELECT:', options: this.makeLevelSelectOptions(), index: 0, onfocus: (i) => this.setStartLevel(i) },
-            { label: 'START GAME', action: () => this.startGame() }
-        ];        
+            { label: 'START GAME', action: () => this.startGame() },
+            { label: 'LEVEL SELECT:', options: this.makeLevelSelectOptions(), index: 0, onfocus: (i) => this.setStartLevel(i) }
+        ];
         this.showMenu(this.mainMenu);
         this.hero = new Character(vec2(-6,0), this);
         this.bat = new Bat(vec2(0,0), this);

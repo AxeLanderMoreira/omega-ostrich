@@ -97,6 +97,8 @@ class GameLevel
         let x = this._next();
         let y = this._next();
         let pos = this._translatePos(x, y, ENEMY_TILE_SIZE_X, ENEMY_TILE_SIZE_Y);
+        // TODO Serialize 'Horizontal Flipping' flag, and acquire as mirror below
+        //let mirror = !!(this._next());
         pos.y += (ENEMY_TILE_SIZE_Y/WORLD_TILE_SIZE)/2;
         switch(id) {
             case ENEMY_ID_SPIDER:
