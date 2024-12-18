@@ -417,8 +417,14 @@ class Laser extends GameObject
             return;
         }
         
-        let left = this.pos.x - (this.size.x / 2);
-        let right = wall.pos.x;// -  (this.size.x / 2);
+        let left, right;
+        if (!this.hero.mirror) { // laser shooting from left to right
+            left = this.pos.x - (this.size.x / 2);
+            right = wall.pos.x;// -  (this.size.x / 2);
+        } else {    // laser shooting from right to left
+            left = wall.pos.x;
+            right = this.pos.x + (this.size.x / 2);
+        }
         let newLength = Math.abs(right - left);
         if (newLength < LASER_MAX_LENGTH) {
             this.size.x = newLength;
