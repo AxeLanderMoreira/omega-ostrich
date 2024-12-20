@@ -371,7 +371,7 @@ class Character extends GameObject
         if (on) {
             if (!this.laser) {
                 this.laser= new Laser(this);
-                this.laserSound = new Sound([1.7,0,294,.11,.01,.005,,2.5,-16,,,,.01,,137,1,.01,.92,,,240]); // Random 28
+                this.laserSound = new Sound(SOUND_LASER_BEAM);
                 this.laserSound.play(null,1,1,1,true);
             }
             this._drainFuel();

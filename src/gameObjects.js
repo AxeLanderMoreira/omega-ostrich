@@ -256,6 +256,76 @@ class Wall extends GameObject
         this.player = screen.player;
     }
 
+
+/*
+if (on) {
+            if (!this.laser) {
+                this.laser= new Laser(this);
+                this.laserSound = new Sound(SOUND_LASER_BEAM);
+                this.laserSound.play(null,1,1,1,true);
+            }
+            this._drainFuel();
+        } else {
+            if (this.laser) {
+                this.laserSound.stop();
+                this.laserSound.setVolume(0);
+                delete this.laserSound;
+                this.laser.destroy();
+                delete this.laser;
+            }
+        }
+*/
+
+    /**
+     * 
+     * @param {boolean} on 
+     * @param {Vector2} pos 
+     */
+    emitSparks(on, pos, mirror) {
+        if (on) {
+            if (!this.sparkEmitter) {
+                this.sparkEmitter = new ParticleEmitter(
+                    pos, //position
+                    (mirror ? 1 : -1) * (Math.PI/2),    // angle
+                    0.2,	// emitSize
+                    0,	// emitTime
+                    70,	// emitRate
+                    0.25,	// emitConeAngle
+                    new TileInfo(vec2(0,0), vec2(8,8), TEXTURE_INDEX_PARTICLES),	// tileInfo
+                    new Color(1, 0, 0, 1),	// colorStartA
+                    new Color(0.502, 0.502, 0.502, 1),	// colorStartB
+                    new Color(1, 1, 0, 0),	// colorEndA
+                    new Color(0.961, 0.706, 0, 0),	// colorEndB
+                    0.3,	// particleTime
+                    0.1,	// sizeStart
+                    1,	// sizeEnd
+                    0.2,	// speed
+                    0.05,	// angleSpeed
+                    1,	// damping
+                    1,	// angleDamping
+                    .5,	// gravityScale
+                    0,	// particleConeAngle
+                    0.1,	// fadeRate
+                    0.2,	// randomness
+                    0,	// collideTiles
+                    1,	// additive
+                    1,	// randomColorLinear
+                    RENDER_ORDER_LASER
+                  ); // particle emitter
+                this.drillSound = new Sound(SOUND_DRILLING);
+                this.drillSound.play(null,1,1,1,true);
+            } else {
+                this.sparkEmitter.pos.y = pos.y; // update pos
+            }         
+        } else if (!on && this.sparkEmitter) {
+            this.sparkEmitter.destroy();
+            delete this.sparkEmitter;
+            this.drillSound.stop();
+            this.drillSound.setVolume(0);
+            delete this.drillSound;
+        }
+    }
+
     checkHitByLaser() {
         let laser = this.player.laser;
         if (laser) {
@@ -267,8 +337,13 @@ class Wall extends GameObject
                     let standing = this.partialDamage(frameElapsed());
                     // if wall is not standing anymore, let laser go back to full length
                     laser.resize(standing ? this : undefined);
-                }
+                    if (standing) {
+                        this.emitSparks(true, vec2(this.pos.x, laser.pos.y), this.player.mirror);
+                    }
+                    return;
+            } 
         }
+        this.emitSparks(false);
     }
 
     /**
@@ -288,6 +363,7 @@ class Wall extends GameObject
             this.pos.y = this.initialY + (randInt(-1,2) * PIXEL_UNIT);
             return true;
         } else {
+            this.emitSparks(false);
             this.screen.destroyWall(this);
             new Sound(SOUND_DYNAMITE_BLOW).play();
             return false;
@@ -421,10 +497,8 @@ class Hint extends GameObject {
     update() {
         let overlap = this.collideWith(this.player.box);
         if (!this.showing && overlap) {
-            console.log('[Hint.update] showHint');
             this.showHint();
         } else if (this.showing && !overlap) {
-            console.log('[Hint.update] hideHint');
             this.hideHint();
         }
     }

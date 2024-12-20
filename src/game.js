@@ -21,12 +21,15 @@ const TEXTURE_INDEX_DYNAMITE=1;
 const TEXTURE_INDEX_ENEMIES=2;
 const TEXTURE_INDEX_HUD_ICONS=3;
 const TEXTURE_INDEX_BREAKABLE_WALL=4;
+const TEXTURE_INDEX_PARTICLES=5;
 
 const PIXEL_UNIT = .125; // 1/8
 
 const SOUND_DYNAMITE_BLOW = [,,49,.08,.06,.43,4,1.3,,-9,,,,.8,,.4,,.48,.12];
 const SOUND_SOFT_BLOW = [2.2,,100,.03,.09,.03,3,3.5,-4,3,,,.09,1.7,,.3,.15,.46,.03,.19];
 const SOUND_CHECKPOINT = [.5,,80,.3,.4,.7,2,.1,-0.73,3.42,-430,.09,.17,,,,.19];
+const SOUND_LASER_BEAM = [1.7,0,294,.11,.01,.005,,2.5,-16,,,,.01,,137,1,.01,.92,,,240]; // Random 28
+const SOUND_DRILLING = [1.1,,24,.05,.22,.004,3,.8,90,,,,,.5,,,.15,.97]; // Random 50
 
 // Unified/merged control modes
 //const CONTROL_MODE_RETRO = 0; // 1-BUTTON
@@ -158,6 +161,7 @@ engineInit(
         './EggBomb.png',
         './Enemies.png',
         './HudIcons.png',
-        './BreakableWall.png'
+        './BreakableWall.png',
+        './Particles.png'
     ]
 );
