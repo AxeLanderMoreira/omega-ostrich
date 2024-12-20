@@ -138,7 +138,7 @@
                  "type":"Enemy",
                  "visible":true,
                  "width":15,
-                 "x":159,
+                 "x":168,
                  "y":168
                 }, 
                 {
@@ -183,8 +183,8 @@
                  "type":"Enemy",
                  "visible":true,
                  "width":15,
-                 "x":233,
-                 "y":167
+                 "x":240,
+                 "y":168
                 }, 
                 {
                  "gid":1,
@@ -195,8 +195,8 @@
                  "type":"Enemy",
                  "visible":true,
                  "width":15,
-                 "x":305,
-                 "y":167
+                 "x":312,
+                 "y":168
                 }, 
                 {
                  "gid":17,
