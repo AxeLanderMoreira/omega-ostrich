@@ -211,18 +211,6 @@
                  "y":99
                 }, 
                 {
-                 "gid":9,
-                 "height":13,
-                 "id":25,
-                 "name":"",
-                 "rotation":0,
-                 "type":"Enemy",
-                 "visible":true,
-                 "width":13,
-                 "x":27,
-                 "y":99
-                }, 
-                {
                  "gid":3,
                  "height":13,
                  "id":26,
@@ -257,18 +245,6 @@
                  "width":13,
                  "x":524,
                  "y":255
-                }, 
-                {
-                 "gid":9,
-                 "height":13,
-                 "id":30,
-                 "name":"",
-                 "rotation":0,
-                 "type":"Enemy",
-                 "visible":true,
-                 "width":13,
-                 "x":153,
-                 "y":163
                 }, 
                 {
                  "height":16,
@@ -349,6 +325,30 @@
                  "width":232,
                  "x":764,
                  "y":368
+                }, 
+                {
+                 "gid":8,
+                 "height":15,
+                 "id":42,
+                 "name":"",
+                 "rotation":0,
+                 "type":"Enemy",
+                 "visible":true,
+                 "width":15,
+                 "x":34,
+                 "y":99
+                }, 
+                {
+                 "gid":8,
+                 "height":15,
+                 "id":43,
+                 "name":"",
+                 "rotation":0,
+                 "type":"Enemy",
+                 "visible":true,
+                 "width":15,
+                 "x":160,
+                 "y":160
                 }],
          "offsetx":-4,
          "offsety":-1,
@@ -359,7 +359,7 @@
          "y":0
         }],
  "nextlayerid":3,
- "nextobjectid":41,
+ "nextobjectid":44,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.0",

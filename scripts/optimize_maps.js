@@ -14,7 +14,7 @@ const SPRITE_INDEX_TENTACLE = 10;
 const ENEMY_GID_SPIDER = SPRITE_INDEX_SPIDER+1;
 const ENEMY_GID_MOTH = SPRITE_INDEX_MOTH+1;
 const ENEMY_GID_BAT = SPRITE_INDEX_BAT+1;
-const ENEMY_GID_SNAKE = SPRITE_INDEX_SNAKE+2;
+const ENEMY_GID_SNAKE = SPRITE_INDEX_SNAKE+1;
 const ENEMY_GID_TENTACLE = SPRITE_INDEX_TENTACLE+1;
 
 const ENEMY_ID_SPIDER = 0;
@@ -65,7 +65,9 @@ function serializeWall(obj) {
 }
 
 function gidToEnemyId(gid) {
-    switch (gid) {
+    let agid = gid & 0x0000FFFF;
+    console.error('AGID: ' + agid);
+    switch (agid) { // eliminate flags
         case ENEMY_GID_SPIDER:
             return ENEMY_ID_SPIDER;
         case ENEMY_GID_MOTH:
@@ -76,7 +78,9 @@ function gidToEnemyId(gid) {
             return ENEMY_ID_SNAKE;
         case ENEMY_GID_TENTACLE:
             return ENEMY_ID_TENTACLE;
-                    
+        default:
+            console.error('UNKNOWN ENEMY GID: ' + agid);
+            return 0;
     }
 }
 
@@ -85,6 +89,8 @@ function serializeEnemy(obj) {
     jsString += ',' + gidToEnemyId(obj.gid);
     jsString += ',' + Math.round(obj.x);
     jsString += ',' + Math.round(obj.y);
+    let hflip = (obj.gid >> 31) & 1;
+    jsString += ',' + hflip; // TODO vflip too?
     // specialized cases
     if (obj.gid == ENEMY_GID_TENTACLE) {
         let leftEdge = 0, rightEdge = 0;

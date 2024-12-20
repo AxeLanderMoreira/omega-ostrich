@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "map00.tmj",
+    "activeFile": "map001.tmj",
     "expandedProjectPaths": [
         "."
     ],
@@ -23,33 +23,44 @@
             "expandedObjectLayers": [
                 2
             ],
-            "scale": 1.5,
+            "scale": 0.75,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 656,
-                "y": 84.99999999999997
+                "x": 246.66666666666669,
+                "y": 363.33333333333326
             }
         },
         "map001.tmj": {
             "expandedObjectLayers": [
                 2
             ],
-            "scale": 2,
+            "scale": 0.5,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 443.5,
-                "y": 141.75
+                "x": 578,
+                "y": 353
+            }
+        },
+        "map002.tmj": {
+            "expandedObjectLayers": [
+                2
+            ],
+            "scale": 1,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 782,
+                "y": 469.5
             }
         },
         "map01.tmj": {
             "expandedObjectLayers": [
                 2
             ],
-            "scale": 3,
+            "scale": 2,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 528.1666666666666,
-                "y": 201.16666666666669
+                "x": 150.25,
+                "y": 236.75
             }
         },
         "map01.tmj#HERO": {
@@ -62,8 +73,8 @@
             "scale": 0.75,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 175.33333333333331,
-                "y": 199.33333333333337
+                "x": 174.66666666666669,
+                "y": 199.33333333333326
             }
         },
         "map03.tmj": {
@@ -73,7 +84,7 @@
             "scale": 0.33,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 175.75757575757575,
+                "x": 174.24242424242425,
                 "y": 298.4848484848485
             }
         },
@@ -84,7 +95,7 @@
             "scale": 1,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 352,
+                "x": 351.5,
                 "y": 99.5
             }
         },
@@ -117,7 +128,8 @@
         "map02.tmj",
         "map04.tmj",
         "map03.tmj",
-        "map00.tmj"
+        "map00.tmj",
+        "map001.tmj"
     ],
     "project": "hero.tiled-project",
     "property.type": "int",
@@ -128,15 +140,16 @@
         "map02.tmj",
         "map04.tmj",
         "map03.tmj",
-        "map00.tmj"
+        "map00.tmj",
+        "map001.tmj"
     ],
     "tileset.embedInMap": false,
     "tileset.lastUsedFormat": "tsx",
     "tileset.margin": 0,
     "tileset.spacing": 0,
     "tileset.tileSize": {
-        "height": 13,
-        "width": 13
+        "height": 26,
+        "width": 16
     },
     "tileset.transparentColor": "#ff00ff",
     "tileset.type": 0,

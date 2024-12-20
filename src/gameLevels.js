@@ -98,8 +98,7 @@ class GameLevel
         let y = this._next();
         let pos = this._translatePos(x, y, ENEMY_TILE_SIZE_X, ENEMY_TILE_SIZE_Y);
         // TODO Serialize 'Horizontal Flipping' flag, and acquire as mirror below
-        //let mirror = !!(this._next());
-        pos.y += (ENEMY_TILE_SIZE_Y/WORLD_TILE_SIZE)/2;
+        let mirror = !!(this._next());
         switch(id) {
             case ENEMY_ID_SPIDER:
                 obj = new Spider(pos, this.screen);
@@ -111,7 +110,7 @@ class GameLevel
                 obj = new Bat(pos, this.screen);
                 break;
             case ENEMY_ID_SNAKE:
-                obj = new Snake(pos, this.screen);
+                obj = new Snake(pos, this.screen, mirror);
                 break;
             case ENEMY_ID_TENTACLE:
                 let leftEdge = Math.floor(this._next()  / WORLD_TILE_SIZE);
@@ -143,7 +142,6 @@ class GameLevel
         let x = this._next();
         let y = this._next();
         let pos = this._translatePos(x, y, ENEMY_TILE_SIZE_X, ENEMY_TILE_SIZE_Y);
-        pos.y += (ENEMY_TILE_SIZE_Y/WORLD_TILE_SIZE)/2;
         let mirror = !!(this._next());
         this.checkpoint = new Checkpoint(pos, this.screen, mirror);
         // Do something about it?
@@ -192,8 +190,10 @@ class GameLevel
         let tx = x - GAME_RESOLUTION_W / 2;
         let ty = -y + GAME_RESOLUTION_H / 2;
         // adjust pivot position in object (from top/left to center)
-        tx += w/2;
-        ty -= h/2;
+        if (isTopLeft) {
+            tx += w/2;
+            ty -= h/2;
+        }
         // divide by tile size (camera scale).
         tx /= WORLD_TILE_SIZE;
         ty /= WORLD_TILE_SIZE;

@@ -141,12 +141,13 @@ const SNAKE_ATTACK_RANGE = (ENEMY_TILE_SIZE_X-2)/WORLD_TILE_SIZE; // adjusted fo
 
 class Snake extends Enemy
 {
-    constructor(pos, screen)
+    constructor(pos, screen, mirror)
     {
         super(pos, screen);
         this.animMap = [
             new GameAnimation(this, SPRITE_INDEX_SNAKE, [0, 1], .2, true)    // ATTACk
         ];
+        this.mirror = mirror;
         this.initialX = pos.x;
         this.t0 = time;
         this.createHitBox(0,0,12,10);
