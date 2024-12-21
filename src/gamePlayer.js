@@ -454,7 +454,7 @@ class Dynamite extends GameObject
         this.mirror = mirror;
         this.animMap = [
             new GameAnimation(this, 0, [0,1,2], .15, true),      // FUSE
-            new GameAnimation(this, 0, [3,4,5,6], .2, true),    // BLOW
+            new GameAnimation(this, 0, [3,4,5,4], .2, true),    // BLOW
         ];
         this.changeState(STATE_DYNAMITE_FUSE);
         this.renderOrder = RENDER_ORDER_DYNAMITE;

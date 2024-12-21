@@ -256,26 +256,6 @@ class Wall extends GameObject
         this.player = screen.player;
     }
 
-
-/*
-if (on) {
-            if (!this.laser) {
-                this.laser= new Laser(this);
-                this.laserSound = new Sound(SOUND_LASER_BEAM);
-                this.laserSound.play(null,1,1,1,true);
-            }
-            this._drainFuel();
-        } else {
-            if (this.laser) {
-                this.laserSound.stop();
-                this.laserSound.setVolume(0);
-                delete this.laserSound;
-                this.laser.destroy();
-                delete this.laser;
-            }
-        }
-*/
-
     /**
      * 
      * @param {boolean} on 

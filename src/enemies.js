@@ -72,8 +72,38 @@ class Enemy extends GameObject
     }
 
     damage() {
+        this.explod();
         new Sound(SOUND_SOFT_BLOW).play();
         this.screen.destroyEnemy(this);
+    }
+
+    explod() {
+        new ParticleEmitter(
+            this.pos, 0,	//position, angle
+            0,	// emitSize
+            .1,	// emitTime
+            40,	// emitRate
+            3.14,	// emitConeAngle
+            new TileInfo(vec2(8,0), vec2(8,8), TEXTURE_INDEX_PARTICLES),	// tileInfo
+            new Color(0, 0.431, 1, 1),	// colorStartA
+            new Color(0.78, 0.816, 1, 1),	// colorStartB
+            new Color(0, 0.2, 1, 0),	// colorEndA
+            new Color(0.745, 0.753, 0.914, 0),	// colorEndB
+            0.4,	// particleTime
+            1,	// sizeStart
+            0.1,	// sizeEnd
+            0.04,	// speed
+            0.05,	// angleSpeed
+            1,	// damping
+            1,	// angleDamping
+            -0.2,	// gravityScale
+            3.14,	// particleConeAngle
+            0.1,	// fadeRate
+            0.2,	// randomness
+            0,	// collideTiles
+            0,	// additive
+            1,	// randomColorLinear
+          ); // particle emitter
     }
 
 }
