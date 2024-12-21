@@ -22,6 +22,8 @@ const TEXTURE_INDEX_ENEMIES=2;
 const TEXTURE_INDEX_HUD_ICONS=3;
 const TEXTURE_INDEX_BREAKABLE_WALL=4;
 const TEXTURE_INDEX_PARTICLES=5;
+const TEXTURE_INDEX_PORTRAIT=6;
+const TEXTURE_INDEX_VISOR_ANIM=7;
 
 const PIXEL_UNIT = .125; // 1/8
 
@@ -162,6 +164,8 @@ engineInit(
         './Enemies.png',
         './HudIcons.png',
         './BreakableWall.png',
-        './Particles.png'
+        './Particles.png',
+        './OstrichBg-1.png',
+        './VisorAnim.png'
     ]
 );
