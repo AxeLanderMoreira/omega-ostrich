@@ -13,11 +13,11 @@ class MainGameScreen extends GameScreen
     /**
      * 
      */
-     constructor(startLevel, controlMode)
+     constructor(startLevel, tutorialOff)
      {
         super();
         this.startLevel = startLevel;
-        gameInput.setControlMode(controlMode);
+        this.tutorialOff = tutorialOff;
      }
 
     /**
@@ -30,7 +30,7 @@ class MainGameScreen extends GameScreen
         this.respawnAirborne = true;
         this.player = new Player(this.respawnPosition, this); // position of middle floor
         this.currLevelNum = this.startLevel;
-        this.level = new GameLevel(GAMEMAP[this.currLevelNum-1], this);
+        this.level = new GameLevel(GAMEMAP[this.currLevelNum-1], this, this.tutorialOff);
         this.player.pos = this.respawnPosition.copy();
         this.enemies = this.level.getEnemies();
         this.fluids = this.level.getFluids();
@@ -341,7 +341,7 @@ class MainGameScreen extends GameScreen
         this.currLevelNum++;
         this.respawnPosition = vec2(-10, 10);   // default respawnPosition
         this.respawnAirborne = true;
-        this.level = new GameLevel(GAMEMAP[this.currLevelNum-1], this);
+        this.level = new GameLevel(GAMEMAP[this.currLevelNum-1], this, this.tutorialOff);
         this.enemies = this.level.getEnemies();
         this.quadrant = vec2(0,0);
         return true;

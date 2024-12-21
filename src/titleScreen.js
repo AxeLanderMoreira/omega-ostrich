@@ -55,7 +55,14 @@ class TitleScreen extends GameScreen
         this.levelSelect = 1;
         this.mainMenu = [            
             { label: 'START GAME', action: () => this.startGame() },
-            { label: 'LEVEL SELECT:', options: this.makeLevelSelectOptions(), index: 0, onfocus: (i) => this.setStartLevel(i) }
+            { label: 'OPTIONS', action: () => this.showMenu(this.optionsMenu) },
+            //{ label: 'LEVEL SELECT:', options: this.makeLevelSelectOptions(), index: 0, onfocus: (i) => this.setStartLevel(i) }
+        ];
+        this.optionsMenu = [
+             { label: 'LEVEL SELECT:', options: this.makeLevelSelectOptions(), index: 0, onfocus: (i) => this.setStartLevel(i) },
+             { label: 'TUTORIAL:', options: ['ON', 'OFF'], index: 0, onfocus: (i) => this.setTutorialOff(i) },
+             { label: 'BACK', action: () => this.showMenu(this.mainMenu) }
+
         ];
         this.showMenu(this.mainMenu);
         this.portrait = new GameObject(
@@ -104,12 +111,16 @@ class TitleScreen extends GameScreen
         this.controlMode = i;
     }*/
 
+    setTutorialOff(i) {
+        this.tutorialOff = i;
+    }
+
     setStartLevel(i) {
         this.levelSelect = (i + 1);
     }
 
     startGame() {
-        showMainGameScreen(this.levelSelect, this.controlMode);
+        showMainGameScreen(this.levelSelect, this.tutorialOff);
     }
     
     showMenu(menu, index) {

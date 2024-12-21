@@ -79,12 +79,12 @@ function showTitleScreen()
     currentScreen.start();
 }
 
-function showMainGameScreen(startLevel, controlMode)
+function showMainGameScreen(startLevel, tutorialOff)
 {
     if (currentScreen) {
         currentScreen.stop();
     }
-    currentScreen = mainGameScreen = new MainGameScreen(startLevel, controlMode);
+    currentScreen = mainGameScreen = new MainGameScreen(startLevel, tutorialOff);
     currentScreen.init();
     currentScreen.start();
 }

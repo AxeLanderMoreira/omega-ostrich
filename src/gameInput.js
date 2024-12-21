@@ -29,10 +29,10 @@ class GameInput
         this.pressedKey = [ false, false, false, false, false, false ];
     }
 
-    setControlMode(mode)
+    /*setControlMode(mode)
     {
         this.controlMode = mode;
-    }
+    }*/
 
     /**
      * 

@@ -10,7 +10,7 @@ const OBJECT_TYPE_HINT = 5;
 
 class GameLevel
 {
-    constructor(map, screen) {
+    constructor(map, screen, tutorialOff) {
         this.map = map;
         this.screen = screen;
         this.parseIdx = 0;
@@ -18,6 +18,7 @@ class GameLevel
         this.enemies = [];
         this.fluids = [];
         this.hints = [];
+        this.tutorialOff = tutorialOff;
         this._parseMapArray(map);
     }
 
@@ -59,6 +60,7 @@ class GameLevel
                     break;
                 case OBJECT_TYPE_HINT:
                     obj = this._parseHint();
+                    break;
             }
             if (obj) {
                 obj.gravityScale = 0;
@@ -164,9 +166,11 @@ class GameLevel
         let hintY = this._next();
         let hintW = this._next();
         let hintH = this._next();
-        let obj = new Hint(pos, this.screen, text, vec2(hintX, hintY), vec2(hintW, hintH));
-        if (obj) {
-            this.hints.push(obj);
+        if (!this.tutorialOff) {
+            let obj = new Hint(pos, this.screen, text, vec2(hintX, hintY), vec2(hintW, hintH));
+            if (obj) {
+                this.hints.push(obj);
+            }
         }
     }
 
