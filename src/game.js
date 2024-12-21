@@ -24,6 +24,7 @@ const TEXTURE_INDEX_BREAKABLE_WALL=4;
 const TEXTURE_INDEX_PARTICLES=5;
 const TEXTURE_INDEX_PORTRAIT=6;
 const TEXTURE_INDEX_VISOR_ANIM=7;
+const TEXTURE_INDEX_TITLE_LOGO=8;
 
 const PIXEL_UNIT = .125; // 1/8
 
@@ -166,6 +167,7 @@ engineInit(
         './BreakableWall.png',
         './Particles.png',
         './OstrichBg-1.png',
-        './VisorAnim.png'
+        './VisorAnim.png',
+        './TitleLogo-Dashed.png'
     ]
 );

@@ -4,8 +4,41 @@
 
 const TOLERANCE_THICKNESS = 3/WORLD_TILE_SIZE; // 3 pixel tolerance
 
-const BG_GRADIENT_COLOR_BRIGHT = 'rgb(92 64 0)';
-const BG_GRADIENT_COLOR_DARK   = 'rgb(0 0 0)'
+const BG_GRADIENT_COLOR_BRIGHT_CAVE = 0x5c4000;
+const BG_GRADIENT_COLOR_BRIGHT_TITLE = 0x5c00ff;
+const BG_GRADIENT_COLOR_BRIGHT_TITLE_2 = 0x00ffff;
+const BG_GRADIENT_COLOR_DARK = 0x000000;
+
+/**
+ * Convert int color to rgb format (used in CSS and JS Canvas API)
+ * @param {int} color Int in 0xRRGGBB format
+ */
+function colorInt2Css(color) {
+    let r = (color >> 16) & 0xFF;
+    let g = (color >> 8) & 0xFF;
+    let b = color & 0xFF;
+    return ('rgb(' + r + ' ' + g + ' ' + b + ')');
+}
+
+/**
+ * Calculates lerp between two colors in hex format
+ * @param {int} c1 Color 1 to blend
+ * @param {int} c2 Color 2 to blend
+ * @param {float} pct percentage to combine c1 upon c2
+ * @returns 
+ */
+function lerpColorInts(c1, c2, pct) {
+    let r1 = (c1 >> 16) & 0xFF;
+    let g1 = (c1 >> 8) & 0xFF;
+    let b1 = c1 & 0xFF;
+    let r2 = (c2 >> 16) & 0xFF;
+    let g2 = (c2 >> 8) & 0xFF;
+    let b2 = c2 & 0xFF;
+    let r = Math.round((pct*r1) + ((1-pct)*r2));
+    let g = Math.round((pct*g1) + ((1-pct)*g2));
+    let b = Math.round((pct*b1) + ((1-pct)*b2));
+    return (r << 16) | (g << 8) | (b);
+}
 
 /**
  * @brief checks if an R1s LEFT edge touches R2's RIGHT edge.
@@ -78,8 +111,10 @@ function collideBT(r1, r2) {
 function drawBackground(color1, color2)
 {
     const gradient = mainContext.fillStyle = mainContext.createLinearGradient(0, 0, 0, mainCanvas.height);
-    gradient.addColorStop(0, color1);
-    gradient.addColorStop(0.5, color2);
-    gradient.addColorStop(1, color1);
+    let rgb1 = colorInt2Css(color1);
+    let rgb2 = colorInt2Css(color2);
+    gradient.addColorStop(0, rgb1);
+    gradient.addColorStop(0.5, rgb2);
+    gradient.addColorStop(1, rgb1);
     mainContext.fillRect(0, 0, mainCanvas.width, mainCanvas.height);
 }

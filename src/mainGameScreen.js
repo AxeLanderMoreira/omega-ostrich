@@ -146,7 +146,7 @@ class MainGameScreen extends GameScreen
             mainContext.fillStyle = mainContext.fillStyle = this.flashColor;
             mainContext.fillRect(0, 0, mainCanvas.width, mainCanvas.height);
         } else {
-            drawBackground(BG_GRADIENT_COLOR_BRIGHT, BG_GRADIENT_COLOR_DARK);
+            drawBackground(BG_GRADIENT_COLOR_BRIGHT_CAVE, BG_GRADIENT_COLOR_DARK);
         }
         super.render();
     }
