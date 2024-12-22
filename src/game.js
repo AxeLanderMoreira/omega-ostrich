@@ -56,7 +56,7 @@ touchGamepadAnalog = false;
 touchGamepadSize = 45;
 glEnable = true;
 
-let gStorage;
+var gStorage;
 
 ///////////////////////////////////////////////////////////////////////////////
 function gameInit()
@@ -73,22 +73,42 @@ function gameInit()
     showTitleScreen();
 }
 
+/**
+ * 
+ * It is stored as array to prevent mangling from terser/uglifyjs/roadroller
+ */
+function parseStorageData(raw)
+{
+    // data taken as a raw string (stringified array)
+    let arr = JSON.parse(raw); // de-stringify back into array
+    return {
+        levelsUnlocked: arr[0],
+        tutorialOff: arr[1]
+    }
+}
+
 function loadStorage()
 {
-    let raw = localStorage.getItem(LOCAL_STORAGE_KEY);
-    if (!raw) {
+    let data = localStorage.getItem(LOCAL_STORAGE_KEY);
+    //console.log('[loadStorage] IN - data = ' + data);
+    if (!data) {
         gStorage = { // initial values
             levelsUnlocked: 1,
             tutorialOff: 0
         };
     } else {
-        gStorage = JSON.parse(raw);
+        gStorage = parseStorageData(data);
+        //console.log('[loadStorage] gStorage = ' + JSON.stringify(gStorage));
     }
 }
 
 function saveStorage()
 {
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(gStorage));
+    let data = [
+        gStorage.levelsUnlocked,
+        gStorage.tutorialOff
+    ]
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(data));
 }
 
 function showTitleScreen()
