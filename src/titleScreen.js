@@ -11,6 +11,10 @@ const STATE_VISOR_ANIM_SPARK = 2;
 
 const TITLE_ANIM_TIME = 6;
 
+const RENDER_ORDER_HERO_PORTRAIT=-3;
+const RENDER_ORDER_VISOR_FLASH=-2;
+const RENDER_ORDER_GAME_LOGO=-1;
+
 class VisorAnimation extends GameObject {
     constructor(pos) {
         super(
@@ -26,6 +30,7 @@ class VisorAnimation extends GameObject {
             new GameAnimation(this, 0, [19,20,21,20,19,0], .25, false) // SPARK
         ];
         this.changeState(STATE_VISOR_ANIM_INVISIBLE);
+        this.renderOrder = RENDER_ORDER_VISOR_FLASH;
     }
 }
 
@@ -56,11 +61,10 @@ class TitleScreen extends GameScreen
         this.mainMenu = [            
             { label: 'START GAME', action: () => this.startGame() },
             { label: 'OPTIONS', action: () => this.showMenu(this.optionsMenu) },
-            //{ label: 'LEVEL SELECT:', options: this.makeLevelSelectOptions(), index: 0, onfocus: (i) => this.setStartLevel(i) }
         ];
         this.optionsMenu = [
              { label: 'LEVEL SELECT:', options: this.makeLevelSelectOptions(), index: 0, onfocus: (i) => this.setStartLevel(i) },
-             { label: 'TUTORIAL:', options: ['ON', 'OFF'], index: 0, onfocus: (i) => this.setTutorialOff(i) },
+             { label: 'TUTORIAL:', options: ['ON', 'OFF'], index: gStorage.tutorialOff, onfocus: (i) => this.setTutorialOff(i) },
              { label: 'BACK', action: () => this.showMenu(this.mainMenu) }
 
         ];
@@ -82,7 +86,9 @@ class TitleScreen extends GameScreen
                 TEXTURE_INDEX_TITLE_LOGO)            
         );
         this.visorAnim = new VisorAnimation(vec2(0,0));
+        this.visorAnim.renderOrder = RENDER_ORDER_VISOR_FLASH;
         this.portrait.addChild(this.visorAnim, vec2(-5.5,10));
+        this.portrait.renderOrder = RENDER_ORDER_HERO_PORTRAIT;
         this.nextTimeToFlash();
         this.topColor = BG_GRADIENT_COLOR_BRIGHT_TITLE;
     }
@@ -100,8 +106,9 @@ class TitleScreen extends GameScreen
 
     makeLevelSelectOptions()
     {
-        let ret = new Array(GAMEMAP.length);
-        for (let i = 1; i <= GAMEMAP.length; i++) {
+        let max = Math.min(gStorage.levelsUnlocked, GAMEMAP.length);
+        let ret = new Array(max);
+        for (let i = 1; i <= max; i++) {
             ret[i-1] = i;
         }
         return ret;
@@ -113,6 +120,10 @@ class TitleScreen extends GameScreen
 
     setTutorialOff(i) {
         this.tutorialOff = i;
+        if (gStorage.tutorialOff != i) {
+            gStorage.tutorialOff = i;
+            saveStorage();
+        }
     }
 
     setStartLevel(i) {
@@ -128,35 +139,46 @@ class TitleScreen extends GameScreen
         this.currentMenu = menu;
     }
 
+    navigateMenu(direction) {
+        this.currentMenu.index += direction;
+        new Sound(SOUND_MENU_FOCUS).play();
+    }
+
+    navigateItem(item, direction) {
+        if (item.options) {
+            item.index += direction;
+            if (item.index < 0) {
+                item.index = item.options.length -1; //wrap around
+            } else if (item.index >= item.options.length) {
+                item.index = 0; //wrap around
+            }
+            item.onfocus(item.index);
+            new Sound(SOUND_MENU_FOCUS).play();
+        }
+    }
+
+    doAction(action) {
+        if (action) {
+            // sound here
+            action();
+            new Sound(SOUND_MENU_ACTION).play();
+        }
+    }
+
     update()
     {
        let menu = this.currentMenu;
        let item = menu[menu.index];
         if (gameInput.pressedUp() && menu.index > 0) {
-            menu.index--;
+            this.navigateMenu(-1);
         } else if (gameInput.pressedDown() && menu.index < menu.length-1) {
-            menu.index++;
+            this.navigateMenu(1);
         } else if (gameInput.pressedLeft()) {
-            if (item.options) {
-                item.index--;
-                if (item.index < 0) {
-                    item.index = item.options.length -1; //wrap around
-                }
-                item.onfocus(item.index);
-            }
+            this.navigateItem(item, -1);
         } else if (gameInput.pressedRight()) {
-            if (item.options) {
-                item.index++;
-                if (item.index >= item.options.length) {
-                    item.index = 0; //wrap around
-                }
-                item.onfocus(item.index);
-            }
+            this.navigateItem(item, 1);
         } else if (gameInput.pressedAction()) {
-            let action = item.action;
-            if (action) {
-                action();
-            }
+            this.doAction(item.action);
         }
         if (time >= this.timeToFlash) {
             this.showFlash();
@@ -194,6 +216,7 @@ class TitleScreen extends GameScreen
         let i = 0;
         let menu = this.currentMenu;
         let y = vbottom -50;
+        if (this.stopping) return;
         menu.forEach(element => {
             let label = element.label;
             let fgcolor = (i == menu.index) ? new Color(1,1,0) : new Color(1,1,1);
@@ -216,11 +239,22 @@ class TitleScreen extends GameScreen
     
     renderPost()
     {
+        super.renderPost();
+    }
+
+    stop(fadeOutTime)
+    {
+        this.timeToFlash = -1;
+        super.stop(fadeOutTime);
     }
     
-    stop()
+    onEnd() 
     {
         engineObjectsDestroy();
+        delete this.portrait;
+        delete this.logo;
+        delete this.visorAnim;
+        super.onEnd();
     }
     
     hide()

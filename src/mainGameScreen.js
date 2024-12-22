@@ -317,6 +317,13 @@ class MainGameScreen extends GameScreen
             return false;
         }
 
+        // prepare next level
+        this.currLevelNum++;
+        if (this.currLevelNum > gStorage.levelsUnlocked) {
+            gStorage.levelsUnlocked = this.currLevelNum;
+            saveStorage();
+        }
+
         // destroy current level entities
         this.enemies.forEach(enemy => {
             enemy.destroy();
@@ -337,8 +344,6 @@ class MainGameScreen extends GameScreen
         this.enemies = [];
         delete this.level;
 
-        // prepare next level
-        this.currLevelNum++;
         this.respawnPosition = vec2(-10, 10);   // default respawnPosition
         this.respawnAirborne = true;
         this.level = new GameLevel(GAMEMAP[this.currLevelNum-1], this, this.tutorialOff);

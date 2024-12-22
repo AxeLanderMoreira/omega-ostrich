@@ -33,6 +33,10 @@ const SOUND_SOFT_BLOW = [2.2,,100,.03,.09,.03,3,3.5,-4,3,,,.09,1.7,,.3,.15,.46,.
 const SOUND_CHECKPOINT = [.5,,80,.3,.4,.7,2,.1,-0.73,3.42,-430,.09,.17,,,,.19];
 const SOUND_LASER_BEAM = [1.7,0,294,.11,.01,.005,,2.5,-16,,,,.01,,137,1,.01,.92,,,240]; // Random 28
 const SOUND_DRILLING = [1.1,,24,.05,.22,.004,3,.8,90,,,,,.5,,,.15,.97]; // Random 50
+const SOUND_MENU_FOCUS = [,0,830,,.06,.24,1,1.82,,,837,.06];//[,,123.4708,.02,.08,.23,1,.4,-5,40,419,.1,,,389,,,.76,,,-1476]; // Random 70
+const SOUND_MENU_ACTION = [,,1675,,.06,.24,1,1.82,,,837,.06];//[.4,,23,,.45,.17,3,.1,,,-463,,.05,.1,,,,.73,.01,.08,187]; // Random 73
+
+const LOCAL_STORAGE_KEY = 'amoreira.omega-ostrich.state';
 
 // Unified/merged control modes
 //const CONTROL_MODE_RETRO = 0; // 1-BUTTON
@@ -41,6 +45,7 @@ const SOUND_DRILLING = [1.1,,24,.05,.22,.004,3,.8,90,,,,,.5,,,.15,.97]; // Rando
 // Program-defined globals
 let gameInput;
 let currentScreen;
+let nextScreen;
 let mainGameScreen;
 var gRandom; 
 let gPrevTime;
@@ -50,6 +55,8 @@ touchGamepadEnable = true;
 touchGamepadAnalog = false;
 touchGamepadSize = 45;
 glEnable = true;
+
+let gStorage;
 
 ///////////////////////////////////////////////////////////////////////////////
 function gameInit()
@@ -62,7 +69,26 @@ function gameInit()
     objectMaxSpeed = .5;    //2;
     gRandom = new RandomGenerator(randInt(1e9));
     gameInput = new GameInput();
+    loadStorage();
     showTitleScreen();
+}
+
+function loadStorage()
+{
+    let raw = localStorage.getItem(LOCAL_STORAGE_KEY);
+    if (!raw) {
+        gStorage = { // initial values
+            levelsUnlocked: 1,
+            tutorialOff: 0
+        };
+    } else {
+        gStorage = JSON.parse(raw);
+    }
+}
+
+function saveStorage()
+{
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(gStorage));
 }
 
 function showTitleScreen()
@@ -82,13 +108,11 @@ function showTitleScreen()
 function showMainGameScreen(startLevel, tutorialOff)
 {
     if (currentScreen) {
-        currentScreen.stop();
+        currentScreen.stop(1); // 1 second fadeout
     }
-    currentScreen = mainGameScreen = new MainGameScreen(startLevel, tutorialOff);
-    currentScreen.init();
-    currentScreen.start();
+    nextScreen = mainGameScreen = new MainGameScreen(startLevel, tutorialOff);
+    // will be started on 'onEnd()'
 }
-
 
 function showGameOverScreen(victory)
 {

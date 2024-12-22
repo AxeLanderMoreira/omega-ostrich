@@ -34,7 +34,7 @@ class GameScreen
      */
     start()
     {
-
+        this.stopping = false;
     }
 
     /**
@@ -66,15 +66,36 @@ class GameScreen
      */
     renderPost()
     {
+        if (this.fadeOutT1) {
+            if (time <= this.fadeOutT1) {
+                let elapsed = time - this.fadeOutT0;
+                let total = this.fadeOutT1 - this.fadeOutT0;
+                let color = new Color(0,0,0,(elapsed/total));
+                drawRect(vec2(GAME_RESOLUTION_W/2,GAME_RESOLUTION_H/2), vec2(GAME_RESOLUTION_W,GAME_RESOLUTION_H), color, 0, glEnable, true);
+            } else {
+                this.onEnd();
+            }
+        }  
+    }
 
+    onEnd()
+    {
+        if (nextScreen) {
+            currentScreen = nextScreen;
+            nextScreen = null;
+            currentScreen.init();
+            currentScreen.start();
+        }
     }
 
     /**
      * Called at every transition out of this screen, when the current state can be discarded.
      */
-    stop()
+    stop(fadeOutTime)
     {
-
+        this.stopping = true;
+        this.fadeOutT0 = time;
+        this.fadeOutT1 = time + fadeOutTime;
     }
 
     /**
