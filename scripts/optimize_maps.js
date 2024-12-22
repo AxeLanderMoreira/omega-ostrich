@@ -139,6 +139,18 @@ function serializeStartPosition(obj) {
     jsString += ',4';   // Object type for StartPosition
     jsString += ',' + Math.round(obj.x);
     jsString += ',' + Math.round(obj.y);
+    let flag = 0;
+    if (obj.properties) {        
+        obj.properties.forEach(prop => {
+            if (prop.name == 'hflip') {
+                flag += 1 * prop.value;
+            }
+            if (prop.name == 'stand') {
+                flag += 2 * prop.value;
+            }
+        });
+    }
+    jsString += ',' + flag;
 }
 
 function serializeHint(obj) {

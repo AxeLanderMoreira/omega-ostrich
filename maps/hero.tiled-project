@@ -125,6 +125,16 @@
             "drawFill": true,
             "id": 5,
             "members": [
+                {
+                    "name": "hflip",
+                    "type": "bool",
+                    "value": false
+                },
+                {
+                    "name": "stand",
+                    "type": "bool",
+                    "value": false
+                }
             ],
             "name": "StartPosition",
             "type": "class",

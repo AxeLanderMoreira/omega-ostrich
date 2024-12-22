@@ -154,7 +154,11 @@ class GameLevel
         let y = this._next();
         let pos = this._translatePos(x, y, 1, 1);
         this.screen.respawnPosition = pos.copy();
-        // TODO Allow mirrored startPosition ?
+        let flag = this._next();
+        let hflip = (flag & 1) == 1;
+        let stand = (flag & 2) == 2;
+        this.screen.respawnAirborne = !stand;
+        this.screen.respawnFlipped = hflip;
     }
 
     _parseHint() {

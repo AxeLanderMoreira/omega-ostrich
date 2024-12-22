@@ -333,6 +333,7 @@ class Character extends GameObject
         }
         if (--this.lives > 0) {
             this.pos = this.screen.respawnPosition.copy();
+            this.mirror = this.screen.respawnFlipped;
             this.changeState(this.screen.respawnAirborne ? STATE_CHARACTER_RESPAWN : STATE_CHARACTER_STAND);
         } else {
             showGameOverScreen();
@@ -345,7 +346,8 @@ class Character extends GameObject
             this.numSticks = PLAYER_INITIAL_NUM_STICKS;
             this.fuel = PLAYER_INITIAL_FUEL;
             this.pos = this.screen.respawnPosition.copy();
-            this.changeState(STATE_CHARACTER_RESPAWN);
+            this.mirror = this.screen.respawnFlipped;
+            this.changeState(this.screen.respawnAirborne ? STATE_CHARACTER_RESPAWN : STATE_CHARACTER_STAND);
         } else {
             showGameOverScreen(true); // victory
         }        

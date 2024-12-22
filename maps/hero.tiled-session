@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "map001.tmj",
+    "activeFile": "map002.tmj",
     "expandedProjectPaths": [
         "."
     ],
@@ -26,7 +26,7 @@
             "scale": 0.75,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 246.66666666666669,
+                "x": 246,
                 "y": 363.33333333333326
             }
         },
@@ -34,22 +34,22 @@
             "expandedObjectLayers": [
                 2
             ],
-            "scale": 0.5,
+            "scale": 3.4518,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 578,
-                "y": 353
+                "x": 789.8777449446666,
+                "y": 169.0422388319138
             }
         },
         "map002.tmj": {
             "expandedObjectLayers": [
                 2
             ],
-            "scale": 0.75,
+            "scale": 1.5,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 742.6666666666665,
-                "y": 520.6666666666667
+                "x": 777,
+                "y": 245.66666666666663
             }
         },
         "map01.tmj": {
@@ -59,8 +59,8 @@
             "scale": 1.5,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 100,
-                "y": 154.33333333333331
+                "x": 528.3333333333333,
+                "y": 199.66666666666663
             }
         },
         "map01.tmj#HERO": {
@@ -73,19 +73,19 @@
             "scale": 0.75,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 174.66666666666669,
-                "y": 199.33333333333326
+                "x": 175.99999999999994,
+                "y": 198.66666666666669
             }
         },
         "map03.tmj": {
             "expandedObjectLayers": [
                 2
             ],
-            "scale": 0.33,
+            "scale": 4,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 174.24242424242425,
-                "y": 298.4848484848485
+                "x": 175.625,
+                "y": 52.625
             }
         },
         "map04.tmj": {
@@ -129,10 +129,11 @@
         "map04.tmj",
         "map03.tmj",
         "map00.tmj",
-        "map001.tmj"
+        "map001.tmj",
+        "map002.tmj"
     ],
     "project": "hero.tiled-project",
-    "property.type": "int",
+    "property.type": "bool",
     "recentFiles": [
         "HERO.tsx",
         "map01.tmj",
@@ -141,7 +142,8 @@
         "map04.tmj",
         "map03.tmj",
         "map00.tmj",
-        "map001.tmj"
+        "map001.tmj",
+        "map002.tmj"
     ],
     "tileset.embedInMap": false,
     "tileset.lastUsedFormat": "tsx",

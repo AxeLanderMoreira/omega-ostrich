@@ -27,11 +27,12 @@ class MainGameScreen extends GameScreen
     init()
     {
         this.respawnPosition = vec2(-10, 10);   // default respawnPosition
-        this.respawnAirborne = true;
         this.player = new Player(this.respawnPosition, this); // position of middle floor
         this.currLevelNum = this.startLevel;
         this.level = new GameLevel(GAMEMAP[this.currLevelNum-1], this, this.tutorialOff);
         this.player.pos = this.respawnPosition.copy();
+        this.player.mirror = this.respawnFlipped;
+        this.player.changeState(this.respawnAirborne ? STATE_CHARACTER_RESPAWN : STATE_CHARACTER_STAND);
         this.enemies = this.level.getEnemies();
         this.fluids = this.level.getFluids();
         this.quadrant = vec2(0,0);
@@ -345,7 +346,6 @@ class MainGameScreen extends GameScreen
         delete this.level;
 
         this.respawnPosition = vec2(-10, 10);   // default respawnPosition
-        this.respawnAirborne = true;
         this.level = new GameLevel(GAMEMAP[this.currLevelNum-1], this, this.tutorialOff);
         this.enemies = this.level.getEnemies();
         this.quadrant = vec2(0,0);
