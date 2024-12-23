@@ -89,7 +89,12 @@ function parseStorageData(raw)
 
 function loadStorage()
 {
-    let data = localStorage.getItem(LOCAL_STORAGE_KEY);
+    let data;
+    try {
+        data = localStorage.getItem(LOCAL_STORAGE_KEY);
+    } catch (e) {
+        console.warn('failed to loadStorage: ' + e);
+    }    
     //console.log('[loadStorage] IN - data = ' + data);
     if (!data) {
         gStorage = { // initial values
@@ -108,7 +113,11 @@ function saveStorage()
         gStorage.levelsUnlocked,
         gStorage.tutorialOff
     ]
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(data));
+    try {
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(data));
+    } catch (e) {
+        console.warn('failed to saveStorage: ' + e);
+    } 
 }
 
 function showTitleScreen()
