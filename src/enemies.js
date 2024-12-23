@@ -121,7 +121,7 @@ class Bat extends Enemy
         ];
         this.initialY = pos.y;
         this.t0 = time;
-        this.createHitBox(0,-.5,13,6);
+        this.updateHitBox(0,-.5,13,6);
         this.changeState(STATE_BAT_FLY);
     }
 
@@ -150,7 +150,7 @@ class Moth extends Enemy
         this.initialX = pos.x;
         this.initialY = pos.y;
         this.t0 = time;
-        this.createHitBox(0,.5,13,10);
+        this.updateHitBox(0,.5,13,10);
         this.changeState(STATE_MOTH_FLY);        
     }
 
@@ -180,7 +180,7 @@ class Snake extends Enemy
         this.mirror = mirror;
         this.initialX = pos.x;
         this.t0 = time;
-        this.createHitBox(0,0,12,10);
+        this.updateHitBox(0,0,12,10);
         this.changeState(STATE_SNAKE_ATTACK);        
     }
 
@@ -208,14 +208,21 @@ class Spider extends Enemy
         this.animMap = [
             new GameAnimation(this, SPRITE_INDEX_SPIDER, [0,1], .2, true)   // ATTACK
         ];
-        this.createHitBox(0,-1,9,12);
+        this.updateHitBox(0,-1,9,12);
         this.changeState(STATE_SPIDER_ATTACK);
     }
 
 }
 
 const TENTACLE_HORZ_MOV_SPD = PLAYER_HORZ_MOVE_SPD / 2;
-const TENTACLE_VERT_DETECT_DISTANCE = 4;
+const TENTACLE_VERT_DETECT_DISTANCE = 8;
+const TENTACLE_HITBOX_PER_FRAME = [
+    [0,-4,11, 5],
+    [0,-3,11, 7],
+    [0,-2,11, 9],
+    [0,-1,11,11],
+    [0, 0,11,13]
+];
 
 class Tentacle extends Enemy
 {
@@ -250,6 +257,16 @@ class Tentacle extends Enemy
             } else {
                 this.velocity.x = 0;
             }
+        } else {
+            this.velocity.x = 0;
         }
+    }
+
+    setFrame(index)
+    {
+        super.setFrame(index);
+        let i = index - SPRITE_INDEX_TENTACLE;
+        let f = TENTACLE_HITBOX_PER_FRAME[i];
+        this.updateHitBox(f[0], f[1], f[2], f[3]);
     }
 }

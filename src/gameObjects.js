@@ -28,21 +28,21 @@ class GameObject extends EngineObject
      * @param {integer} pw width in pixels of the hitbox
      * @param {integer} ph height in pixels of the hitbox
      */
-    createHitBox(px, py, pw, ph) {
-        let box = new EngineObject(
-            vec2(0,0),
-            vec2(pw/WORLD_TILE_SIZE, ph/WORLD_TILE_SIZE)
-        );
-        //box.color = new Color(0,1,0,.5); // debug
-        box.color = new Color(0,0,0,0);
-        this.addChild(box,vec2(px/WORLD_TILE_SIZE, py/WORLD_TILE_SIZE));
-        this.box = box;
-    }
-
     updateHitBox(px, py, pw, ph) {
-        this.box.size.x = pw/WORLD_TILE_SIZE;
-        this.box.size.y = ph/WORLD_TILE_SIZE;
-        this.box.localPos.set(px/WORLD_TILE_SIZE, py/WORLD_TILE_SIZE);
+        if (!this.box) { // create
+            let box = new EngineObject(
+                vec2(0,0),
+                vec2(pw/WORLD_TILE_SIZE, ph/WORLD_TILE_SIZE)
+            );
+            //box.color = new Color(0,1,0,.5); // debug
+            box.color = new Color(0,0,0,0);
+            this.addChild(box,vec2(px/WORLD_TILE_SIZE, py/WORLD_TILE_SIZE));
+            this.box = box;
+        } else { // update
+            this.box.size.x = pw/WORLD_TILE_SIZE;
+            this.box.size.y = ph/WORLD_TILE_SIZE;
+            this.box.localPos.set(px/WORLD_TILE_SIZE, py/WORLD_TILE_SIZE);
+        }
     }
 
     update() 
@@ -475,7 +475,7 @@ class Hint extends GameObject {
     }
 
     update() {
-        let overlap = this.collideWith(this.player.box);
+        let overlap = this.collideWith(this.player.box); // TODO Remove box when dead
         if (!this.showing && overlap) {
             this.showHint();
         } else if (this.showing && !overlap) {

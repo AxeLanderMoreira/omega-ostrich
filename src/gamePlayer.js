@@ -60,8 +60,8 @@ class Character extends GameObject
             new GameAnimation(this, 0, [6,7,8], .4, true),   // RESPAWN
         ];
         //this.setCollision(false, true);
-//        this.createHitBox(3,0,7,24);
-        this.createHitBox(0,0,12,24);
+//        this.updateHitBox(3,0,7,24);
+        this.updateHitBox(0,0,12,24);
         this.changeState(STATE_CHARACTER_RESPAWN); // this.nextState will assume -1
         this.renderOrder = RENDER_ORDER_HERO;
         this.numSticks = PLAYER_INITIAL_NUM_STICKS;
