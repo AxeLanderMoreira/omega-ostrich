@@ -147,4 +147,17 @@ class GameInput
         return this.pressedKey[GAME_INPUT_PAUSE];
     }
 
+    hasPressedAnyKey()
+    {
+        for (let i = 0; i < this.pressedKey.length; i++) {
+            if (this.pressedKey[i]) {
+                return true;
+            }
+        }
+        if (mouseWasPressed(0)) {
+            return true;
+        }
+        return false;
+    }
+
 }

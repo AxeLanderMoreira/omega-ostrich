@@ -70,7 +70,7 @@ function gameInit()
     gRandom = new RandomGenerator(randInt(1e9));
     gameInput = new GameInput();
     loadStorage();
-    showTitleScreen();
+    showDisclaimerScreen();
 }
 
 /**
@@ -118,6 +118,13 @@ function saveStorage()
     } catch (e) {
         console.warn('failed to saveStorage: ' + e);
     } 
+}
+
+function showDisclaimerScreen()
+{
+    currentScreen = new DisclaimerScreen();
+    currentScreen.init();
+    currentScreen.start();
 }
 
 function showTitleScreen()
