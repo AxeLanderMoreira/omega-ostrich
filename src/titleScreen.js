@@ -15,6 +15,8 @@ const RENDER_ORDER_HERO_PORTRAIT=-3;
 const RENDER_ORDER_VISOR_FLASH=-2;
 const RENDER_ORDER_GAME_LOGO=-1;
 
+const TITLE_SONG = 'woutervl_haste.mod';
+
 class VisorAnimation extends GameObject {
     constructor(pos) {
         super(
@@ -36,22 +38,6 @@ class VisorAnimation extends GameObject {
 
 class TitleScreen extends GameScreen
 {
-    /*init()
-    {
-        this.levelSelect = 1;
-        this.mainMenu = [            
-            { label: 'OPTIONS', action: () => this.showMenu(this.optionsMenu) },
-            { label: 'START GAME', action: () => this.startGame() }
-        ];
-        this.optionsMenu = [
-            { label: 'CONTROL MODE:', options: ['1 BUTTON', '2 BUTTONS'], index: 0, onfocus: (i) => this.setControlMode(i) },
-            { label: 'LEVEL SELECT:', options: this.makeLevelSelectOptions(), index: 0, onfocus: (i) => this.setStartLevel(i) },
-            { label: 'BACK', action: () => this.showMenu(this.mainMenu) }
-
-        ]
-        this.showMenu(this.mainMenu);
-    }*/
-
     // Simplified implementation - instead of allowing select a different control scheme,
     // we allow (for now) both UP arrow and button 2 to work as jump/fly;
 
@@ -91,6 +77,7 @@ class TitleScreen extends GameScreen
         this.portrait.renderOrder = RENDER_ORDER_HERO_PORTRAIT;
         this.nextTimeToFlash();
         this.topColor = BG_GRADIENT_COLOR_BRIGHT_TITLE;
+        this.wasChiptuneLibLoaded = false;
     }
     
     start()
@@ -165,8 +152,29 @@ class TitleScreen extends GameScreen
         }
     }
 
+    tryPlaySong()
+    {
+        console.log('[TitleScreen.tryPlaySong] IN - gChiptuneLibLoaded = ' + gChiptuneLibLoaded);
+        if (gChiptuneLibLoaded && !this.wasChiptuneLibLoaded) {                
+            console.log('[TitleScreen.tryPlaySong] chiptune lib loaded');
+            console.log('[TitleScreen.tryPlaySong] trying to load tune');
+            gMusicPlayer.load(TITLE_SONG, (buffer) => {
+                console.log('[TitleScreen.tryPlaySong] tune loaded');
+                gMusicPlayer.play(buffer);
+                // Enable volume control on chiptune2.js
+                // Reference: https://github.com/deskjet/chiptune2.js/issues/17
+                this.musicGain = gMusicPlayer.context.createGain();
+                this.musicGain.connect(gMusicPlayer.context.destination);
+                gMusicPlayer.currentPlayingNode.disconnect();
+                gMusicPlayer.currentPlayingNode.connect(this.musicGain);
+                this.wasChiptuneLibLoaded = true;
+            });
+        }        
+    }
+
     update()
     {
+       this.tryPlaySong();
        let menu = this.currentMenu;
        let item = menu[menu.index];
         if (gameInput.pressedUp() && menu.index > 0) {
@@ -191,6 +199,13 @@ class TitleScreen extends GameScreen
             } else {
                 this.flashing = false;
                 this.topColor = BG_GRADIENT_COLOR_BRIGHT_TITLE;
+            }
+        }
+        if (this.stopping) {
+            // fade out music
+            let total = this.fadeOutT1 - time;
+            if (total >= 0 && total <= 1) {
+                this.musicGain.gain.value = total;
             }
         }
         super.update();
@@ -250,6 +265,7 @@ class TitleScreen extends GameScreen
     
     onEnd() 
     {
+        gMusicPlayer.stop();
         engineObjectsDestroy();
         delete this.portrait;
         delete this.logo;

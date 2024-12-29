@@ -49,6 +49,8 @@ let nextScreen;
 let mainGameScreen;
 var gRandom; 
 let gPrevTime;
+let gChiptuneLibLoaded = false;
+let gMusicPlayer = null;
 
 // LittleJS globals
 touchGamepadEnable = true;
@@ -231,3 +233,27 @@ engineInit(
         './TitleLogo-Dashed.png'
     ]
 );
+
+const NUM_EXTERNAL_SCRIPTS = 2;
+let numExternalScriptsLoaded = 0;
+
+var libopenmpt = {};
+
+function onLoadedExternalScript() {
+    console.log('[onLoadedExternalScript] IN');
+    numExternalScriptsLoaded++;
+    if (numExternalScriptsLoaded >= NUM_EXTERNAL_SCRIPTS) {
+        console.log('[onLoadedExternalScript] all external scripts loaded - defined callback for libopenmpt');
+        libopenmpt.onRuntimeInitialized  = function() {
+            console.log('[onLoadedExternalScript] libopenmpt runtime initialized');
+            try {
+                gChiptuneLibLoaded = true;
+                gMusicPlayer = new ChiptuneJsPlayer(new ChiptuneJsConfig(-1));            
+            } catch (error) {
+                console.error('[onLoadedExternalScript] error = ' + error);
+            }
+            
+        }
+    }
+    console.log('[onLoadedExternalScript] OUT');
+}

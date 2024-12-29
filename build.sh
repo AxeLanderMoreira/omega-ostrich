@@ -37,15 +37,19 @@ mkdir ${BUILD_FOLDER}
 cd ${BUILD_FOLDER}
 #cat ../engine/engine.all.release.js >> ${BUILD_FILENAME}
 if [ $BUILD_MODE == "release" ]; then
-    cat ../engine/littlejs.release.js >> ${BUILD_FILENAME}
+    cat ../engine/littlejs.min.js >> ${BUILD_FILENAME}
 else
     cat ../engine/littlejs.js >> ${BUILD_FILENAME}
 fi
 echo "" >>${BUILD_FILENAME}
 
+# copy chiptune2.js and libopenmpt
+cp ../chiptune2.js/* .
+
 # add your game's files to include here
 cat ../maps/maps_optimized.js >> ${BUILD_FILENAME}
 cat ../src/gameScreen.js >> ${BUILD_FILENAME}
+cat ../src/disclaimerScreen.js >> ${BUILD_FILENAME}
 cat ../src/gameObjects.js >> ${BUILD_FILENAME}
 cat ../src/gamePlayer.js >> ${BUILD_FILENAME}
 cat ../src/enemies.js >> ${BUILD_FILENAME}
@@ -60,10 +64,12 @@ cat ../src/titleScreen.js >> ${BUILD_FILENAME}
 cat ../src/utils.js >> ${BUILD_FILENAME}
 
 # optimize images
-optipng ../images/*.png
+#optipng -fix ../images/*.png
 
-# copy images to build folder
+# copy images and music to build folder
 cp -R ../images/*  .
+optipng -fix *.png
+cp -R ../music/* .
 
 if [ $BUILD_MODE == "release" ]; then
     # minify code with closure
