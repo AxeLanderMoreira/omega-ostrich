@@ -37,7 +37,7 @@ mkdir ${BUILD_FOLDER}
 cd ${BUILD_FOLDER}
 #cat ../engine/engine.all.release.js >> ${BUILD_FILENAME}
 if [ $BUILD_MODE == "release" ]; then
-    cat ../engine/littlejs.release.js >> ${BUILD_FILENAME}
+    cat ../engine/littlejs.min.js >> ${BUILD_FILENAME}
 else
     cat ../engine/littlejs.js >> ${BUILD_FILENAME}
 fi
@@ -46,6 +46,7 @@ echo "" >>${BUILD_FILENAME}
 # add your game's files to include here
 cat ../maps/maps_optimized.js >> ${BUILD_FILENAME}
 cat ../src/gameScreen.js >> ${BUILD_FILENAME}
+cat ../src/disclaimerScreen.js >> ${BUILD_FILENAME}
 cat ../src/gameObjects.js >> ${BUILD_FILENAME}
 cat ../src/gamePlayer.js >> ${BUILD_FILENAME}
 cat ../src/enemies.js >> ${BUILD_FILENAME}
