@@ -13,8 +13,9 @@ const RENDER_ORDER_ENEMIES=-3;
 const RENDER_ORDER_HERO=-2;
 const RENDER_ORDER_LASER=-1;
 const RENDER_ORDER_WALL=0; // default
-const RENDER_ORDER_DYNAMITE=1;
-const RENDER_ORDER_FLUID=2;
+const RENDER_ORDER_SPIKE=1;
+const RENDER_ORDER_DYNAMITE=2;
+const RENDER_ORDER_FLUID=3;
 
 const TEXTURE_INDEX_HERO=0;
 const TEXTURE_INDEX_DYNAMITE=1;
@@ -25,6 +26,7 @@ const TEXTURE_INDEX_PARTICLES=5;
 const TEXTURE_INDEX_PORTRAIT=6;
 const TEXTURE_INDEX_VISOR_ANIM=7;
 const TEXTURE_INDEX_TITLE_LOGO=8;
+const TEXTURE_INDEX_SPIKE=9;
 
 const PIXEL_UNIT = .125; // 1/8
 
@@ -228,6 +230,7 @@ engineInit(
         './Particles.png',
         './OstrichBg-1.png',
         './VisorAnim.png',
-        './TitleLogo-Dashed.png'
+        './TitleLogo-Dashed.png',
+        './Spike.png'
     ]
 );

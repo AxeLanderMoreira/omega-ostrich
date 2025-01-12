@@ -74,8 +74,6 @@ class GameObject extends EngineObject
 
     updateState()
     {
-        this.oldx = this.x;
-        this.oldy = this.y;
         if (this.currentAnim) {
             this.currentAnim.update();
         }

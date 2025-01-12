@@ -121,6 +121,69 @@
             ]
         },
         {
+            "color": "#fff9f9ff",
+            "drawFill": true,
+            "id": 7,
+            "members": [
+                {
+                    "name": "beginOn",
+                    "type": "int",
+                    "value": 0
+                },
+                {
+                    "name": "endOn",
+                    "type": "int",
+                    "value": 0
+                },
+                {
+                    "name": "interval",
+                    "type": "int",
+                    "value": 0
+                },
+                {
+                    "name": "sensorH",
+                    "type": "int",
+                    "value": 0
+                },
+                {
+                    "name": "sensorW",
+                    "type": "int",
+                    "value": 0
+                },
+                {
+                    "name": "subtype",
+                    "propertyType": "SpikeType",
+                    "type": "string",
+                    "value": "always"
+                }
+            ],
+            "name": "Spike",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset",
+                "project"
+            ]
+        },
+        {
+            "id": 8,
+            "name": "SpikeType",
+            "storageType": "string",
+            "type": "enum",
+            "values": [
+                "always",
+                "timer",
+                "sensor"
+            ],
+            "valuesAsFlags": false
+        },
+        {
             "color": "#ffa0a0a4",
             "drawFill": true,
             "id": 5,

@@ -46,7 +46,6 @@ class Enemy extends GameObject
             p.pos,
             p.size
         )
-        // TODO custom hitbox for player
     }
 
     hitByLaser() {

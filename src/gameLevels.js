@@ -7,6 +7,11 @@ const OBJECT_TYPE_FLUID = 2;
 const OBJECT_TYPE_CHECKPOINT = 3;
 const OBJECT_TYPE_START_POSITION = 4;
 const OBJECT_TYPE_HINT = 5;
+const OBJECT_TYPE_SPIKE = 6;
+
+const OBJECT_ANCHOR_CENTER_MIDDLE = 0;  /* e.g. Enemies */
+const OBJECT_ANCHOR_TOP_LEFT = 1;       /* e.g. Walls */
+const OBJECT_ANCHOR_BOTTOM_LEFT = 2;    /* e.g. Spikes */
 
 class GameLevel
 {
@@ -14,10 +19,12 @@ class GameLevel
         this.map = map;
         this.screen = screen;
         this.parseIdx = 0;
-        this.walls= []; // Array of GameObjects
+        // Arrays of GameObjects
         this.enemies = [];
         this.fluids = [];
         this.hints = [];
+        this.spikes = [];
+        this.walls= []; 
         this.tutorialOff = tutorialOff;
         this._parseMapArray(map);
     }
@@ -61,6 +68,9 @@ class GameLevel
                 case OBJECT_TYPE_HINT:
                     obj = this._parseHint();
                     break;
+                case OBJECT_TYPE_SPIKE:
+                    obj = this._parseSpike();
+                    break;
             }
             if (obj) {
                 obj.gravityScale = 0;
@@ -84,7 +94,7 @@ class GameLevel
         } else {
             color = randColor(new Color(.5,.5,.5), new Color(.9,.9,.9));
         }
-        let pos = this._translatePos(x, y, width, height, true);
+        let pos = this._translatePos(x, y, width, height, OBJECT_ANCHOR_TOP_LEFT);
         let size = vec2(width, height).divide(vec2(8));
         let obj = new Wall(pos, size, this.screen, color, breakable, hot, xmove, ymove);
         if (obj) {
@@ -132,7 +142,7 @@ class GameLevel
         let height = this._next();
         let color = new Color();
         color.setHex(this._next());
-        let pos = this._translatePos(x, y, width, height, true);
+        let pos = this._translatePos(x, y, width, height, OBJECT_ANCHOR_TOP_LEFT);
         let size = vec2(width, height).divide(vec2(8));
         let obj = new Fluid(pos, size, color, this.screen);
         if (obj) {
@@ -178,6 +188,38 @@ class GameLevel
         }
     }
 
+    _parseSpike() {
+        let x = this._next();
+        let y = this._next();
+        // TODO Check if necessary reduce SPIKE_TILE_SIZE_* to compensate for tile margin
+        let direction = this._next();
+        let rotated = (direction == SPIKE_POINTING_LEFT || direction == SPIKE_POINTING_RIGHT);
+        let w, h;
+        if (rotated) {
+            w = SPIKE_TILE_SIZE_Y;
+            h = SPIKE_TILE_SIZE_X;
+        } else {
+            w = SPIKE_TILE_SIZE_X;
+            h = SPIKE_TILE_SIZE_Y;
+        }
+        let pos = this._translatePos(x, y, w, h, OBJECT_ANCHOR_BOTTOM_LEFT);
+        let subtype = this._next();
+        let details = {};
+        switch(subtype) {
+            case SPIKE_TYPE_TIMER:
+                details.interval = this._next();
+                details.beginOn = this._next();
+                details.endOn = this._next();
+                break;
+            case SPIKE_TYPE_SENSOR:
+                details.sensorW = this._next();
+                details.sensorH = this._next();
+                break;
+        }
+        let obj = new Spike(pos, this.screen, direction, subtype, details);
+        this.spikes.push(obj);
+    }
+
     /**
      * 
      * @param {Vector2} pos in pixels (0,0@top,left)
@@ -190,17 +232,23 @@ class GameLevel
      * @param {int} y y-coordinate
      * @param {int} w width
      * @param {int} h height
-     * @param {boolean} isTopLeft true if x,y position is anchored to top left; false or undefined if centered.
+     * @param {int} anchor 
      * @returns {Vector2} pos in game world coordinates
      */
-    _translatePos(x, y, w, h, isTopLeft) {
+    _translatePos(x, y, w, h, anchor) {
         // adjust from screen coordinates to cartesian
         let tx = x - GAME_RESOLUTION_W / 2;
         let ty = -y + GAME_RESOLUTION_H / 2;
         // adjust pivot position in object (from top/left to center)
-        if (isTopLeft) {
-            tx += w/2;
-            ty -= h/2;
+        switch (anchor) {
+            case OBJECT_ANCHOR_TOP_LEFT:
+                tx += w/2;
+                ty -= h/2;
+                break;
+            case OBJECT_ANCHOR_BOTTOM_LEFT:
+                tx += w/2;
+                ty += h/2;
+                break;
         }
         // divide by tile size (camera scale).
         tx /= WORLD_TILE_SIZE;
@@ -210,11 +258,6 @@ class GameLevel
 
     _translateSize(size) {
         return size.divide(vec2(8)); // TODO IMPLEMENT
-    }
-
-    getWalls()
-    {
-        return this.walls;
     }
 
     getEnemies()
@@ -231,7 +274,16 @@ class GameLevel
     {
         return this.hints;
     }
-     
+
+    getSpikes()
+    {
+        return this.spikes;
+    }
+
+    getWalls()
+    {
+        return this.walls;
+    }
 
      /*
       * @return vector with farthest possible top-left camera position

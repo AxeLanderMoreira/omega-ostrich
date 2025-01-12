@@ -23,6 +23,15 @@ const ENEMY_ID_BAT = 2;
 const ENEMY_ID_SNAKE = 3;
 const ENEMY_ID_TENTACLE = 4;
 
+const SPIKE_TYPE_ALWAYS = 0; /**< spike is always on (protracted) */
+const SPIKE_TYPE_TIMER = 1; /**< spike will retract and protract in a preset interval */
+const SPIKE_TYPE_SENSOR = 2; /** spike will protract if player comes inside a proximity sensor */
+
+const SPIKE_POINTING_UP = 0;
+const SPIKE_POINTING_DOWN = 1;
+const SPIKE_POINTING_LEFT = 2;
+const SPIKE_POINTING_RIGHT = 3;
+
 // USE THE FOLLOWING CONSTANTS
 // Represent level width and height in # of screens, not tiles.
 const GAME_RESOLUTION_W = 352; // 44 8x8 tiles
@@ -180,6 +189,50 @@ function serializeHint(obj) {
     jsString += ',' + hintH;
 }
 
+function serializeSpike(obj) {
+    jsString += ',6';   // Object type for Spike
+    jsString += ',' + Math.round(obj.x);
+    jsString += ',' + Math.round(obj.y);
+    let subtype = SPIKE_TYPE_ALWAYS;
+    let details = {};
+    if (obj.properties) {
+        obj.properties.forEach(prop => {
+            if (prop.name == 'subtype') {
+                switch (prop.value) {
+                    case 'timer':
+                        subtype = SPIKE_TYPE_TIMER;
+                        break;
+                    case 'sensor':
+                        subtype = SPIKE_TYPE_SENSOR;
+                        break;
+                }
+            } else {
+                details[prop.name] = prop.value;
+            }
+        });
+    }
+    let vflip = (obj.gid >> 30) & 1;
+    let direction;
+    if (obj.rotation == 90) {
+        direction = vflip ? SPIKE_POINTING_LEFT : SPIKE_POINTING_RIGHT;
+    } else {
+        direction = vflip ? SPIKE_POINTING_DOWN : SPIKE_POINTING_UP;
+    }
+    jsString += ',' + direction;
+    jsString += ',' + subtype;
+    switch (subtype) {
+        case SPIKE_TYPE_TIMER:
+            jsString += ',' + details.interval;
+            jsString += ',' + details.beginOn;
+            jsString += ',' + details.endOn;
+            break;
+        case SPIKE_TYPE_SENSOR:
+            jsString += ',' + details.sensorW;
+            jsString += ',' + details.sensorH;
+            break;
+    }
+}
+
 function sortLayer(layer) {
     layer.sort(function(a,b) {
         if (a.y < b.y) { // order from top-to-bottom first
@@ -221,6 +274,7 @@ function processMapFile(mapPath) {
         obj.y -= prevy;
         prevx = swapx;
         prevt = swapy;*/
+        console.log('seralize obj ' + obj.type);
         switch(obj.type) {
             case 'Wall':
                 serializeWall(obj);
@@ -239,6 +293,9 @@ function processMapFile(mapPath) {
                 break;
             case 'Hint':
                 serializeHint(obj);
+                break;
+            case 'Spike':
+                serializeSpike(obj);
                 break;
         }
     });

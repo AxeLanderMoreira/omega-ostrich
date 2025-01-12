@@ -5,7 +5,6 @@ const FLUID_WAVE_OFFSET = .25; // offset between wave units
 
 class Fluid extends GameObject
 {
-    // TODO Pass color
     constructor(pos, size, color, screen) {
         //console.log('[Fluid constructor] IN');
         let limit = size.x; /*GAME_RESOLUTION_W/WORLD_TILE_SIZE;*/

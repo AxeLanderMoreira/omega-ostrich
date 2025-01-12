@@ -34,8 +34,8 @@ class MainGameScreen extends GameScreen
         this.player.mirror = this.respawnFlipped;
         this.player.changeState(this.respawnAirborne ? STATE_CHARACTER_RESPAWN : STATE_CHARACTER_STAND);
         this.enemies = this.level.getEnemies();
-        this.fluids = this.level.getFluids();
         this.quadrant = vec2(0,0);
+        this.song = new Audio('main_loop.ogg');
     }
 
     getQuadrantCenterPos(quad) {
@@ -60,6 +60,10 @@ class MainGameScreen extends GameScreen
     start()
     {
         this.player.setControlEnabled(true);
+        this.song.volume = 1;
+        this.song.loop = true;
+        this.song.play();
+        super.start();
     }
 
     /**
@@ -252,6 +256,10 @@ class MainGameScreen extends GameScreen
      */
     stop()
     {
+        this.song.volume = 0;
+        this.song.pause();
+        this.song.currentTime = 0;
+        delete this.song;
         delete this.level;
         this.enemies = [];
         delete this.player;
@@ -341,6 +349,10 @@ class MainGameScreen extends GameScreen
         let hints = this.level.getHints();
         hints.forEach(hint => {
             hint.destroy();
+        });
+        let spikes = this.level.getSpikes();
+        spikes.forEach(spike => {
+            spike.destroy();
         });
         this.enemies = [];
         delete this.level;

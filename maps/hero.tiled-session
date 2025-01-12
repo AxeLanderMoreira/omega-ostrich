@@ -19,6 +19,9 @@
             "scaleInDock": 1,
             "scaleInEditor": 1
         },
+        "Spike.tsx": {
+            "scaleInDock": 1
+        },
         "map00.tmj": {
             "expandedObjectLayers": [
                 2
@@ -26,19 +29,19 @@
             "scale": 0.75,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 246,
-                "y": 363.33333333333326
+                "x": 351.3333333333333,
+                "y": 99.33333333333326
             }
         },
         "map001.tmj": {
             "expandedObjectLayers": [
                 2
             ],
-            "scale": 3.4518,
+            "scale": 1,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 789.8777449446666,
-                "y": 169.0422388319138
+                "x": 658.5,
+                "y": 306.5
             }
         },
         "map002.tmj": {
@@ -48,19 +51,19 @@
             "scale": 1.5,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 777,
-                "y": 245.66666666666663
+                "x": 259.66666666666663,
+                "y": 234.33333333333337
             }
         },
         "map01.tmj": {
             "expandedObjectLayers": [
                 2
             ],
-            "scale": 1.5,
+            "scale": 0.75,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 528.3333333333333,
-                "y": 199.66666666666663
+                "x": 563.3333333333333,
+                "y": 263.33333333333326
             }
         },
         "map01.tmj#HERO": {
@@ -73,19 +76,19 @@
             "scale": 0.75,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 175.99999999999994,
-                "y": 198.66666666666669
+                "x": 175.33333333333331,
+                "y": 197.99999999999994
             }
         },
         "map03.tmj": {
             "expandedObjectLayers": [
                 2
             ],
-            "scale": 4,
+            "scale": 0.75,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 175.625,
-                "y": 52.625
+                "x": 358,
+                "y": 569.9999999999999
             }
         },
         "map04.tmj": {
@@ -112,7 +115,7 @@
         }
     },
     "last.exportedFilePath": "/home/alexandre/workspace/herojs/maps",
-    "last.imagePath": "/home/alexandre/workspace/herojs/images",
+    "last.imagePath": "/home/alexandre/workspace/omega-ostrich/images",
     "map.fixedSize": true,
     "map.height": 50,
     "map.lastUsedExportFilter": "JavaScript map files (*.js)",
@@ -133,7 +136,7 @@
         "map002.tmj"
     ],
     "project": "hero.tiled-project",
-    "property.type": "bool",
+    "property.type": "int",
     "recentFiles": [
         "HERO.tsx",
         "map01.tmj",
@@ -147,11 +150,11 @@
     ],
     "tileset.embedInMap": false,
     "tileset.lastUsedFormat": "tsx",
-    "tileset.margin": 0,
+    "tileset.margin": 1,
     "tileset.spacing": 0,
     "tileset.tileSize": {
-        "height": 26,
-        "width": 16
+        "height": 25,
+        "width": 13
     },
     "tileset.transparentColor": "#ff00ff",
     "tileset.type": 0,

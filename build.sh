@@ -51,6 +51,7 @@ cat ../src/gameObjects.js >> ${BUILD_FILENAME}
 cat ../src/gamePlayer.js >> ${BUILD_FILENAME}
 cat ../src/enemies.js >> ${BUILD_FILENAME}
 cat ../src/fluid.js >> ${BUILD_FILENAME}
+cat ../src/spike.js >> ${BUILD_FILENAME}
 cat ../src/mainGameScreen.js >> ${BUILD_FILENAME}
 cat ../src/game.js >> ${BUILD_FILENAME}
 cat ../src/gameInput.js >> ${BUILD_FILENAME}
@@ -63,8 +64,9 @@ cat ../src/utils.js >> ${BUILD_FILENAME}
 # optimize images
 optipng ../images/*.png
 
-# copy images to build folder
+# copy images and music to build folder
 cp -R ../images/*  .
+cp -R ../music/*.ogg .
 
 if [ $BUILD_MODE == "release" ]; then
     # minify code with closure
@@ -106,7 +108,7 @@ fi
 echo "</script>" >> index.html
 
 # zip the result, ect is recommended
-../node_modules/ect-bin/vendor/linux/ect -9 -strip -zip ../${NAME}.zip index.html *.png
+../node_modules/ect-bin/vendor/linux/ect -9 -strip -zip ../${NAME}.zip index.html *.png *.ogg
 if [ $? -ne 0 ]; then
     read -p "Unexpected error. Press any key to terminate..."
     exit $?

@@ -91,11 +91,15 @@ class TitleScreen extends GameScreen
         this.portrait.renderOrder = RENDER_ORDER_HERO_PORTRAIT;
         this.nextTimeToFlash();
         this.topColor = BG_GRADIENT_COLOR_BRIGHT_TITLE;
+        this.song = new Audio('title.ogg');
     }
     
     start()
     {
-
+        this.song.volume = 1;
+        this.song.loop = true;
+        this.song.play();
+        super.start();
     }
 
     nextTimeToFlash()
@@ -193,6 +197,13 @@ class TitleScreen extends GameScreen
                 this.topColor = BG_GRADIENT_COLOR_BRIGHT_TITLE;
             }
         }
+        if (this.stopping) {
+            // fade out music
+            let total = this.fadeOutT1 - time;
+            if (total >= 0 && total <= 1) {
+                this.song.volume = total;
+            }
+        }
         super.update();
     }
 
@@ -250,6 +261,10 @@ class TitleScreen extends GameScreen
     
     onEnd() 
     {
+        this.song.volume = 0;
+        this.song.pause();
+        this.song.currentTime = 0;
+        delete this.song;
         engineObjectsDestroy();
         delete this.portrait;
         delete this.logo;

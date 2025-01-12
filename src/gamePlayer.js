@@ -192,16 +192,16 @@ class Character extends GameObject
         let lowerLimit = this.screen.level.getCameraLowerLimit().add(vec2(22, -12.5));
         // 44 x 25
         if (this.pos.y > upperLimit.y) {
-            this.pos.y = upperLimit.y;//this.oldy;
+            this.pos.y = upperLimit.y;
         }
         if (this.pos.x < upperLimit.x) {
-            this.pos.x = upperLimit.x;//this.oldx;
+            this.pos.x = upperLimit.x;
         }
         if (this.pos.y < lowerLimit.y) {
-            this.pos.y = lowerLimit.y;//this.oldy;
+            this.pos.y = lowerLimit.y;
         }
         if (this.pos.x > lowerLimit.x) {
-            this.pos.x = lowerLimit.x;//this.oldx;
+            this.pos.x = lowerLimit.x;
         }
     }
 
