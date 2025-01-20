@@ -1,6 +1,5 @@
 const WORLD_TILE_SIZE = 8;
 
-
 // "HP" of a breakable wall actually corresponds to how long (in seconds) it 
 // can withstand a continuous laser beam 
 const BREAKABLE_WALL_HP = 6;
@@ -354,8 +353,45 @@ class Wall extends GameObject
 
     render() {
         if (!this.breakable && !this.hot) {
-            drawRect(this.pos, this.size); // white outline
-            drawRect(this.pos, this.size.add(vec2(-PIXEL_UNIT*2)), this.color);            
+            // "Regular" walls are rendered with a 9-patch approach
+            let xOffset = 0;
+            let yOffset = 0;
+            let x0Pos = this.pos.x - (this.size.x / 2) + .5;
+            for (let x = 0; x < this.size.x; x++) { // horizontal
+                if (this.size.x - x < 1) {
+                    x = this.size.x - 1;
+                }
+                if (x == 0) {
+                    xOffset = 0 * WORLD_TILE_SIZE;
+                } else if (x == this.size.x - 1) {
+                    xOffset = 2 * WORLD_TILE_SIZE;
+                } else {
+                    xOffset = 1 * WORLD_TILE_SIZE;
+                }
+                let y0Pos = this.pos.y + (this.size.y / 2) - .5;
+                for (let y = 0; y < this.size.y; y++) {
+                    if (this.size.y - y < 1) {
+                        y = this.size.y - 1;
+                    }
+                    if (y == 0) {
+                        yOffset = 0 * WORLD_TILE_SIZE;
+                    } else if (y == this.size.y - 1) {
+                        yOffset = 2 * WORLD_TILE_SIZE;
+                    } else {
+                        yOffset = 1 * WORLD_TILE_SIZE;
+                    }
+                    drawTile(
+                        vec2(x0Pos + x, y0Pos - y),
+                        vec2(1),
+                        new TileInfo(
+                            vec2(xOffset, yOffset),
+                            vec2(WORLD_TILE_SIZE, WORLD_TILE_SIZE),
+                            TEXTURE_INDEX_WALL_TILES
+                        ),
+                        this.color
+                    );
+                }
+            }
         } else {
             super.render();
         }

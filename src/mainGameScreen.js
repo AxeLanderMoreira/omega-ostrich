@@ -8,16 +8,19 @@ const HUD_ICON_LEVEL = 11;
 const HUD_ICON_HERO = 12;
 const HUD_ICON_DYNAMITE = 13;
 
+const BG_TILE_SIZE = 32;
+
 class MainGameScreen extends GameScreen
 {
     /**
      * 
      */
-     constructor(startLevel, tutorialOff)
+     constructor(startLevel, tutorialOff, song)
      {
         super();
         this.startLevel = startLevel;
         this.tutorialOff = tutorialOff;
+        this.song = song;
      }
 
     /**
@@ -30,12 +33,12 @@ class MainGameScreen extends GameScreen
         this.player = new Player(this.respawnPosition, this); // position of middle floor
         this.currLevelNum = this.startLevel;
         this.level = new GameLevel(GAMEMAP[this.currLevelNum-1], this, this.tutorialOff);
+        this.resetBgTileLayer();
         this.player.pos = this.respawnPosition.copy();
         this.player.mirror = this.respawnFlipped;
         this.player.changeState(this.respawnAirborne ? STATE_CHARACTER_RESPAWN : STATE_CHARACTER_STAND);
         this.enemies = this.level.getEnemies();
         this.quadrant = vec2(0,0);
-        this.song = new Audio('main_loop.ogg');
     }
 
     getQuadrantCenterPos(quad) {
@@ -139,6 +142,38 @@ class MainGameScreen extends GameScreen
     {
     }
 
+    resetBgTileLayer()
+    {
+        let w = Math.ceil((this.level.mapWidth * WORLD_TILE_SIZE) / BG_TILE_SIZE); // TODO MAGIC NUMBER
+        let h = Math.ceil((this.level.mapHeight * WORLD_TILE_SIZE) / BG_TILE_SIZE); // TODO MAGIC NUMBER
+        let exceeding_y = 
+        this.tileLayer = new TileLayer(
+            // position:
+            vec2(
+                 (-GAME_RESOLUTION_W/WORLD_TILE_SIZE)/2, 
+                  (-GAME_RESOLUTION_H/WORLD_TILE_SIZE/2)-(this.level.mapHeight-(GAME_RESOLUTION_H/WORLD_TILE_SIZE))
+                ),
+            // size:
+            vec2(this.level.mapWidth, this.level.mapHeight),
+            // texture/tile info:
+            new TileInfo(vec2(0), vec2(BG_TILE_SIZE), TEXTURE_INDEX_BG_TILES),
+            // scale:
+            vec2(BG_TILE_SIZE/WORLD_TILE_SIZE),
+            // render order:
+            RENDER_ORDER_BGLAYER
+        );
+        for (let i = 0; i < w; i++) {
+            for (let j = 0; j < h; j++) {
+                let r = gRandom.int(0,20);
+                this.tileLayer.setData(
+                    vec2(i,j),
+                    new TileLayerData(r >=1 && r <= 4 ? r : 0, 0, false, new Color(1,1,1,.5))
+                );
+            }
+        }
+        this.tileLayer.redraw();
+    }
+
     /**
      * Called from gameRender callback registered via engineInit
      */
@@ -150,9 +185,7 @@ class MainGameScreen extends GameScreen
             this.flashFXFrame) {
             mainContext.fillStyle = mainContext.fillStyle = this.flashColor;
             mainContext.fillRect(0, 0, mainCanvas.width, mainCanvas.height);
-        } else {
-            drawBackground(BG_GRADIENT_COLOR_BRIGHT_CAVE, BG_GRADIENT_COLOR_DARK);
-        }
+        } 
         super.render();
     }
 
@@ -334,6 +367,7 @@ class MainGameScreen extends GameScreen
         }
 
         // destroy current level entities
+        this.tileLayer.destroy();
         this.enemies.forEach(enemy => {
             enemy.destroy();
         });
@@ -359,6 +393,7 @@ class MainGameScreen extends GameScreen
 
         this.respawnPosition = vec2(-10, 10);   // default respawnPosition
         this.level = new GameLevel(GAMEMAP[this.currLevelNum-1], this, this.tutorialOff);
+        this.resetBgTileLayer();
         this.enemies = this.level.getEnemies();
         this.quadrant = vec2(0,0);
         return true;

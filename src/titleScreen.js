@@ -55,6 +55,12 @@ class TitleScreen extends GameScreen
     // Simplified implementation - instead of allowing select a different control scheme,
     // we allow (for now) both UP arrow and button 2 to work as jump/fly;
 
+    constructor(song)
+    {
+        super();
+        this.song = song;
+    }
+
     init()
     {
         this.levelSelect = 1;
@@ -91,7 +97,6 @@ class TitleScreen extends GameScreen
         this.portrait.renderOrder = RENDER_ORDER_HERO_PORTRAIT;
         this.nextTimeToFlash();
         this.topColor = BG_GRADIENT_COLOR_BRIGHT_TITLE;
-        this.song = new Audio('title.ogg');
     }
     
     start()
@@ -135,7 +140,12 @@ class TitleScreen extends GameScreen
     }
 
     startGame() {
-        showMainGameScreen(this.levelSelect, this.tutorialOff);
+        let loading = (gMainLoopSong.readyState < HTMLMediaElement.HAVE_ENOUGH_DATA);
+        if (!loading) {
+            showMainGameScreen(this.levelSelect, this.tutorialOff);
+        } else {
+            this.showLoading = true;
+        }
     }
     
     showMenu(menu, index) {
@@ -171,8 +181,16 @@ class TitleScreen extends GameScreen
 
     update()
     {
-       let menu = this.currentMenu;
-       let item = menu[menu.index];
+        if (this.showLoading) {
+            let loading = (gMainLoopSong.readyState < HTMLMediaElement.HAVE_ENOUGH_DATA);
+            if (!loading) {
+                this.showLoading = false;
+                showMainGameScreen(this.levelSelect, this.tutorialOff);
+            }
+            return;
+        }
+        let menu = this.currentMenu;
+        let item = menu[menu.index];
         if (gameInput.pressedUp() && menu.index > 0) {
             this.navigateMenu(-1);
         } else if (gameInput.pressedDown() && menu.index < menu.length-1) {
@@ -218,6 +236,15 @@ class TitleScreen extends GameScreen
     {
     
     }
+
+    drawOutlineText(txt, pos, sz, fillColor, outlineColor)
+    {
+        drawTextScreen(txt, vec2(pos.x-1, pos.y-1), sz, outlineColor);
+        drawTextScreen(txt, vec2(pos.x+1, pos.y-1), sz, outlineColor);
+        drawTextScreen(txt, vec2(pos.x+1, pos.y+1), sz, outlineColor);
+        drawTextScreen(txt, vec2(pos.x-1, pos.y+1), sz, outlineColor);
+        drawTextScreen(txt, pos, 15, fillColor);
+    }
     
     render()
     {
@@ -225,8 +252,12 @@ class TitleScreen extends GameScreen
         let hcenter = mainCanvasSize.x/4;
         let vbottom =  mainCanvasSize.y;
         let i = 0;
-        let menu = this.currentMenu;
         let y = vbottom -50;
+        if (this.showLoading) {
+            this.drawOutlineText('LOADING...', vec2(hcenter, y), 15, new Color(1,1,1), new Color(0,0,0));
+            return;
+        }
+        let menu = this.currentMenu;
         if (this.stopping) return;
         menu.forEach(element => {
             let label = element.label;
@@ -239,11 +270,7 @@ class TitleScreen extends GameScreen
             }
             i++;
             // outline
-            drawTextScreen(label, vec2(hcenter-1, y-1), 15, bgcolor);
-            drawTextScreen(label, vec2(hcenter+1, y-1), 15, bgcolor);
-            drawTextScreen(label, vec2(hcenter+1, y+1), 15, bgcolor);
-            drawTextScreen(label, vec2(hcenter-1, y+1), 15, bgcolor);
-            drawTextScreen(label, vec2(hcenter, y), 15, fgcolor);
+            this.drawOutlineText(label, vec2(hcenter, y), 15, fgcolor, bgcolor);
             y += 20;
         });
     }

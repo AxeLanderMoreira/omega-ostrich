@@ -44,10 +44,17 @@ class DisclaimerScreen extends GameScreen
 
     update()
     {
-        console.log('[DisclaimerScreen.update] IN');
-        if (gameInput.hasPressedAnyKey()) {
-            console.log('[DisclaimerScreen.update] hasPressedAnyKey');
+        let loading = (gTitleSong.readyState < HTMLMediaElement.HAVE_ENOUGH_DATA);
+        if (this.showLoading && !loading) {
             showTitleScreen();
+            return;
+        }
+        if (gameInput.hasPressedAnyKey()) {
+            if (!loading) {
+                showTitleScreen();
+            } else {
+                this.showLoading = true;
+            }
         }
     }
 
@@ -59,8 +66,13 @@ class DisclaimerScreen extends GameScreen
     render()
     {
         let hcenter = mainCanvasSize.x/2;
-        let vcenter =  mainCanvasSize.y/2 - ((DISCLAIMER_FONT_SIZE * DISCLAIMER_TEXT_NUM_LINES) / 2);
-        drawTextScreen(this.disclaimerText, vec2(hcenter, vcenter), DISCLAIMER_FONT_SIZE);
+        let vcenter = mainCanvasSize.y/2;
+        if (!this.showLoading) {
+            vcenter -= (DISCLAIMER_FONT_SIZE * DISCLAIMER_TEXT_NUM_LINES) / 2;
+            drawTextScreen(this.disclaimerText, vec2(hcenter, vcenter), DISCLAIMER_FONT_SIZE);
+        } else {
+            drawTextScreen('LOADING...', vec2(hcenter, vcenter), DISCLAIMER_FONT_SIZE);
+        }
     }
 
     /*renderPost()

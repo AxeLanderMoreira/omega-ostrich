@@ -6,9 +6,10 @@
 
 
 // Constants
-const GAME_RESOLUTION_W = 352; // 44 8x8 tiles
-const GAME_RESOLUTION_H = 198; // 25 8x8 tiles
+const GAME_RESOLUTION_W = 44*WORLD_TILE_SIZE; // 44 8x8 tiles
+const GAME_RESOLUTION_H = 25*WORLD_TILE_SIZE; // 25 8x8 tiles
 
+const RENDER_ORDER_BGLAYER = -4;
 const RENDER_ORDER_ENEMIES=-3;
 const RENDER_ORDER_HERO=-2;
 const RENDER_ORDER_LASER=-1;
@@ -27,6 +28,9 @@ const TEXTURE_INDEX_PORTRAIT=6;
 const TEXTURE_INDEX_VISOR_ANIM=7;
 const TEXTURE_INDEX_TITLE_LOGO=8;
 const TEXTURE_INDEX_SPIKE=9;
+const TEXTURE_INDEX_WALL_TILES=10;
+const TEXTURE_INDEX_BG_TILES=11;
+const LAST_TEXTURE_INDEX = TEXTURE_INDEX_BG_TILES + 1;
 
 const PIXEL_UNIT = .125; // 1/8
 
@@ -51,6 +55,8 @@ let nextScreen;
 let mainGameScreen;
 var gRandom; 
 let gPrevTime;
+let gTitleSong;
+let gMainLoopSong;
 
 // LittleJS globals
 touchGamepadEnable = true;
@@ -127,6 +133,9 @@ function showDisclaimerScreen()
     currentScreen = new DisclaimerScreen();
     currentScreen.init();
     currentScreen.start();
+    if (!gTitleSong) {
+        gTitleSong = new Audio('title.ogg');
+    }
 }
 
 function showTitleScreen()
@@ -138,18 +147,23 @@ function showTitleScreen()
     if (currentScreen) {
         currentScreen.stop();
     }
-    currentScreen = new TitleScreen();
+    currentScreen = new TitleScreen(gTitleSong);
     currentScreen.init();
     currentScreen.start();
+    if (!gMainLoopSong) {
+        gMainLoopSong = new Audio('main_loop.ogg');
+    }
 }
 
 function showMainGameScreen(startLevel, tutorialOff)
 {
+    console.log('[showMainGameScreen] IN');
     if (currentScreen) {
         currentScreen.stop(1); // 1 second fadeout
     }
-    nextScreen = mainGameScreen = new MainGameScreen(startLevel, tutorialOff);
+    nextScreen = mainGameScreen = new MainGameScreen(startLevel, tutorialOff, gMainLoopSong);
     // will be started on 'onEnd()'
+    console.log('[showMainGameScreen] OUT');
 }
 
 function showGameOverScreen(victory)
@@ -222,7 +236,7 @@ engineInit(
     gameRender, 
     gameRenderPost, 
     [
-        './Ostrich.png', /*HERO*/
+        './Ostrich.png',
         './EggBomb.png',
         './Enemies.png',
         './HudIcons.png',
@@ -231,6 +245,8 @@ engineInit(
         './OstrichBg-1.png',
         './VisorAnim.png',
         './TitleLogo-Dashed.png',
-        './Spike.png'
+        './Spike.png',
+        './TileSet-001.png',
+        './LabBgWalls.png'
     ]
 );
