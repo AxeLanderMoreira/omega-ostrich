@@ -413,7 +413,7 @@
                  "type":"Enemy",
                  "visible":true,
                  "width":13,
-                 "x":616,
+                 "x":408,
                  "y":328
                 }, 
                 {
@@ -918,7 +918,7 @@
                  "y":297
                 }, 
                 {
-                 "height":80,
+                 "height":64,
                  "id":79,
                  "name":"",
                  "rotation":0,
@@ -957,7 +957,7 @@
                  "y":374
                 }, 
                 {
-                 "height":77,
+                 "height":93,
                  "id":82,
                  "name":"",
                  "rotation":0,
@@ -965,7 +965,7 @@
                  "visible":true,
                  "width":24,
                  "x":0,
-                 "y":280
+                 "y":264
                 }, 
                 {
                  "height":43,
@@ -1005,7 +1005,7 @@
                  "visible":true,
                  "width":13,
                  "x":65,
-                 "y":305
+                 "y":289
                 }, 
                 {
                  "gid":1073741844,
@@ -1034,7 +1034,7 @@
                  "visible":true,
                  "width":13,
                  "x":214,
-                 "y":305
+                 "y":289
                 }, 
                 {
                  "height":97,
@@ -1074,7 +1074,7 @@
                  "visible":true,
                  "width":13,
                  "x":140,
-                 "y":305
+                 "y":289
                 }, 
                 {
                  "gid":17,
