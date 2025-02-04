@@ -118,3 +118,13 @@ function drawBackground(color1, color2)
     gradient.addColorStop(1, rgb1);
     mainContext.fillRect(0, 0, mainCanvas.width, mainCanvas.height);
 }
+
+/**
+ * 
+ * @param {*} v1 
+ * @param {*} v2 
+ * @return true if vectors are equal
+ */
+function compareVectors(v1, v2) {
+    return (v1.x == v2.x && v1.y == v2.y);
+}

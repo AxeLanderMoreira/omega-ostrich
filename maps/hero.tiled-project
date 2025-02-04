@@ -121,6 +121,46 @@
             ]
         },
         {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 9,
+            "members": [
+            ],
+            "name": "Ring",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset",
+                "project"
+            ]
+        },
+        {
+            "color": "#ffffffff",
+            "drawFill": true,
+            "id": 10,
+            "members": [
+            ],
+            "name": "RingDoor",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "layer",
+                "object",
+                "tile",
+                "tileset",
+                "wangcolor",
+                "wangset",
+                "project"
+            ]
+        },
+        {
             "color": "#fff9f9ff",
             "drawFill": true,
             "id": 7,
@@ -219,14 +259,15 @@
             "id": 1,
             "members": [
                 {
-                    "name": "breakable",
+                    "name": "hot",
                     "type": "bool",
                     "value": false
                 },
                 {
-                    "name": "hot",
-                    "type": "bool",
-                    "value": false
+                    "name": "subtype",
+                    "propertyType": "WallType",
+                    "type": "string",
+                    "value": "regular"
                 },
                 {
                     "name": "xmove",
@@ -252,6 +293,18 @@
                 "wangset",
                 "project"
             ]
+        },
+        {
+            "id": 11,
+            "name": "WallType",
+            "storageType": "string",
+            "type": "enum",
+            "values": [
+                "regular",
+                "breakable",
+                "ringdoor"
+            ],
+            "valuesAsFlags": false
         }
     ]
 }

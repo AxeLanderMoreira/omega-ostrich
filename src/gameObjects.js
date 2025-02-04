@@ -7,6 +7,9 @@ const BREAKABLE_WALL_HP = 6;
 const SPRITE_INDEX_CHECKPOINT = 14;
 const SPRITE_INDEX_HINT = 16;
 
+const RING_TILE_SIZE_X = 8; // 6
+const RING_TILE_SIZE_Y = 34; // 32
+
 class GameObject extends EngineObject 
 {
     constructor(pos, size, tileInfo, angle, color)
@@ -218,19 +221,29 @@ const hotWallColor1 = new Color(.5, .15, .05);
 const WALL_MOVE_SPEED = 6; // tiles per second
 const BREAKABLE_WALL_NUM_FRAMES = 6;
 
+const RINGDOOR_TIME_TO_OPEN = 1;
+
 class Wall extends GameObject
 {
-    constructor(pos, size, screen, color, breakable, hot, xmove, ymove) {
+    constructor(pos, size, screen, color, subtype, hot, xmove, ymove) {
         super(pos, 
               size, 
-              breakable ? new TileInfo(vec2(0,0), vec2(24,60), TEXTURE_INDEX_BREAKABLE_WALL) : undefined, 
+              (subtype != 0) ? new TileInfo(vec2(0,0), vec2(24,60), TEXTURE_INDEX_BREAKABLE_WALL) : undefined, 
               0, 
               color);
-        this.breakable = breakable;
-        if (breakable) {
+        this.subtype = subtype;
+        this.breakable = (subtype == 1); // quick compatibility
+        if (this.breakable) {
             this.hp = BREAKABLE_WALL_HP;
             this.dmgFrame = 0;
             this.initialY = pos.y;
+        }
+        this.ringdoor = (subtype == 2);
+        if (this.ringdoor) {
+            this.setFrame(6);
+            this.ringsOn = 0;
+            this.horizontal = (this.size.x > this.size.y);
+            this.renderOrder--;
         }
         this.hot = hot;
         if (hot) {
@@ -352,7 +365,7 @@ class Wall extends GameObject
     }
 
     render() {
-        if (!this.breakable && !this.hot) {
+        if (this.subtype == 0 && !this.hot) {
             // "Regular" walls are rendered with a 9-patch approach
             let xOffset = 0;
             let yOffset = 0;
@@ -393,7 +406,17 @@ class Wall extends GameObject
                 }
             }
         } else {
-            super.render();
+            if (this.ringdoor && this.horizontal) {
+                drawTile(
+                    this.pos,
+                    vec2(this.size.y, this.size.x),
+                    this.tileInfo,
+                    new Color(1,1,1,1),
+                    -Math.PI/2
+                );
+            } else {
+                super.render();
+            }
         }
     }
 
@@ -450,7 +473,55 @@ class Wall extends GameObject
         if (this.breakable) {
             this.checkHitByLaser();
         }
+        if (this.ringdoor && this.t0Open) {
+            let t = time - this.t0Open;
+            if (t >= RINGDOOR_TIME_TO_OPEN) {
+                this.screen.destroyWall(this);
+            }
+            if (this.horizontal) {
+                this.pos.x = this.originalPos.x - this.size.x * t;
+            } else {
+                this.pos.y = this.originalPos.y - this.size.y * t;
+            }
+            
+        }
         super.update();
+    }
+
+    nextRing() {
+        if (this.ringsOn < 4) {
+            new Sound(SOUND_MENU_ACTION).play();
+            this.ringsOn++;
+            this.setFrame(6 + this.ringsOn);
+            if (this.ringsOn == 4) {
+                this.openRingDoor();
+            }
+        }        
+    }
+
+    openRingDoor() {
+        new Sound(SOUND_OPEN_DOOR).play();
+        this.t0Open = time;
+        this.originalPos = this.pos.copy();
+        this.rings.forEach(ring => {
+            ring.disable();
+        });
+        this.rings = [];
+    }
+
+    clearRings() {
+        if (this.ringsOn > 0) {
+            new Sound(SOUND_MISS_RING).play();
+            this.ringsOn = 0;
+            this.setFrame(6);
+        }        
+    }
+
+    addRing(ring) {
+        if (!this.rings) {
+            this.rings = [];
+        }
+        this.rings.push(ring);
     }
 }
 
@@ -525,5 +596,96 @@ class Hint extends GameObject {
     hideHint() {
         this.showing = false;
         this.screen.hideHint();
+    }
+}
+
+class Ring {
+    constructor(pos, screen, horizontal) {
+        let angle = horizontal ? Math.PI / 2 : 0;
+        this.pos = pos;
+        this.screen = screen;
+        this.player = this.screen.player;
+        let xshift = horizontal ? 0 : .3;
+        let yshift = !horizontal ? 0 : .3;
+        this.front = new EngineObject(
+            vec2(pos.x-xshift, pos.y+yshift),
+            vec2(RING_TILE_SIZE_X/WORLD_TILE_SIZE, RING_TILE_SIZE_Y/WORLD_TILE_SIZE),
+            new TileInfo(vec2(0, 0), vec2(RING_TILE_SIZE_X, RING_TILE_SIZE_Y), TEXTURE_INDEX_RING, 1),
+            angle,
+            new Color(1,1,0,1),
+            RENDER_ORDER_HERO + 1
+        );
+        this.back = new EngineObject(
+            vec2(pos.x+xshift, pos.y-yshift),
+            vec2(RING_TILE_SIZE_X/WORLD_TILE_SIZE, RING_TILE_SIZE_Y/WORLD_TILE_SIZE),
+            new TileInfo(vec2(RING_TILE_SIZE_X, 0), vec2(RING_TILE_SIZE_X, RING_TILE_SIZE_Y), TEXTURE_INDEX_RING, 1),
+            angle,
+            new Color(.6,.6,0,1),
+            RENDER_ORDER_HERO -1
+        );
+        this.front.gravityScale = 0;
+        this.front.controller = this;
+        this.back.gravityScale = 0;
+        this.front.update = function() {
+            // TODO Check collision
+            this.controller.update();
+        }
+    }
+
+    passByPlayer() {
+        if (!this.player) return;
+        let p = this.player.box ? this.player.box : this.player;
+        let ret = isOverlapping(
+            this.pos,
+            //vec2(PIXEL_UNIT,PIXEL_UNIT),
+            vec2(1,1),
+            p.pos,
+            p.size
+        );
+        return ret;
+    }
+
+    activate(flag) {
+        if (this.activated != flag) {
+            if (!this.wall) {
+                this.wall = this.screen.level.getRingDoor(this);
+                this.wall.addRing(this);
+            }            
+            // handle change
+            if (flag) {
+                this.front.color = new Color(0,1,0,1); // green
+                this.back.color = new Color(0,.6,0,1);
+                this.wall.nextRing();
+            } else {
+                this.front.color = new Color(1,0,0,1); // red
+                this.back.color = new Color(.6,0,0,1);
+                this.wall.clearRings();
+            }
+            this.activated = flag; // commit change
+        }        
+    }
+
+    update() {
+        if (this.disabled) {
+            return;
+        }
+        if (this.passByPlayer()) {
+            this.activate(true);
+        } else if (this.player.state == STATE_CHARACTER_STAND) {
+            // TODO Must have a trigger for touch walls
+            // TODO Must link to a Wall of subtype == ringdoor
+            this.activate(false);
+        }
+    }
+
+    disable() {
+        this.disabled = true;
+        this.front.color = new Color(1,1,1,1); // green
+        this.back.color = new Color(.6,.6,.6,1);
+    }
+
+    destroy() {
+        this.front.destroy();
+        this.back.destroy();
     }
 }

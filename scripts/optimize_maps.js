@@ -55,8 +55,18 @@ function serializeWall(obj) {
             if (prop.name == 'hot') {
                 flag += 1 * prop.value;
             }
-            if (prop.name == 'breakable') {
-                flag += 2 * prop.value;
+            if (prop.name == 'subtype') {
+                switch (prop.value) {
+                    case 'breakable':
+                        flag += 2; // 010
+                        break;
+                    case 'ringdoor':
+                        flag += 4; // 100
+                        break;
+                    default:
+                        // do nothing 000
+                        break;
+                }
             }
             if (prop.name == 'xmove') {
                 xmove = prop.value;
@@ -67,7 +77,6 @@ function serializeWall(obj) {
             // TODO color?
         });
     }
-    //let flag = (1*obj.hot) + (2*obj.breakable);
     jsString += ',' + flag;
     jsString += ',' + xmove;
     jsString += ',' + ymove;
@@ -233,22 +242,20 @@ function serializeSpike(obj) {
     }
 }
 
-function sortLayer(layer) {
-    layer.sort(function(a,b) {
-        if (a.y < b.y) { // order from top-to-bottom first
-            return -1;
-        }
-        if (a.y > b.y) {
-            return 1;
-        }
-        if (a.x < b.x) { // then from left-to-right
-            return -1;
-        }
-        if (a.x > b.x) {
-            return 1;
-        }
-        return 0;
-    });
+function serializeRing(obj) {
+    jsString += ',7';   // Object type for Ring
+    jsString += ',' + Math.round(obj.x);
+    jsString += ',' + Math.round(obj.y);
+    let horizontal = (obj.rotation == 90);
+    jsString += ',' + horizontal;
+}
+
+function serializeRingDoor(obj) {
+    jsString += ',8';   // Object type for RingDoor
+    jsString += ',' + Math.round(obj.x);
+    jsString += ',' + Math.round(obj.y);
+    let horizontal = (obj.rotation == 90);
+    jsString += ',' + horizontal;
 }
 
 /**
@@ -261,19 +268,19 @@ function processMapFile(mapPath) {
     jsString +='\t[' + map.width;
     jsString += ',' + map.height;
     let layer = map.layers[0];
-    /*let prevx = 0;
-    let prevy = 0;
-    let swapx, swapy;*/
-    //sortLayer(layer.objects);
-    layer.objects.forEach(obj => {
-        // Transform object's absolute position into position relative to
-        // previous object in sorted list.
-        /*swapx = obj.x;
-        swapy = obj.y;
-        obj.x -= prevx;
-        obj.y -= prevy;
-        prevx = swapx;
-        prevt = swapy;*/
+    // TODO Handle dynamically
+/*
+ "tilesets":[
+        {
+         "firstgid":1,
+         "source":"Ring.tsx"
+        }, 
+        {
+         "firstgid":2,
+         "source":"Enemies.tsx"
+        }],
+*/
+    layer.objects.forEach(obj => {        
         console.log('seralize obj ' + obj.type);
         switch(obj.type) {
             case 'Wall':
@@ -296,6 +303,12 @@ function processMapFile(mapPath) {
                 break;
             case 'Spike':
                 serializeSpike(obj);
+                break;
+            case 'Ring':
+                serializeRing(obj);
+                break;
+            case 'RingDoor':
+                serializeRingDoor(obj);
                 break;
         }
     });

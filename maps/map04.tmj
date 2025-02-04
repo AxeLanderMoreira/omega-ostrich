@@ -110,9 +110,10 @@
                  "name":"",
                  "properties":[
                         {
-                         "name":"breakable",
-                         "type":"bool",
-                         "value":true
+                         "name":"subtype",
+                         "propertytype":"WallType",
+                         "type":"string",
+                         "value":"breakable"
                         }],
                  "rotation":0,
                  "type":"Wall",

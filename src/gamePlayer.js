@@ -1,5 +1,7 @@
 'use strict';
 
+const EASY_FLY_CONTROLS = true;
+
 const PLAYER_TILE_SIZE_X = 16;  //14;
 const PLAYER_TILE_SIZE_Y = 26;  //24;
 const DYNAMITE_TILE_SIZE_X = 15; //13;
@@ -114,11 +116,25 @@ class Character extends GameObject
      */
     changeState(newState, followingState = -1)
     {
+        switch (this.state) {
+            // special cases to reset current state
+            case STATE_CHARACTER_CROUCH:
+                // reset hitbox to normal
+                this.updateHitBox(0,0,12,24);
+                break;
+            case STATE_CHARACTER_HOVER:
+            case STATE_CHARACTER_TURNMIDAIR:
+                if (this.t1StopFall) {
+                    delete this.t1StopFall;
+                }
+                break;
+        }
         if (this.state == STATE_CHARACTER_CROUCH) {
             // reset hitbox to normal
             this.updateHitBox(0,0,12,24);
         }
         switch(newState) {
+            // general cases to apply ne state
             case STATE_CHARACTER_STAND:
             case STATE_CHARACTER_TURN:
                 // TODO Implement TURNCROUCHING state
@@ -676,7 +692,8 @@ class Player extends Character
                 break;
             case STATE_CHARACTER_JUMP:
                 /*if (pressedUp) {*/
-                if (holdingUp && this.velocity.y <= 0) {
+                let holdingOpposite = (this.mirror) ? holdingRight : holdingLeft;
+                if ((holdingUp || holdingOpposite) && this.velocity.y <= 0) {
                     this.changeState(STATE_CHARACTER_HOVER);
                 }
                 break;
@@ -684,10 +701,39 @@ class Player extends Character
             case STATE_CHARACTER_TURNMIDAIR:
                 if (!holdingUp) {
                     this.changeState(STATE_CHARACTER_FALL);
-                } else {
-                    accy = PLAYER_HOVER_UPWARDS_ACCELERATION;
+                } else {                    
+                    if (EASY_FLY_CONTROLS) {
+                        // The flag above means that he player can immediately stop a free
+                        // fall by pressing UP/2 -> it will glide instead of keep falling.
+                        if (!this.t1StopFall && this.velocity.y < 0) {
+                            this.t1StopFall = time - (this.velocity.y);
+                            // the time it takes to reaccelerate upwards will depend on how
+                            // fast it was going downwards.
+                            this.velocity.y = accy = 0;
+                            break;
+                        } else if (this.t1StopFall) {
+                            this.velocity.y = 0;
+                            if (time < this.t1StopFall) {
+                                // still gliding...
+                                accy = 0;
+                                break;
+                            } else {
+                                // ready to reaccelerate up
+                                delete this.t1StopFall;                                
+                                accy = PLAYER_HOVER_UPWARDS_ACCELERATION;
+                            }
+                        } else {
+                            // not falling, keep accelerating up
+                            accy = PLAYER_HOVER_UPWARDS_ACCELERATION;
+                        }
+                    } else {
+                        // If flag is not set, it will just accelerate up, applying force
+                        // against gravity (more realistic and simpler to implement, but 
+                        // harder for the player to control.
+                        accy = PLAYER_HOVER_UPWARDS_ACCELERATION;
+                    }
                     this._drainFuel();
-                }                
+                }
                 if (holdingLeft && this.velocity.x > -PLAYER_HORZ_MOVE_SPD) {
                     if (!this.mirror) {
                         this.mirror = true;

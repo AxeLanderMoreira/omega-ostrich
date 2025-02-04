@@ -30,7 +30,8 @@ const TEXTURE_INDEX_TITLE_LOGO=8;
 const TEXTURE_INDEX_SPIKE=9;
 const TEXTURE_INDEX_WALL_TILES=10;
 const TEXTURE_INDEX_BG_TILES=11;
-const LAST_TEXTURE_INDEX = TEXTURE_INDEX_BG_TILES + 1;
+const TEXTURE_INDEX_RING=12;
+const LAST_TEXTURE_INDEX = TEXTURE_INDEX_RING + 1;
 
 const PIXEL_UNIT = .125; // 1/8
 
@@ -41,6 +42,8 @@ const SOUND_LASER_BEAM = [1.7,0,294,.11,.01,.005,,2.5,-16,,,,.01,,137,1,.01,.92,
 const SOUND_DRILLING = [1.1,,24,.05,.22,.004,3,.8,90,,,,,.5,,,.15,.97]; // Random 50
 const SOUND_MENU_FOCUS = [,0,830,,.06,.24,1,1.82,,,837,.06];//[,,123.4708,.02,.08,.23,1,.4,-5,40,419,.1,,,389,,,.76,,,-1476]; // Random 70
 const SOUND_MENU_ACTION = [,,1675,,.06,.24,1,1.82,,,837,.06];//[.4,,23,,.45,.17,3,.1,,,-463,,.05,.1,,,,.73,.01,.08,187]; // Random 73
+const SOUND_MISS_RING = [1.1,0,87.30706,,.45,.04,2,1.3,,5,,,.04,,,,,.55,,,-1462]; // Random 88
+const SOUND_OPEN_DOOR = [,.2,349.2282,.3,,1.5,,11,,,,,,30];
 
 const LOCAL_STORAGE_KEY = 'amoreira.omega-ostrich.state';
 
@@ -247,6 +250,7 @@ engineInit(
         './TitleLogo-Dashed.png',
         './Spike.png',
         './TileSet-001.png',
-        './LabBgWalls.png'
+        './LabBgWalls.png',
+        './Ring.png'
     ]
 );

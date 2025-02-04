@@ -68,14 +68,15 @@
                  "name":"",
                  "properties":[
                         {
-                         "name":"breakable",
+                         "name":"hot",
                          "type":"bool",
                          "value":true
                         }, 
                         {
-                         "name":"hot",
-                         "type":"bool",
-                         "value":true
+                         "name":"subtype",
+                         "propertytype":"WallType",
+                         "type":"string",
+                         "value":"breakable"
                         }],
                  "rotation":0,
                  "type":"Wall",

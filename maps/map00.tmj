@@ -74,9 +74,10 @@
                  "name":"",
                  "properties":[
                         {
-                         "name":"breakable",
-                         "type":"bool",
-                         "value":true
+                         "name":"subtype",
+                         "propertytype":"WallType",
+                         "type":"string",
+                         "value":"breakable"
                         }],
                  "rotation":0,
                  "type":"Wall",
@@ -204,7 +205,7 @@
          "y":0
         }],
  "nextlayerid":3,
- "nextobjectid":18,
+ "nextobjectid":20,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.0",

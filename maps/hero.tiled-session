@@ -3,13 +3,17 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "map002.tmj",
+    "activeFile": "map00.tmj",
     "expandedProjectPaths": [
         "."
     ],
     "fileStates": {
         "": {
             "scaleInDock": 1
+        },
+        "BreakableWall.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
         },
         "Enemies.tsx": {
             "scaleInDock": 2,
@@ -19,6 +23,9 @@
             "scaleInDock": 1,
             "scaleInEditor": 1
         },
+        "Ring.tsx": {
+            "scaleInDock": 1
+        },
         "Spike.tsx": {
             "scaleInDock": 1
         },
@@ -26,11 +33,11 @@
             "expandedObjectLayers": [
                 2
             ],
-            "scale": 0.75,
+            "scale": 1.5,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 351.3333333333333,
-                "y": 99.33333333333326
+                "x": 201.66666666666663,
+                "y": 229.66666666666663
             }
         },
         "map001.tmj": {
@@ -40,30 +47,41 @@
             "scale": 1,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 658.5,
-                "y": 306.5
+                "x": 427,
+                "y": 199.5
+            }
+        },
+        "map001fly.tmj": {
+            "expandedObjectLayers": [
+                2
+            ],
+            "scale": 2,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 540.5,
+                "y": 516.75
             }
         },
         "map002.tmj": {
             "expandedObjectLayers": [
                 2
             ],
-            "scale": 1.5,
+            "scale": 1.2031,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 259.66666666666663,
-                "y": 234.33333333333337
+                "x": 455.489984207464,
+                "y": 199.90025766769176
             }
         },
         "map01.tmj": {
             "expandedObjectLayers": [
                 2
             ],
-            "scale": 0.75,
+            "scale": 0.9455,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 563.3333333333333,
-                "y": 263.33333333333326
+                "x": 527.7630883130619,
+                "y": 199.8942358540455
             }
         },
         "map01.tmj#HERO": {
@@ -76,8 +94,8 @@
             "scale": 0.75,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 175.33333333333331,
-                "y": 197.99999999999994
+                "x": 175.99999999999994,
+                "y": 198.66666666666669
             }
         },
         "map03.tmj": {
@@ -87,8 +105,8 @@
             "scale": 0.75,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 358,
-                "y": 569.9999999999999
+                "x": 175.99999999999994,
+                "y": 299.99999999999994
             }
         },
         "map04.tmj": {
@@ -98,8 +116,8 @@
             "scale": 1,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 351.5,
-                "y": 99.5
+                "x": 352,
+                "y": 100
             }
         },
         "map05.tmj": {
@@ -109,7 +127,7 @@
             "scale": 2,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 82.75,
+                "x": 117.75,
                 "y": 166.75
             }
         }
@@ -117,13 +135,13 @@
     "last.exportedFilePath": "/home/alexandre/workspace/herojs/maps",
     "last.imagePath": "/home/alexandre/workspace/omega-ostrich/images",
     "map.fixedSize": true,
-    "map.height": 50,
+    "map.height": 75,
     "map.lastUsedExportFilter": "JavaScript map files (*.js)",
     "map.lastUsedFormat": "json",
     "map.orientation": 1,
     "map.tileHeight": 8,
     "map.tileWidth": 8,
-    "map.width": 132,
+    "map.width": 88,
     "openFiles": [
         "HERO.tsx",
         "map01.tmj",
@@ -133,28 +151,31 @@
         "map03.tmj",
         "map00.tmj",
         "map001.tmj",
-        "map002.tmj"
+        "map002.tmj",
+        "map001fly.tmj"
     ],
     "project": "hero.tiled-project",
-    "property.type": "int",
+    "property.type": "WallType",
     "recentFiles": [
+        "BreakableWall.tsx",
         "HERO.tsx",
         "map01.tmj",
         "Enemies.tsx",
         "map02.tmj",
         "map04.tmj",
         "map03.tmj",
-        "map00.tmj",
+        "map001fly.tmj",
+        "map002.tmj",
         "map001.tmj",
-        "map002.tmj"
+        "map00.tmj"
     ],
     "tileset.embedInMap": false,
     "tileset.lastUsedFormat": "tsx",
-    "tileset.margin": 1,
+    "tileset.margin": 0,
     "tileset.spacing": 0,
     "tileset.tileSize": {
-        "height": 25,
-        "width": 13
+        "height": 32,
+        "width": 11
     },
     "tileset.transparentColor": "#ff00ff",
     "tileset.type": 0,

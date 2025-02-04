@@ -8,6 +8,7 @@ const OBJECT_TYPE_CHECKPOINT = 3;
 const OBJECT_TYPE_START_POSITION = 4;
 const OBJECT_TYPE_HINT = 5;
 const OBJECT_TYPE_SPIKE = 6;
+const OBJECT_TYPE_RING = 7;
 
 const OBJECT_ANCHOR_CENTER_MIDDLE = 0;  /* e.g. Enemies */
 const OBJECT_ANCHOR_TOP_LEFT = 1;       /* e.g. Walls */
@@ -25,6 +26,7 @@ class GameLevel
         this.hints = [];
         this.spikes = [];
         this.walls= []; 
+        this.rings = [];
         this.tutorialOff = tutorialOff;
         this._parseMapArray(map);
     }
@@ -71,6 +73,9 @@ class GameLevel
                 case OBJECT_TYPE_SPIKE:
                     obj = this._parseSpike();
                     break;
+                case OBJECT_TYPE_RING:
+                    obj = this._parseRing();
+                    break;
             }
             if (obj) {
                 obj.gravityScale = 0;
@@ -85,18 +90,18 @@ class GameLevel
         let height = this._next();
         let flag = this._next();
         let hot = (flag & 1) == 1;
-        let breakable = (flag & 2) == 2;
+        let subtype = (flag >> 1) & 3;
         let xmove = this._next()/WORLD_TILE_SIZE;
         let ymove = this._next()/WORLD_TILE_SIZE;
         let color;
-        if (breakable) {
+        if (subtype != 0) { // breakable or ringdoor
             color = new Color(1,1,1,1);
-        } else {
+        } else { // regular wall
             color = randColor(new Color(.5,.5,.5), new Color(.9,.9,.9));
         }
         let pos = this._translatePos(x, y, width, height, OBJECT_ANCHOR_TOP_LEFT);
         let size = vec2(width, height).divide(vec2(8));
-        let obj = new Wall(pos, size, this.screen, color, breakable, hot, xmove, ymove);
+        let obj = new Wall(pos, size, this.screen, color, subtype, hot, xmove, ymove);
         if (obj) {
             this.walls.push(obj);
         }        
@@ -220,6 +225,21 @@ class GameLevel
         this.spikes.push(obj);
     }
 
+    _parseRing() {
+        let x = this._next();
+        let y = this._next();
+        let pos = this._translatePos(x, y, 14, 32, OBJECT_ANCHOR_TOP_LEFT);        
+        let horizontal = this._next();
+        if (horizontal) {
+            // TODO Find the correct compensation formula; this is needed 
+            // because rotation of geometric forms in Tiled is weird
+            pos.x -= 24*PIXEL_UNIT; 
+            pos.y += 7*PIXEL_UNIT;
+        }
+        let obj = new Ring(pos, this.screen, horizontal);
+        this.rings.push(obj);
+    }
+
     /**
      * 
      * @param {Vector2} pos in pixels (0,0@top,left)
@@ -283,6 +303,28 @@ class GameLevel
     getWalls()
     {
         return this.walls;
+    }
+
+    getRings()
+    {
+        return this.rings;
+    }
+
+    getRingDoor(ring)
+    {
+        let i = 0;
+        let walls = this.walls;
+        let j = 0;
+        let q1 = this.screen.getQuadrantFromPos(ring.pos);
+        for (let i  = 0; i < walls.length; i++) {
+            let wall = walls[i];
+            if (wall.ringdoor) {
+                let q2 = this.screen.getQuadrantFromPos(wall.pos);
+                if (compareVectors(q1, q2)) {
+                    return wall;
+                }
+            }
+        }
     }
 
      /*

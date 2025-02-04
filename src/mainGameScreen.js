@@ -388,6 +388,10 @@ class MainGameScreen extends GameScreen
         spikes.forEach(spike => {
             spike.destroy();
         });
+        let rings = this.level.getRings();
+        rings.forEach(ring => {
+            ring.destroy();
+        });
         this.enemies = [];
         delete this.level;
 
